@@ -1,0 +1,83 @@
+NUMBER x = 1
+BOO isOK
+
+METHOD addSum (NUMBER y, NUMBER z // DECLARATIONLIST)
+    y + z /// STATEMENT
+ENDMETHOD
+
+METHOD m1 (NUMBER y)
+     y = y + 1
+ENDMETHOD
+
+METHOD m2 (NUMBER y)
+     y = 10
+ENDMETHOD
+
+METHOD m3 (NUMBER y)
+     m2(y PARAMETERLIST)
+ENDMETHOD
+
+METHOD m4 (NUMBER y)
+     IF x == z | 1 /// EXPRESSION THEN
+          /// STATEMENT
+     ENDIF
+ENDMETHOD
+
+METHOD m4 (NUMBER y)
+     WHILE x == z | 1 THEN
+           /// STATEMENT
+     ENDWHILE
+ENDMETHOD
+
+
+
+BLOCKS
+    STATEMENTS
+    METHODCALLS
+    DECLARATIONS
+
+METHOD>
+   STATEMENTS
+   METHODCALLS
+   WHILE/IF
+
+WHILE/IF
+   EXPRESSION
+   THEN
+       STATEMENTS
+       METHODCALLS
+   END
+
+
+- EXPRESSION
+    x - y == 1   / NO
+    x == z
+    x == 1
+    x != y
+
+- STATEMENT
+    x = 1
+    x = y
+    x = x + 1
+    y = x + 1
+    x = METHODSCALLS
+    x = y = 1
+
+- METHODCALLS
+    sumA(x) // IDENTIFIER S_B PARAMETERLIST E_B // sumB()
+
+- DECLARATION
+    NUMBER x = 1
+    NUMBER x
+
+- PARAMETERLIST
+    //EMPTY
+    x
+    x , y, ..
+    // NOT A METHOD CALL
+
+- DECLARATIONLIST
+    //EMPTY
+    NUMBER x, NUMBER y, ...
+    NUMBER x
+
