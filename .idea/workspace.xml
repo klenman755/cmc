@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eef7f610-2f39-4492-9ae9-2a4e4db7dd20" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/package1/HAPK" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cmc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cmc.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/package1/Grammar_HAPK_v1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/package1/HAPK" beforeDir="false" afterPath="$PROJECT_DIR$/src/package1/HAPK" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,6 +13,25 @@
   </component>
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/package1/Grammar_HAPK_v1">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="409">
+                    <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -49,11 +68,32 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/package1/Token.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="420">
               <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/package1/HAPK">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-231">
+              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/package1/Scanner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="765">
+              <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#2395#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,14 +120,17 @@
       <list>
         <option value="$PROJECT_DIR$/src/package1/Parser.java" />
         <option value="$PROJECT_DIR$/src/package1/HAPK" />
+        <option value="$PROJECT_DIR$/src/package1/Grammar_HAPK_v1" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="137" />
     <option name="y" value="23" />
-    <option name="width" value="1411" />
+    <option name="width" value="1405" />
     <option name="height" value="1027" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -146,17 +189,24 @@
     <configuration />
   </component>
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="one">
+      <created>1570638179622</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570638179623</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4241000" />
+    <option name="totallyTimeSpent" value="7239000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="137" y="23" width="1411" height="1027" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1405" height="1027" extended-state="0" />
     <layout>
       <window_info id="DB Browser" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49947754" visible="true" weight="0.25858292" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49947754" visible="true" weight="0.15627293" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -175,7 +225,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32894737" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32894737" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="9" visible="true" weight="0.18969299" />
+      <window_info anchor="bottom" id="Version Control" order="9" visible="true" weight="0.18969299" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32810867" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="11" show_stripe_button="false" weight="0.32894737" />
       <window_info anchor="bottom" id="Floobits" order="12" show_stripe_button="false" weight="0.32894737" />
@@ -192,19 +242,13 @@
       <window_info anchor="right" id="Codota" order="9" weight="0.32913783" />
     </layout>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="one" />
+    <option name="LAST_COMMIT_MESSAGE" value="one" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/package1/Scanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#2395#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/package1/TestDriverScanner.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -230,13 +274,6 @@
           <folding>
             <element signature="e#0#4137#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/package1/HAPK">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="76" column="24" selection-start-line="76" selection-start-column="24" selection-end-line="76" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -271,6 +308,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/package1/Grammar_HAPK_v1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/package1/HAPK">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-231">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/package1/Scanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#2395#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

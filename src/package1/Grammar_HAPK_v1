@@ -1,0 +1,73 @@
+V1 - Long normal version
+
+program             block
+
+block               declarations
+                    statements
+                    methodCalls
+                    [declarations | statements | methodCalls] block*
+
+declarations        type IDENTIFIER OPERATOR INTEGER_LITERAL                        NUMBER x = 1
+                    type IDENTIFIER                                                 NUMBER x
+                    METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statements ENDMETHOD
+
+type                NUMBER
+                    BOO
+
+statements          operations
+                    methodCalls
+
+operations          IDENTIFIER OPERATOR IDENTIFIER                                  x=y
+                    IDENTIFIER OPERATOR INTEGER_LITERAL                             x=1
+                    IDENTIFIER OPERATOR IDENTIFIER OPERATOR INTEGER_LITERAL...      x=x+1   x=x+1+2
+                    IDENTIFIER OPERATOR methodCalls                                 x=addSum(y,z)
+                    IDENTIFIER OPERATOR IDENTIFIER OPERATOR INTEGER_LITERAL...      x=y=1   x=y=a=1
+
+methodCalls         IDENTIFIER START_BRACKET parameterList END_BRACKET
+                    IF expression THEN statements ENDIF
+                    WHILE expression THEN statements ENDWHILE
+
+parameterList       IDENTIFIER
+                    IDENTIFIER, IDENTIFIER...
+                    e
+
+declarationList     type IDENTIFIER
+                    type IDENTIFIER, type IDENTIFIER...
+                    e
+
+expression          IDENTIFIER OPERATOR IDENTIFIER
+                    IDENTIFIER OPERATOR INTEGER_LITERAL
+                    IDENTIFIER OPERATOR BOOLEAN
+
+
+
+
+
+
+V2 - Removed Left recursion; || and *
+
+
+program             block
+
+block               [ declarations || statements || methodCalls ] [ block ]*
+
+declarations        type IDENTIFIER [ OPERATOR INTEGER_LITERAL ]*
+                    METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statements ENDMETHOD
+
+type                [ NUMBER || BOO ]
+
+statements          [ operations || methodCalls ]
+
+operations          IDENTIFIER OPERATOR [ [ IDENTIFIER [ OPERATOR [ IDENTIFIER || INTEGER_LITERAL ] ]* ] || INTEGER_LITERAL || methodCalls ]
+
+methodCalls         IDENTIFIER START_BRACKET parameterList END_BRACKET
+                    IF expression THEN statements ENDIF
+                    WHILE expression THEN statements ENDWHILE
+
+parameterList       IDENTIFIER [ , IDENTIFIER ]*
+                    e
+
+declarationList     type IDENTIFIER [ , type IDENTIFIER ]*
+                    e
+
+expression          IDENTIFIER OPERATOR [ IDENTIFIER || NTEGER_LITERAL || BOOLEAN ]
