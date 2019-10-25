@@ -5,7 +5,10 @@ program             block
 block               declarations
                     statements
                     methodCalls
-                    [declarations | statements | methodCalls] block*
+                    declarations block*
+                    statements block*
+                    methodCalls block*
+
 
 declarations        type IDENTIFIER OPERATOR INTEGER_LITERAL                        NUMBER x = 1
                     type IDENTIFIER                                                 NUMBER x
@@ -19,9 +22,8 @@ statements          operations
 
 operations          IDENTIFIER OPERATOR IDENTIFIER                                  x=y
                     IDENTIFIER OPERATOR INTEGER_LITERAL                             x=1
-                    IDENTIFIER OPERATOR IDENTIFIER OPERATOR INTEGER_LITERAL...      x=x+1   x=x+1+2
+                    IDENTIFIER OPERATOR IDENTIFIER OPERATOR INTEGER_LITERAL...      x=x+1   x=x+1+2 ,x=y=a=1
                     IDENTIFIER OPERATOR methodCalls                                 x=addSum(y,z)
-                    IDENTIFIER OPERATOR IDENTIFIER OPERATOR INTEGER_LITERAL...      x=y=1   x=y=a=1
 
 methodCalls         IDENTIFIER START_BRACKET parameterList END_BRACKET
                     IF expression THEN statements ENDIF
