@@ -15,8 +15,7 @@ public class Token
 	
 	public TokenKind kind;
 	public String spelling;
-	
-	
+
 	public Token( TokenKind kind, String spelling )
 	{
 		this.kind = kind;
@@ -120,14 +119,12 @@ public class Token
 	private static final String MULTOPS[] =
 	{
 		"*",
-		"/",
-		
+		"/"
 	};
 	
 	private static final String COMPOPS[] =
 		{
 			"==",
 			"!="
-			
 		};
 }
