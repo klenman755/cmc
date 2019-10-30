@@ -1,11 +1,4 @@
-/*
- * 16.08.2016 Minor editing
- * 25.09.2009 New package structure
- * 22.09.2006 Original version (adapted from Watt&Brown)
- */
- 
 package package1;
-
 
 import java.io.*;
 
@@ -14,11 +7,9 @@ public class SourceFile
 {
 	public static final char EOL = '\n';
 	public static final char EOT = 0;
-	
-	
+
 	private FileInputStream source;
-	
-	
+
 	public SourceFile( String sourceFileName )
 	{
 		try {
@@ -28,8 +19,7 @@ public class SourceFile
 			System.exit( 1 );
 		}
 	}
-	
-	
+
 	public char getSource()
 	{
 		try {
