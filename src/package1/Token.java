@@ -1,13 +1,4 @@
 package package1;
-/*
- * 16.08.2016 Minor editing
- * 29.10.2009 New package structure
- * 22.10.2006 isAssignOp(), isAddOp(), isMulOp()
- * 28.09.2006 New keyword: return
- * 22.09.2006 Keyword recoqnition in constructor
- * 22.09.2006 ERROR added
- * 17.09.2006 Original Version (based on Example 4.2 in Watt&Brown)
- */
 
 public class Token
 {

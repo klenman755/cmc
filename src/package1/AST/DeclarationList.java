@@ -1,14 +1,13 @@
 package package1.AST;
 
 import package1.AST.SUBTYPES.SubTypeIdentifier;
-import package1.AST.TOKENS.Identifier;
 
 import java.util.Vector;
 
 public class DeclarationList extends AST {
-    Vector<SubTypeIdentifier> declarationList;
+    private  Vector<Identifier> identifiers;
 
-    public DeclarationList(Vector<SubTypeIdentifier> declarationList) {
-        this.declarationList = declarationList;
+    public DeclarationList(Vector<Identifier> identifiers) {
+        this.identifiers = identifiers;
     }
 }

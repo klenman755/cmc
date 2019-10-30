@@ -1,11 +1,3 @@
-/*
- * 23.08.2019 TokenKind enum introduced
- * 16.08.2016 IScanner gone, minor editing
- * 20.09.2010 IScanner
- * 25.09.2009 New package structure
- * 22.09.2006 Original version (based on Example 4.21 in Watt&Brown)
- */
-
 package package1;
 
 public class Scanner {

@@ -1,10 +1,4 @@
 package package1;
-/**
- * HAPK
- * @author 
- *
- */
-
 
 public enum TokenKind {
 	
