@@ -1,13 +1,11 @@
 package package1.AST;
 
-import package1.AST.TOKENS.Identifier;
-
 import java.util.Vector;
 
 public class ParameterList extends AST {
-    Vector<Identifier> list;
+    private Vector<Identifier> identifiers;
 
-    public ParameterList(Vector<Identifier> list) {
-        this.list = list;
+    public ParameterList(Vector<Identifier> identifiers) {
+        this.identifiers = identifiers;
     }
 }

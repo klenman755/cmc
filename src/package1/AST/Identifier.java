@@ -1,4 +1,4 @@
-package package1.AST.TOKENS;
+package package1.AST;
 
 public class Identifier {
 }
