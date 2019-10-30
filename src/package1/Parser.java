@@ -1,15 +1,8 @@
-/*
- * 23.08.2019 TokenKind enum introduced
- * 30.08.2016 IParse gone, IScanner gone, minor editing
- * 24.09.2010 IParser
- * 07.10.2009 New package structure
- * 02.10.2006 Small fix in parsePrimary()
- * 28.09.2006 Original version (based on Watt&Brown)
- */
+
   
 package package1;
 
-
+//TODO add logic for different variale types and their checking
 import package1.TokenKind.*;
 
 
@@ -33,194 +26,227 @@ public class Parser
 	{
 		parseBlock();
 		
-		if( currentTerminal.kind != EOT )
+		if( currentTerminal.kind != TokenKind.EOT )
 			System.out.println( "Tokens found after end of program" );
 	}
 	
 	
-	private void parseBlock()
-	{
-		accept( DECLARE );
-		parseDeclarations();
-		accept( DO );
-		parseStatements();
-		accept( OD );
-	}
-	
-	
-	private void parseDeclarations()
-	{
-		while( currentTerminal.kind == VAR ||
-		       currentTerminal.kind == FUNC )
-			parseOneDeclaration();
-	}
-	
-	
-	private void parseOneDeclaration()
-	{
-		switch( currentTerminal.kind ) {
-			case VAR:
-				accept( VAR );
-				accept( IDENTIFIER );
-				accept( SEMICOLON );
-				break;
-				
-			case FUNC:
-				accept( FUNC );
-				accept( IDENTIFIER );
-				accept( LEFTPARAN );
-				
-				if( currentTerminal.kind == IDENTIFIER )
-					parseIdList();
-					
-				accept( RIGHTPARAN );
-				parseBlock();
-				accept( RETURN );
-				parseExpression();
-				accept( SEMICOLON );
-				break;
-				
-			default:
-				System.out.println( "var or func expected" );
-				break;
-		}
-	}
-	
-	
-	private void parseIdList()
-	{
-		accept( IDENTIFIER );
+	private void parseBlock() {
+		switch (currentTerminal.kind) {
+		case BOO:
+		case NUMBER:
+		case METHOD:
+			parseDeclarations();
+			break;
+		case IDENTIFIER:
+		case IF:
+		case WHILE:
+			parseStatements();
+			break;
+		default:
+			System.out.println("Error in statement");
+			break;
 		
-		while( currentTerminal.kind == COMMA ) {
-			accept( COMMA );
-			accept( IDENTIFIER );
 		}
 	}
 	
-	
-	private void parseStatements()
-	{
-		while( currentTerminal.kind == IDENTIFIER ||
-		       currentTerminal.kind == OPERATOR ||
-		       currentTerminal.kind == INTEGERLITERAL ||
-		       currentTerminal.kind == LEFTPARAN ||
-		       currentTerminal.kind == IF ||
-		       currentTerminal.kind == WHILE ||
-		       currentTerminal.kind == SAY )
-			parseOneStatement();
-	}
-	
-	
-	private void parseOneStatement()
-	{
-		switch( currentTerminal.kind ) {
+		
+		
+	private void parseStatements() {
+		switch (currentTerminal.kind) {
+		case IDENTIFIER:
+			accept(TokenKind.IDENTIFIER);
+			switch (currentTerminal.kind) {
 			case IDENTIFIER:
-			case INTEGERLITERAL:
-			case OPERATOR:
-			case LEFTPARAN:
-				parseExpression();
-				accept( SEMICOLON );
+				parseOperations();
 				break;
-				
-			case IF:
-				accept( IF );
-				parseExpression();
-				accept( THEN );
-				parseStatements();
-				
-				if( currentTerminal.kind == ELSE ) {
-					accept( ELSE );
-					parseStatements();
-				}
-				
-				accept( FI );
-				accept( SEMICOLON );
+			case START_BRACKET:
+				parseMethodCallsFromStartBracket();
 				break;
-				
-			case WHILE:
-				accept( WHILE );
-				parseExpression();
-				accept( DO );
-				parseStatements();
-				accept( OD );
-				accept( SEMICOLON );
-				break;
-				
-			case SAY:
-				accept( SAY );
-				parseExpression();
-				accept( SEMICOLON );
-				break;
-				
 			default:
-				System.out.println( "Error in statement" );
+				System.out.println("Error in statement");
 				break;
+
+			}
+			break;
+		case IF:
+		case WHILE:
+			parseEvaluationBlock();
+			break;
+		default:
+			System.out.println("Error in statement");
+			break;
 		}
 	}
-	
-	
-	private void parseExpression()
-	{
-		parsePrimary();
-		while( currentTerminal.kind == OPERATOR ) {
-			accept( OPERATOR );
-			parsePrimary();
-		}
-	}
-	
-	
-	private void parsePrimary()
-	{
-		switch( currentTerminal.kind ) {
-			case IDENTIFIER:
-				accept( IDENTIFIER );
-				
-				if( currentTerminal.kind == LEFTPARAN ) {
-					accept( LEFTPARAN );
-					
-					if( currentTerminal.kind == IDENTIFIER ||
-					    currentTerminal.kind == INTEGERLITERAL ||
-					    currentTerminal.kind == OPERATOR ||
-					    currentTerminal.kind == LEFTPARAN )
-						parseExpressionList();
-						
-					
-					accept( RIGHTPARAN );
-				}
-				break;
-				
-			case INTEGERLITERAL:
-				accept( INTEGERLITERAL );
-				break;
-				
-			case OPERATOR:
-				accept( OPERATOR );
-				parsePrimary();
-				break;
-				
-			case LEFTPARAN:
-				accept( LEFTPARAN );
-				parseExpression();
-				accept( RIGHTPARAN );
-				break;
-				
-			default:
-				System.out.println( "Error in primary" );
-				break;
-		}
-	}
-	
-	
-	private void parseExpressionList()
-	{
+	private void parseEvaluationBlock() {
+		accept(TokenKind.IF);
 		parseExpression();
-		while( currentTerminal.kind == COMMA ) {
-			accept( COMMA );
-			parseExpression();
+		accept(TokenKind.THEN);
+		parseStatements();
+		accept(TokenKind.END_IF);
+		
+	}
+
+
+	private void parseExpression() {
+		accept(TokenKind.IDENTIFIER);
+		accept(TokenKind.OPERATOR);
+	}
+
+//we start from start bracket because identifier was already accepted
+	private void parseMethodCallsFromStartBracket() {
+		accept(TokenKind.START_BRACKET);
+		parseParameterList();
+		accept(TokenKind.END_BRACKET);
+		accept(TokenKind.SEMICOLON);
+		
+	}
+
+
+	private void parseParameterList() {
+		switch (currentTerminal.kind) {
+		case END_BRACKET:
+			break;
+		case IDENTIFIER:
+			accept(TokenKind.IDENTIFIER);
+			while(currentTerminal.kind == TokenKind.COMMA) {
+				accept(TokenKind.COMMA);
+				accept(TokenKind.IDENTIFIER);
+			}
+			break;
+		default:
+			System.out.println("Error in statement");
+			break;
+		
+		
+		}
+		
+	}
+
+
+	//we start from operator because identifier is already accepted
+	private void parseOperations() {
+		accept(TokenKind.OPERATOR);
+		switch (currentTerminal.kind) {
+		case INTEGER_LITERAL:
+			accept(currentTerminal.kind);
+			while (currentTerminal.kind == TokenKind.OPERATOR) {
+				accept(TokenKind.OPERATOR);
+				if (currentTerminal.kind == TokenKind.INTEGER_LITERAL || currentTerminal.kind == TokenKind.IDENTIFIER) {
+					accept(currentTerminal.kind);
+				}
+
+			}
+			accept(TokenKind.SEMICOLON);
+			break;
+		case IDENTIFIER:
+			accept(currentTerminal.kind);
+			switch (currentTerminal.kind) {
+			case SEMICOLON:
+				accept(currentTerminal.kind);
+				break;
+			case OPERATOR:
+				accept(TokenKind.OPERATOR);
+				switch (currentTerminal.kind) {
+				case INTEGER_LITERAL:
+					accept(currentTerminal.kind);
+					while (currentTerminal.kind == TokenKind.OPERATOR) {
+						accept(TokenKind.OPERATOR);
+						if (currentTerminal.kind == TokenKind.INTEGER_LITERAL
+								|| currentTerminal.kind == TokenKind.IDENTIFIER) {
+							accept(currentTerminal.kind);
+						}
+
+					}
+					accept(TokenKind.SEMICOLON);
+					break;
+				default:
+					System.out.println("Error in statement");
+					break;
+				}
+			case START_BRACKET:
+				parseMethodCallsFromStartBracket();
+				break;
+			default:
+				System.out.println("Error in statement");
+				break;
+			}
+		default:
+			System.out.println("Error in statement");
+			break;
+		}
+
+	}
+
+
+	private void parseDeclarations() {
+		switch (currentTerminal.kind) {
+		case BOO:
+		case NUMBER:
+			accept(currentTerminal.kind);
+			accept(TokenKind.IDENTIFIER);
+			switch (currentTerminal.kind) {
+			case SEMICOLON:
+				accept(currentTerminal.kind);
+				break;
+			case OPERATOR:
+				accept(currentTerminal.kind);
+				accept(TokenKind.INTEGER_LITERAL);
+				accept(TokenKind.SEMICOLON);
+				break;
+			default:
+				System.out.println("Error in statement");
+				break;
+			}
+		break;
+		case METHOD:
+			accept(currentTerminal.kind);
+			accept(TokenKind.IDENTIFIER);
+			accept(TokenKind.START_BRACKET);
+			parseDeclarationList();
+			accept(TokenKind.END_BRACKET);
+			parseStatements();
+			accept(TokenKind.END_METHOD);
+			break;
+		default:
+			System.out.println("Error in statement");
+			break;
+
 		}
 	}
 	
+
 	
+	private void parseDeclarationList() {
+		switch (currentTerminal.kind) {
+		case END_BRACKET:
+			break;
+		case BOO:
+		case NUMBER:
+			accept(currentTerminal.kind);
+			accept(TokenKind.IDENTIFIER);
+			while(currentTerminal.kind == TokenKind.COMMA) {
+				accept(TokenKind.COMMA);
+				if(currentTerminal.kind == TokenKind.BOO || currentTerminal.kind==TokenKind.NUMBER) {
+					accept(currentTerminal.kind);
+				}else {
+					System.out.println("Error in statement");
+					break;
+				}
+				accept(TokenKind.IDENTIFIER);
+				break;
+			}
+			break;
+		default:
+			System.out.println("Error in statement");
+			break;
+		
+		
+		}
+		
+	}
+
+
 	private void accept( TokenKind expected )
 	{
 		if( currentTerminal.kind == expected )

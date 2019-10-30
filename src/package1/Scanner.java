@@ -7,7 +7,7 @@
  */
 
 package package1;
-
+//TODO add support for scanning boo
 public class Scanner {
 	private SourceFile source;
 

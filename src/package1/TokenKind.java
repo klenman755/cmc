@@ -10,9 +10,10 @@ public enum TokenKind {
 	
 	IDENTIFIER,
 	INTEGER_LITERAL,
+	BOO_VALUE,
 	OPERATOR,
 	
-	WHHILE( "WHILE" ),
+	WHILE( "WHILE" ),
 	END_WHILE("ENDWHILE"),
 	METHOD("METHOD"),
 	END_METHOD("ENDMETHOD"),
@@ -25,9 +26,9 @@ public enum TokenKind {
 	NUMBER("NUMBER"),
 	RETURN("RETURN"),
 	WRITE("WRITE"),
-	TRUE("TRUE"),
+	/**TRUE("TRUE"),
 	FALSE("FALSE"),
-	
+	*/
 	
 	COMMA(","),
 	SEMICOLON(";"),

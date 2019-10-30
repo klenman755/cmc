@@ -83,7 +83,7 @@ public class Token
 	
 	private static final TokenKind[] KEYWORDS = { 
 
-			TokenKind.WHHILE,
+			TokenKind.WHILE,
 			TokenKind.END_WHILE,
 			TokenKind.METHOD,
 			TokenKind.END_METHOD,
@@ -96,9 +96,9 @@ public class Token
 			TokenKind.NUMBER,
 			TokenKind.RETURN,
 			TokenKind.WRITE,
-			TokenKind.TRUE,
+		/**	TokenKind.TRUE,
 			TokenKind.FALSE
-			
+			*/
 
 	};
 	

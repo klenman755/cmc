@@ -27,13 +27,15 @@ public class TestDriverScanner
 		if( fc.showOpenDialog( null ) == JFileChooser.APPROVE_OPTION ) {
 			SourceFile in = new SourceFile( fc.getSelectedFile().getAbsolutePath() );
 			Scanner s = new Scanner( in );
+			Parser p = new Parser(s);
+			p.parseProgram();
 		
-			Token t = s.scan();
+		/**	Token t = s.scan();
 			while( t.kind != TokenKind.EOT ) {
 				System.out.println( t.kind + " " + t.spelling );
 			
 				t = s.scan();
-			}
+			}*/
 		}
 	}
 }
