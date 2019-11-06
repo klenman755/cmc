@@ -13,29 +13,30 @@ package package1;
 
 
 import javax.swing.*;
+import java.io.File;
 
- 
+
 public class TestDriverScanner
 {
 	private static final String EXAMPLES_DIR = "C:\\daddy\\";
-	
-	
+	private static final String HARRY_DIR = "/_repo/intelij/cmc/CodeExamples/";
+
+	private static final String userDir = System.getProperty("user.home") + HARRY_DIR;
+
 	public static void main( String args[] )
 	{
-		JFileChooser fc = new JFileChooser( EXAMPLES_DIR );
-		
+		JFileChooser fc = new JFileChooser( userDir );
+
 		if( fc.showOpenDialog( null ) == JFileChooser.APPROVE_OPTION ) {
 			SourceFile in = new SourceFile( fc.getSelectedFile().getAbsolutePath() );
 			Scanner s = new Scanner( in );
 			Parser p = new Parser(s);
+
+			System.out.println("------------ START PARSE PROGRAM ------------");
 			p.parseProgram();
-		
-		/**	Token t = s.scan();
-			while( t.kind != TokenKind.EOT ) {
-				System.out.println( t.kind + " " + t.spelling );
-			
-				t = s.scan();
-			}*/
+
+			System.out.println("------------ START PARSE PROGRAM ------------");
+			Checker c = new Checker();
 		}
 	}
 }

@@ -20,16 +20,21 @@ public enum TokenKind {
 	IF("IF") ,
 	END_IF("ENDIF"),
 	THEN("THEN"),
+
+	//TODO do we have structure?
 	STRUCTURE("STRUCTURE"),
 	END_STRUCTURE("ENDSTRUCTURE"),
+
 	BOO("BOO"), 
 	NUMBER("NUMBER"),
 	RETURN("RETURN"),
 	WRITE("WRITE"),
+
+	//TODO remove
 	/**TRUE("TRUE"),
 	FALSE("FALSE"),
 	*/
-	
+
 	COMMA(","),
 	SEMICOLON(";"),
 	START_BRACKET("("),

@@ -37,11 +37,14 @@ public class Scanner {
 		switch (currentChar) {
 		case '_':
 			takeIt();
-			while (currentChar != SourceFile.EOL && currentChar != SourceFile.EOT)
+			while (currentChar != SourceFile.EOL && currentChar != SourceFile.EOT) {
 				takeIt();
+			}
 
-			if (currentChar == SourceFile.EOL)
+			if (currentChar == SourceFile.EOL) {
 				takeIt();
+			}
+
 			break;
 
 		case ' ':
@@ -58,17 +61,15 @@ public class Scanner {
 			takeIt();
 			while (isLetter(currentChar) || isDigit(currentChar))
 				takeIt();
-
 			return TokenKind.IDENTIFIER;
 
 		} else if (isDigit(currentChar)) {
 			takeIt();
 			while (isDigit(currentChar))
 				takeIt();
-
 			return TokenKind.INTEGER_LITERAL;
-
 		}
+
 		switch (currentChar) {
 		case '+':
 		case '-':
@@ -120,10 +121,10 @@ public class Scanner {
 	}
 
 	public Token scan() {
-		while (currentChar == '_' || currentChar == '\n' || currentChar == '\r' || currentChar == '\t'
-				|| currentChar == ' ') {
+		while (currentChar == '_' || currentChar == '\n' || currentChar == '\r' || currentChar == '\t' || currentChar == ' ') {
 			scanSeparator();
 		}
+
 		currentSpelling = new StringBuffer("");
 		TokenKind kind = scanToken();
 

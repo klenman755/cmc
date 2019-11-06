@@ -12,4 +12,9 @@ public class Block extends AST
 		this.stats = stats;
 		this.methodCalls = methodCalls;
 	}
+
+//	public Object visit( Visitor v, Object arg )
+//	{
+//		return v.visitBlock( this, arg );
+//	}
 }

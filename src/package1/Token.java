@@ -1,18 +1,6 @@
 package package1;
-/*
- * 16.08.2016 Minor editing
- * 29.10.2009 New package structure
- * 22.10.2006 isAssignOp(), isAddOp(), isMulOp()
- * 28.09.2006 New keyword: return
- * 22.09.2006 Keyword recoqnition in constructor
- * 22.09.2006 ERROR added
- * 17.09.2006 Original Version (based on Example 4.2 in Watt&Brown)
- */
 
-public class Token
-{
-//	public byte kind;
-	
+public class Token {
 	public TokenKind kind;
 	public String spelling;
 
@@ -21,32 +9,37 @@ public class Token
 		this.kind = kind;
 		this.spelling = spelling;
 		
-		if( kind == TokenKind.IDENTIFIER )
-/*
-			for( byte i = 0; i < SPELLINGS.length; ++i )
-				if( spelling.equals( SPELLINGS[i] ) ) {
-					this.kind = i;
+		if( kind == TokenKind.IDENTIFIER ) {
+
+			for ( String boo : BOOLEAN ) {
+				if (boo.equals(spelling)) {
+
+					// TODO STOP parser but do not crash it.
+					kind = null;
+					spelling = null;
+					System.out.println("IDENTIFIER cannot be named as BOOLEAN");
 					break;
 				}
-*/
-			for( TokenKind tk: KEYWORDS )
-				if( spelling.equals( tk.getSpelling() ) ) {
+			}
+
+			for ( TokenKind tk : KEYWORDS ) {
+				if (spelling.equals(tk.getSpelling())) {
 					this.kind = tk;
 					break;
 				}
+			}
+		}
 	}
 	
 	
-	public boolean isAssignOperator()
-	{
+	public boolean isAssignOperator() {
 		if( kind == TokenKind.OPERATOR )
 			return containsOperator( spelling, ASSIGNOPS );
 		else
 			return false;
 	}
 	
-	public boolean isAddOperator()
-	{
+	public boolean isAddOperator() {
 		if( kind == TokenKind.OPERATOR )
 			return containsOperator( spelling, ADDOPS );
 		else
@@ -68,7 +61,16 @@ public class Token
 		else
 			return false;
 	}
-	
+
+	//TODO is correct? When is this called?
+	public boolean isBoolean()
+	{
+		if( kind == TokenKind.BOO_VALUE )
+			return containsOperator( spelling, BOOLEAN );
+		else
+			return false;
+	}
+
 	private boolean containsOperator( String spelling, String OPS[] )
 	{
 		for( int i = 0; i < OPS.length; ++i )
@@ -77,10 +79,7 @@ public class Token
 				
 		return false;
 	}
-	
-	
 
-	
 	private static final TokenKind[] KEYWORDS = { 
 
 			TokenKind.WHILE,
@@ -90,13 +89,18 @@ public class Token
 			TokenKind.IF ,
 			TokenKind.END_IF,
 			TokenKind.THEN,
+
+			// TODO remove
 			TokenKind.STRUCTURE,
 			TokenKind.END_STRUCTURE,
+
 			TokenKind.BOO, 
 			TokenKind.NUMBER,
 			TokenKind.RETURN,
 			TokenKind.WRITE,
-		/**	TokenKind.TRUE,
+
+			// TODO remove
+		/*	TokenKind.TRUE,
 			TokenKind.FALSE
 			*/
 
@@ -123,8 +127,14 @@ public class Token
 	};
 	
 	private static final String COMPOPS[] =
-		{
-			"==",
-			"!="
-		};
+	{
+		"==",
+		"!="
+	};
+
+	private static final String BOOLEAN[] =
+	{
+		"TRUE",
+		"FALSE"
+	};
 }

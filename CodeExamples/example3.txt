@@ -1,0 +1,2 @@
+NUMBER x = 1;
+NUMBER y = 2;
