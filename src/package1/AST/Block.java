@@ -4,6 +4,8 @@ public class Block extends AST
 {
 	public Declaration decs;
 	public Statement stats;
+
+	//TODO Parser implemenented? this
 	public MethodCall methodCalls;
 
 	public Block(Declaration decs, Statement stats, MethodCall methodCalls )
@@ -13,8 +15,8 @@ public class Block extends AST
 		this.methodCalls = methodCalls;
 	}
 
-//	public Object visit( Visitor v, Object arg )
-//	{
-//		return v.visitBlock( this, arg );
-//	}
+	public Object visit( Visitor v, Object arg )
+	{
+		return v.visitBlock( this, arg );
+	}
 }

@@ -1,6 +1,4 @@
 package package1.AST;
 
-public class MethodCall extends AST {
-
-
+public abstract class MethodCall extends AST {
 }

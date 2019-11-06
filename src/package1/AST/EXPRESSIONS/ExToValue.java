@@ -4,6 +4,7 @@ import package1.AST.Expression;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
+import package1.AST.Visitor;
 
 public class ExToValue extends Expression {
 
@@ -15,5 +16,9 @@ public class ExToValue extends Expression {
         this.name = name;
         this.doubleEquals = doubleEquals;
         this.value = value;
+    }
+
+    public Object visit(Visitor v, Object arg) {
+        return v.visitExToValue( this, arg );
     }
 }

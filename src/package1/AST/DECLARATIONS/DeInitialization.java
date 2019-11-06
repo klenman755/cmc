@@ -4,18 +4,23 @@ import package1.AST.Declaration;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
-import package1.AST.Type;
+import package1.AST.VariableType;
+import package1.AST.Visitor;
 
 public class DeInitialization extends Declaration {
-    Type type;
+    VariableType type;
     Identifier name;
     Operator equals;
     IntegerLiteral value;
 
-    public DeInitialization(Type type, Identifier name, Operator equals, IntegerLiteral value) {
+    public DeInitialization(VariableType type, Identifier name, Operator equals, IntegerLiteral value) {
         this.type = type;
         this.name = name;
         this.equals = equals;
         this.value = value;
+    }
+
+    public Object visit(Visitor v, Object arg) {
+        return v.visitDeInitialization( this, arg );
     }
 }

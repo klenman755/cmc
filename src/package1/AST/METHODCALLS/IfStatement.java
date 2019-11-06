@@ -1,9 +1,6 @@
 package package1.AST.METHODCALLS;
 
-import package1.AST.Expression;
-import package1.AST.MethodCall;
-import package1.AST.ParameterList;
-import package1.AST.Statement;
+import package1.AST.*;
 import package1.AST.TOKENS.Identifier;
 
 public class IfStatement extends MethodCall {
@@ -13,5 +10,9 @@ public class IfStatement extends MethodCall {
     public IfStatement(Expression expression, Statement statement) {
         this.expression = expression;
         this.statement = statement;
+    }
+
+    public Object visit(Visitor v, Object arg) {
+        return v.visitIfStatement( this, arg );
     }
 }

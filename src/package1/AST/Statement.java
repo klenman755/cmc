@@ -1,7 +1,5 @@
 package package1.AST;
 
-import package1.AST.TOKENS.Operator;
-
 public class Statement extends AST {
     Operation operation;
     MethodCall methodCall;
@@ -12,5 +10,9 @@ public class Statement extends AST {
 
     public Statement(MethodCall methodCall) {
         this.methodCall = methodCall;
+    }
+
+    public Object visit(Visitor v, Object arg) {
+        return v.visitStatement( this, arg );
     }
 }

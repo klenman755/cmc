@@ -5,9 +5,9 @@ import package1.AST.TOKENS.Identifier;
 import java.util.Vector;
 
 public class ParameterList extends AST {
-    Vector<Identifier> list;
+    public Vector<Identifier> list = new Vector<Identifier>();
 
-    public ParameterList(Vector<Identifier> list) {
-        this.list = list;
+    public Object visit(Visitor v, Object arg) {
+        return v.visitParameterList( this, arg );
     }
 }
