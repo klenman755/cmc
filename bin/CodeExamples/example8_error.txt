@@ -1,0 +1,5 @@
+NUMBER y = 1;
+
+METHOD addOne ()
+    1 + 1;
+ENDMETHOD

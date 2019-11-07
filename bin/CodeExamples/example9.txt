@@ -1,0 +1,5 @@
+NUMBER y = 1;
+
+METHOD addOne (NUMBER x, NUMBER y)
+    1;
+ENDMETHOD
