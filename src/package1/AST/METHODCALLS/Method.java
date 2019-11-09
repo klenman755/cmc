@@ -6,8 +6,8 @@ import package1.AST.TOKENS.Identifier;
 import package1.AST.Visitor;
 
 public class Method extends MethodCall {
-    Identifier name;
-    ParameterList list;
+    public Identifier name;
+    public ParameterList list;
 
     public Method(Identifier name, ParameterList list) {
         this.name = name;

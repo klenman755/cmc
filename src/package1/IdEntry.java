@@ -4,6 +4,8 @@ import package1.AST.*;
 
 public class IdEntry
 {
+	// TODO are we using this?
+
 	public int level;
 	public String id;
 	public Declaration attr;

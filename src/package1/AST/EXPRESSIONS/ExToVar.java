@@ -9,9 +9,9 @@ import package1.AST.Visitor;
 
 public class ExToVar extends Expression {
 
-    Identifier name;
-    Operator doubleEquals;
-    Identifier variable;
+    public Identifier name;
+    public Operator doubleEquals;
+    public Identifier variable;
 
     public ExToVar(Identifier name, Operator doubleEquals, Identifier variable) {
         this.name = name;

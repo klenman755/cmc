@@ -13,6 +13,8 @@ import java.util.Vector;
 
 public class IdentificationTable
 {
+	// TODO are we using this?
+
 	private Vector<IdEntry> table = new Vector<IdEntry>();
 	private int level = 0;
 	
@@ -22,7 +24,7 @@ public class IdentificationTable
 	}
 	
 	
-	public void enter( String id, Declaration attr )
+	public void enter( String id, Declaration attr)
 	{
 		IdEntry entry = find( id );
 		

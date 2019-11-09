@@ -7,6 +7,7 @@
 package package1.AST;
 
 
+import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
 import package1.AST.DECLARATIONS.DeVariable;
@@ -16,30 +17,19 @@ import package1.AST.EXPRESSIONS.ExToVar;
 import package1.AST.METHODCALLS.IfStatement;
 import package1.AST.METHODCALLS.Method;
 import package1.AST.METHODCALLS.WhileStatement;
-import package1.AST.OPERATIONS.OpDecleration;
-import package1.AST.OPERATIONS.OpDeclerationFromVar;
-import package1.AST.OPERATIONS.OpDeclerationVarAndLiteral;
-import package1.AST.OPERATIONS.OpMethodCall;
+import package1.AST.OPERATIONS.*;
 import package1.AST.SUBTYPES.SubOpIdentifier;
 import package1.AST.SUBTYPES.SubOpIntegerLiteral;
 import package1.AST.SUBTYPES.SubTypeIdentifier;
+import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
+import package1.AST.TYPES.BOO;
+import package1.AST.TYPES.NUMBER;
 
 public interface Visitor
 {
-	//TODO can be removed?
-//	public Object visitExpression(Expression e, Object arg);
-//
-//	public Object visitMethodCall(MethodCall mc, Object arg);
-//
-//	public Object visitOperation(Operation o, Object arg);
-//
-//	public Object visitDeclaration(Declaration d, Object arg);
-//
-//	public Object visitVariableType(VariableType vt, Object arg);
-
 	public Object visitBlock(Block b, Object arg);
 
 	public Object visitDeclarationList( DeclarationList dl, Object arg);
@@ -72,13 +62,11 @@ public interface Visitor
 
 	public Object visitWhileStatement(WhileStatement whileStatement, Object arg);
 
-	public Object visitOpDecleration(OpDecleration opDecleration, Object arg);
+	public Object visitOpDecleration(OpDeclerationNum opDecleration, Object arg);
 
 	public Object visitOpDeclerationFromVar(OpDeclerationFromVar opDeclerationFromVar, Object arg);
 
 	public Object visitOpDeclerationVarAndLiteral(OpDeclerationVarAndLiteral opDeclerationVarAndLiteral, Object arg);
-
-	public Object visitOpMethodCall(OpMethodCall opMethodCall, Object arg);
 
 	public Object visitSubOpIdentifier(SubOpIdentifier subOpIdentifier, Object arg);
 
@@ -87,4 +75,18 @@ public interface Visitor
 	public Object visitSubTypeIdentifier(SubTypeIdentifier subTypeIdentifier, Object arg);
 
 	public Object visitProgram(Program program, Object arg);
+
+	public Object visitDeArray(DeArray deArray, Object arg);
+
+	public Object visitBooValue(BooValue booValue, Object arg);
+
+	public Object visitValueList(ValueList valueList, Object arg);
+
+	public Object visitVariableType(VariableType variableType, Object arg);
+
+	public Object visitBOO(BOO boo, Object arg);
+
+	public Object visitNUMBER(NUMBER number, Object arg);
+
+	public Object visitOpDeclerationBoo(OpDeclerationBoo opDeclerationBoo, Object arg);
 }

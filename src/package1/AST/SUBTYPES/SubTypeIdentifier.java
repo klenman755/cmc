@@ -6,8 +6,8 @@ import package1.AST.Visitor;
 
 public class SubTypeIdentifier {
 
-    VariableType type;
-    Operator operator;
+    public VariableType type;
+    public Operator operator;
 
     public SubTypeIdentifier(VariableType type, Operator operator) {
         this.type = type;

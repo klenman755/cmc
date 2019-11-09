@@ -8,10 +8,10 @@ import package1.AST.VariableType;
 import package1.AST.Visitor;
 
 public class DeInitialization extends Declaration {
-    VariableType type;
-    Identifier name;
-    Operator equals;
-    IntegerLiteral value;
+    public VariableType type;
+    public Identifier name;
+    public Operator equals;
+    public IntegerLiteral value;
 
     public DeInitialization(VariableType type, Identifier name, Operator equals, IntegerLiteral value) {
         this.type = type;

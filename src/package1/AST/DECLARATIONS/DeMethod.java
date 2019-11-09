@@ -7,9 +7,9 @@ import package1.AST.TOKENS.Identifier;
 import package1.AST.Visitor;
 
 public class DeMethod extends Declaration {
-    Identifier name;
-    DeclarationList list;
-    Statement statement;
+    public Identifier name;
+    public DeclarationList list;
+    public Statement statement;
 
     public DeMethod(Identifier name, DeclarationList list, Statement statement) {
         this.name = name;

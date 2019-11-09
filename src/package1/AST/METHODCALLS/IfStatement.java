@@ -4,8 +4,8 @@ import package1.AST.*;
 import package1.AST.TOKENS.Identifier;
 
 public class IfStatement extends MethodCall {
-    Expression expression;
-    Statement statement;
+    public Expression expression;
+    public Statement statement;
 
     public IfStatement(Expression expression, Statement statement) {
         this.expression = expression;

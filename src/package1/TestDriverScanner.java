@@ -12,6 +12,9 @@
 package package1;
 
 
+import package1.AST.AST;
+import package1.AST.Program;
+
 import javax.swing.*;
 import java.io.File;
 
@@ -36,7 +39,10 @@ public class TestDriverScanner
 			p.parseProgram();
 
 			System.out.println("------------ START PARSE PROGRAM ------------");
-			//Checker c = new Checker();
+			Checker c = new Checker();
+
+			AST ast = (AST) p.parseProgram();
+			c.check( (Program) ast );
 		}
 	}
 }

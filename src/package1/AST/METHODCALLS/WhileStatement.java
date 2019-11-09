@@ -6,8 +6,8 @@ import package1.AST.Statement;
 import package1.AST.Visitor;
 
 public class WhileStatement extends MethodCall {
-    Expression expression;
-    Statement statement;
+    public Expression expression;
+    public Statement statement;
 
     public WhileStatement(Expression expression, Statement statement) {
         this.expression = expression;

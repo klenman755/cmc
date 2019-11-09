@@ -7,9 +7,9 @@ import package1.AST.Visitor;
 
 public class OpDeclerationFromVar extends Operation {
 
-    Identifier identifierOne;
-    Operator operator;
-    Identifier identifierTwo;
+    public Identifier identifierOne;
+    public Operator operator;
+    public Identifier identifierTwo;
 
     public OpDeclerationFromVar(Identifier identifierOne, Operator operator, Identifier identifierTwo) {
         this.identifierOne = identifierOne;

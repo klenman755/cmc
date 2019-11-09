@@ -6,8 +6,8 @@ import package1.AST.VariableType;
 import package1.AST.Visitor;
 
 public class DeVariable extends Declaration {
-    VariableType type;
-    Identifier name;
+    public VariableType type;
+    public Identifier name;
 
     public DeVariable(VariableType type, Identifier name) {
         this.type = type;

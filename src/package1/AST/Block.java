@@ -4,8 +4,6 @@ public class Block extends AST
 {
 	public Declaration decs;
 	public Statement stats;
-
-	//TODO Parser implemenented? this
 	public MethodCall methodCalls;
 
 	public Block(Declaration decs, Statement stats, MethodCall methodCalls )

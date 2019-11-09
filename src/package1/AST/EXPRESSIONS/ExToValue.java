@@ -8,9 +8,9 @@ import package1.AST.Visitor;
 
 public class ExToValue extends Expression {
 
-    Identifier name;
-    Operator doubleEquals;
-    IntegerLiteral value;
+    public Identifier name;
+    public Operator doubleEquals;
+    public IntegerLiteral value;
 
     public ExToValue(Identifier name, Operator doubleEquals, IntegerLiteral value) {
         this.name = name;

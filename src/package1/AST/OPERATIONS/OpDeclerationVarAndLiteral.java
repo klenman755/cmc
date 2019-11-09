@@ -10,9 +10,9 @@ import java.util.Vector;
 
 public class OpDeclerationVarAndLiteral extends Operation {
 
-    Identifier name;
-    Vector<SubOpIdentifier> variables;
-    Vector<SubOpIntegerLiteral> literals;
+    public Identifier name;
+    public Vector<SubOpIdentifier> variables;
+    public Vector<SubOpIntegerLiteral> literals;
 
     public OpDeclerationVarAndLiteral(Identifier name, Vector<SubOpIdentifier> variables, Vector<SubOpIntegerLiteral> literals) {
         this.name = name;

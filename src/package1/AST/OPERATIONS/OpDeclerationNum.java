@@ -6,13 +6,13 @@ import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
 import package1.AST.Visitor;
 
-public class OpDecleration extends Operation {
+public class OpDeclerationNum extends Operation {
 
-    Identifier identifier;
-    Operator operator;
-    IntegerLiteral integerLiteral;
+    public Identifier identifier;
+    public Operator operator;
+    public IntegerLiteral integerLiteral;
 
-    public OpDecleration(Identifier identifier, Operator operator, IntegerLiteral integerLiteral) {
+    public OpDeclerationNum(Identifier identifier, Operator operator, IntegerLiteral integerLiteral) {
         this.identifier = identifier;
         this.operator = operator;
         this.integerLiteral = integerLiteral;

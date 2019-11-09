@@ -6,8 +6,8 @@ import package1.AST.Visitor;
 
 public class SubOpIdentifier {
 
-    IntegerLiteral literal;
-    Operator operator;
+    public IntegerLiteral literal;
+    public Operator operator;
 
     public SubOpIdentifier(IntegerLiteral literal, Operator operator) {
         this.literal = literal;

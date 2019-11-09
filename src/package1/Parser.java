@@ -2,6 +2,11 @@ package package1;
 
 //TODO add logic for different variale types and their checking
 
+import package1.AST.Block;
+import package1.AST.Declaration;
+import package1.AST.Program;
+import package1.AST.Statement;
+
 public class Parser
 {
 	private Scanner scan;
@@ -12,36 +17,41 @@ public class Parser
 		this.scan = scan;
 	}
 	
-	public void parseProgram() {
+	public Object parseProgram() {
 		currentTerminal = scan.scan();
-		parseBlock();
+		Block block = parseBlock();
 
 		if( currentTerminal.kind != TokenKind.EOT ) {
 			parseBlock();
 		} else {
 			System.out.println( "EOT" );
 		}
+
+		return new Program( block );
 	}
 
-	private void parseBlock() {
+	private Block parseBlock() {
 		System.out.println("\n-- BLOCK --");
 		switch (currentTerminal.kind) {
 			case BOO:
 			case NUMBER:
 			case METHOD:
-				parseDeclarations();
-				break;
+				return new Block( parseDeclarations(), null , null );
 			case IDENTIFIER:
 			case IF:
 			case WHILE:
-				parseStatements();
-				break;
+				return new Block( null, parseStatements(), null );
+
+			//TODO IMPLEMENT;
+			case METHOD:
+				return new Block( null, null,  parseMethodCallsFromStartBracket());
+
 			default:
-				break;
+				return new Block(null, null), null ;
 		}
 	}
 		
-	private void parseStatements() {
+	private Statement parseStatements() {
 		System.out.println("\n-- STATEMNETS --");
 		switch (currentTerminal.kind) {
 			case IDENTIFIER:
@@ -106,6 +116,8 @@ public class Parser
 				break;
 		}
 	}
+
+	// TODO THIS NEES TO BE CHANGED IN AST TREE CHECKER.....
 	private void parseEvaluationBlock() {
 		System.out.println("\n-- EVALUATION --");
 		accept(currentTerminal.kind);
@@ -223,7 +235,7 @@ public class Parser
 	}
 
 
-	private void parseDeclarations() {
+	private Declaration parseDeclarations() {
 		System.out.println("\n-- DECLARATION --");
 		switch (currentTerminal.kind) {
 			case BOO:
