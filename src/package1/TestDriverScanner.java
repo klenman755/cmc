@@ -36,7 +36,7 @@ public class TestDriverScanner
 			p.parseProgram();
 
 			System.out.println("------------ START PARSE PROGRAM ------------");
-			Checker c = new Checker();
+			//Checker c = new Checker();
 		}
 	}
 }

@@ -30,7 +30,6 @@ METHOD m4 (NUMBER y)
 ENDMETHOD
 
 
-
 BLOCKS
     STATEMENTS
     METHODCALLS
@@ -86,3 +85,9 @@ statements
     NUMBER x, NUMBER y, ...
     NUMBER x
 
+
+ARRAY NUMBER name
+   1,
+   1,
+   2,
+ENDARRAY

@@ -4,28 +4,31 @@ program             block*
 
 block               declaration
                     statement
-                                       
 
 
 declaration        type IDENTIFIER OPERATOR INTEGER_LITERAL ;                       NUMBER x = 1;
                    type IDENTIFIER ;                                                NUMBER x;
                    METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statements ENDMETHOD
 
+                    // TODO NOT IMPLEMENTED
+                    ARRAY type IDENTIFIER [ valueList | parameterList ] ENDARRAY
+
+
 type                NUMBER
                     BOO
 
 statements          operations
                     evaluationBlock
-		    methodCall     
+		    methodCall
 
 operations          IDENTIFIER OPERATOR IDENTIFIER ;                                  x=y;
                     IDENTIFIER OPERATOR INTEGER_LITERAL ;                             x=1;
- 		    IDENTIFIER OPERATOR BOO ;                                         x=true;
-                    IDENTIFIER OPERATOR IDENTIFIER || INTEGER_LITERAL || Boo || methodCalls OPERATOR IDENTIFIER || INTEGER_LITERAL || Boo || methodCalls ; x=x+1 x=1+1+1 x=x+x+x x=x+1+x  
+ 		               IDENTIFIER OPERATOR BOO ;                                         x=true;
+                    IDENTIFIER OPERATOR IDENTIFIER || INTEGER_LITERAL || Boo || methodCalls OPERATOR IDENTIFIER || INTEGER_LITERAL || Boo || methodCalls ; x=x+1 x=1+1+1 x=x+x+x x=x+1+x
                     IDENTIFIER OPERATOR methodCalls ;                                 x=addSum(y,z);
- 
+
 methodCall         IDENTIFIER START_BRACKET parameterList END_BRACKET
-                   
+
 evaluationBlock     IF expression THEN statements   ENDIF
                     WHILE expression THEN statements ENDWHILE
 
@@ -37,12 +40,17 @@ declarationList     type IDENTIFIER
                     type IDENTIFIER, type IDENTIFIER...
                     e
 
+//TODO implement this in parser & AST
+valueList           INTEGER_LITERAL [ ,INTEGER_LITERAL ] *
+                    BOO [ ,BOO ] *
+
+
 expression          IDENTIFIER OPERATOR IDENTIFIER
-                    IDENTIFIER OPERATOR INTEGER_LITERAL 
+                    IDENTIFIER OPERATOR INTEGER_LITERAL
 	            IDENTIFIER OPERATOR TRUE
 		    IDENTIFIER OPERATOR FALSE
 		    IDENTIFIER OPERATOR methodCall
-                    
+
 
 
 

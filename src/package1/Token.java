@@ -13,10 +13,7 @@ public class Token {
 
 			for ( String boo : BOOLEAN ) {
 				if (boo.equals(spelling)) {
-
-					// TODO STOP parser but do not crash it.
-					kind = null;
-					spelling = null;
+					this.kind = TokenKind.BOO_VALUE;
 					System.out.println("IDENTIFIER cannot be named as BOOLEAN");
 					break;
 				}

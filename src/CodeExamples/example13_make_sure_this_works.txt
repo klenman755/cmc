@@ -2,7 +2,4 @@ NUMBER x = 1;
 
 METHOD addOne (NUMBER x)
     x = x + 1;
-
 ENDMETHOD
-
-addOne(1);

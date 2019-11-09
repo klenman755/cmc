@@ -61,6 +61,7 @@ public class Scanner {
 			takeIt();
 			while (isLetter(currentChar) || isDigit(currentChar))
 				takeIt();
+
 			return TokenKind.IDENTIFIER;
 
 		} else if (isDigit(currentChar)) {
