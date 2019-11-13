@@ -16,11 +16,7 @@ import package1.AST.EVALUATIONBLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
-import package1.AST.METHODCALLS.Method;
 import package1.AST.OPERATIONS.*;
-import package1.AST.SUBTYPES.SubOpIdentifier;
-import package1.AST.SUBTYPES.SubOpIntegerLiteral;
-import package1.AST.SUBTYPES.SubTypeIdentifier;
 import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
@@ -60,17 +56,7 @@ public interface Visitor
 
 	public Object visitWhileStatement(WhileStatement whileStatement, Object arg);
 
-	public Object visitOpDecleration(OpDeclerationNum opDecleration, Object arg);
-
-	public Object visitOpDeclerationFromVar(OpDeclerationFromVar opDeclerationFromVar, Object arg);
-
-	public Object visitOpDeclerationVarAndLiteral(OpDeclerationVarAndLiteral opDeclerationVarAndLiteral, Object arg);
-
-	public Object visitSubOpIdentifier(SubOpIdentifier subOpIdentifier, Object arg);
-
-	public Object visitSubOpIntegerLiteral(SubOpIntegerLiteral subOpIntegerLiteral, Object arg);
-
-	public Object visitSubTypeIdentifier(SubTypeIdentifier subTypeIdentifier, Object arg);
+	public Object visitOpDecleration(OpDecleration opDeclerationFromVar, Object arg);
 
 	public Object visitProgram(Program program, Object arg);
 

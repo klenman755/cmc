@@ -3,13 +3,15 @@ package package1.AST.EVALUATIONBLOCKS;
 import package1.AST.*;
 import package1.AST.TOKENS.Identifier;
 
+import java.util.Vector;
+
 public class IfStatement extends EvaluationBlock {
     public Expression expression;
-    public Statement statement;
+    public Vector<Statement> statements;
 
-    public IfStatement(Expression expression, Statement statement) {
+    public IfStatement(Expression expression, Vector<Statement> statements) {
         this.expression = expression;
-        this.statement = statement;
+        this.statements = statements;
     }
 
     public Object visit(Visitor v, Object arg) {

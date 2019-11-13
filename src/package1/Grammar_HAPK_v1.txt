@@ -20,11 +20,12 @@ statement           operations
 operation           IDENTIFIER OPERATOR IDENTIFIER ;                                  x=y;
                     IDENTIFIER OPERATOR INTEGER_LITERAL ;                             x=1;
  		            IDENTIFIER OPERATOR BooValue ;                                         x=true;
-                    IDENTIFIER OPERATOR IDENTIFIER || INTEGER_LITERAL || BooValue || methodCalls OPERATOR IDENTIFIER || INTEGER_LITERAL || Boo || methodCalls ; x=x+1 x=1+1+1 x=x+x+x x=x+1+x
+
+                    IDENTIFIER OPERATOR [ IDENTIFIER || INTEGER_LITERAL ] [ OPERATOR IDENTIFIER || INTEGER_LITERAL ]* ;  x=x+1 x=1+1+1 x=x+x+x x=x+1+x
 
 methodCall          IDENTIFIER START_BRACKET parameterList END_BRACKET
 
-evaluationBlock     IF expression THEN statements   ENDIF
+evaluationBlock     IF expression THEN statements ENDIF
                     WHILE expression THEN statements ENDWHILE
 
 parameterList       IDENTIFIER

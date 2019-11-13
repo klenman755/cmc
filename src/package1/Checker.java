@@ -10,11 +10,8 @@ import package1.AST.EVALUATIONBLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
-import package1.AST.METHODCALLS.Method;
 import package1.AST.OPERATIONS.OpDeclerationBoo;
-import package1.AST.OPERATIONS.OpDeclerationNum;
-import package1.AST.OPERATIONS.OpDeclerationFromVar;
-import package1.AST.OPERATIONS.OpDeclerationVarAndLiteral;
+import package1.AST.OPERATIONS.OpDecleration;
 import package1.AST.SUBTYPES.SubOpIdentifier;
 import package1.AST.SUBTYPES.SubOpIntegerLiteral;
 import package1.AST.SUBTYPES.SubTypeIdentifier;
@@ -113,40 +110,13 @@ public class Checker implements Visitor
 		return null;
 	}
 
-	public Object visitOpDecleration(OpDeclerationNum opDecleration, Object arg) {
+	public Object visitOpDecleration(OpDecleration opDecleration, Object arg) {
 		opDecleration.identifier.visit( this, null );
 		opDecleration.operator.visit( this, null );
 		opDecleration.integerLiteral.visit( this, null );
 		return null;
 	}
 
-	public Object visitOpDeclerationFromVar(OpDeclerationFromVar opDeclerationFromVar, Object arg) {
-		opDeclerationFromVar.identifierOne.visit( this, null );
-		opDeclerationFromVar.operator.visit( this, null );
-		opDeclerationFromVar.identifierTwo.visit( this, null );
-
-		return null;
-	}
-
-	public Object visitSubOpIdentifier(SubOpIdentifier subOpIdentifier, Object arg) {
-		subOpIdentifier.literal.visit( this, null );
-		subOpIdentifier.operator.visit( this, null );
-		return null;
-	}
-
-	public Object visitSubOpIntegerLiteral(SubOpIntegerLiteral subOpIntegerLiteral, Object arg) {
-		subOpIntegerLiteral.name.visit( this, null );
-		subOpIntegerLiteral.operator.visit( this, null );
-
-		return null;
-	}
-
-	public Object visitSubTypeIdentifier(SubTypeIdentifier subTypeIdentifier, Object arg) {
-		subTypeIdentifier.type.visit( this, null );
-		subTypeIdentifier.operator.visit( this, null );
-
-		return null;
-	}
 
 	//
 	//

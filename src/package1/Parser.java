@@ -1,19 +1,18 @@
 package package1;
 
-import package1.AST.Block;
-import package1.AST.Declaration;
-import package1.AST.Expression;
-import package1.AST.MethodCall;
-import package1.AST.ParameterList;
-import package1.AST.Program;
-import package1.AST.Statement;
+import package1.AST.*;
+import package1.AST.EVALUATIONBLOCKS.IfStatement;
+import package1.AST.EVALUATIONBLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
+import package1.AST.OPERATIONS.OpDeclerationBoo;
 import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
+
+import java.util.Vector;
 
 public class Parser {
 	private Scanner scan;
@@ -48,110 +47,103 @@ public class Parser {
 		case IDENTIFIER:
 		case IF:
 		case WHILE:
-			return new Block(null, parseStatements());
+			return new Block(null, parseStatement());
 
 		default:
 			return new Block(null, null);
 		}
 	}
 
-	private Statement parseStatements() {
-		System.out.println("\n-- STATEMNETS --");
+	private Statement parseStatement() {
+		System.out.println("\n-- STATEMNET --");
 		switch (currentTerminal.kind) {
-		case IDENTIFIER:
-			String placeholder = currentTerminal.spelling;
-			accept(currentTerminal.kind);
-			switch (currentTerminal.kind) {
-			case OPERATOR:
-				return parseOpertion(placeholder);
-			case START_BRACKET:
-				return parseMethodCallsFromStartBracket(placeholder);
-			default:
-
-				System.err.println("parseStatements() => error in parsing statements ");
-				return null;
-			}
-
-		case IF:
-		case WHILE:
-			return parseEvaluationBlock();
-			break;
-
-		default:
-			System.out.println("Error in statement");
-			break;
-		}
-		return null;
-	}
-
-	private Statement parseOpertion(Object placeholder) {
-		accept(TokenKind.IDENTIFIER);
-		switch (currentTerminal.kind) {
-		case OPERATOR:
-			accept(currentTerminal.kind);
-
-			while (currentTerminal.kind != TokenKind.SEMICOLON) {
+			case IDENTIFIER:
+				Identifier placeholder = new Identifier(currentTerminal.spelling);
+				accept(currentTerminal.kind);
 				switch (currentTerminal.kind) {
-				case INTEGER_LITERAL:
-				case IDENTIFIER:
-					accept(currentTerminal.kind);
-					break;
-				case BOO_VALUE:
+					case OPERATOR:
+						return parseOpertion(placeholder);
+					case START_BRACKET:
+						return parseMethodCallsFromStartBracket(placeholder);
+					default:
 
-					break;
-				default:
-					System.out.println("Error in statement");
-					break;
-				}
-				if (currentTerminal.kind == TokenKind.BOO_VALUE) {
-					accept(currentTerminal.kind);
-					accept(TokenKind.SEMICOLON);
-					break;
-				}
-				if (currentTerminal.kind == TokenKind.SEMICOLON) {
-					accept(currentTerminal.kind);
-					break;
+						System.err.println("parseStatements() => error in parsing statements ");
+						return null;
 				}
 
-				if (currentTerminal.kind == TokenKind.OPERATOR) {
-					accept(currentTerminal.kind);
-				} else {
-					System.out.println("Error in statement");
-				}
-			}
-			break;
+			case IF:
+			case WHILE:
+				return parseEvaluationBlock();
 
-		default:
-			System.out.println("Error in statement");
-			break;
+			default:
+				System.out.println("Error in statement");
+				return null;
 		}
-
 	}
 
-	private void parseEvaluationBlock() {
+	private Vector<Statement> parseStatements() {
+		System.out.println("\n-- STATEMNETS --");
+		Vector<Statement> statementVector = new Vector<Statement>();
+		Statement statement;
+		do {
+			statement = parseStatement();
+			if (statement != null) {
+				statementVector.add(parseStatement());
+			}
+		} while ( currentTerminal.kind != TokenKind.END_METHOD && currentTerminal.kind != TokenKind.END_IF &&  currentTerminal.kind != TokenKind.END_WHILE && statement != null);
+
+		return statementVector;
+	}
+
+	private Operation parseOpertion(Identifier placeholder) {
+		Vector<Operator> operators = new Vector<Operator>();
+
+		operators.add(new Operator(currentTerminal.spelling));
+		accept(TokenKind.OPERATOR);
+
+		switch (currentTerminal.kind) {
+			case BOO_VALUE:
+				BooValue booValue = new BooValue(currentTerminal.spelling);
+				accept(currentTerminal.kind);
+				accept(TokenKind.SEMICOLON);
+				return new OpDeclerationBoo(placeholder, operators.get(0), booValue);
+
+			case INTEGER_LITERAL:
+				accept(currentTerminal.kind);
+
+				// take first and then WHILE not semicollon AND has operator => loop
+				return null;
+			case IDENTIFIER:
+				accept(currentTerminal.kind);
+				return null;
+
+			default:
+				System.out.println("Error in statement");
+				return null;
+		}
+	}
+
+	private EvaluationBlock parseEvaluationBlock() {
 		System.out.println("\n-- EVALUATION --");
 		switch (currentTerminal.kind) {
-		case IF:
-			parseInsideEvaluationBlock();
-			accept(TokenKind.END_IF);
-			break;
-		case WHILE:
-			parseInsideEvaluationBlock();
-			accept(TokenKind.END_WHILE);
-			break;
-		default:
-			System.out.println("parseEvaluationBlock() => error parsing evaluation block");
-			break;
-
+			case IF:
+				accept(currentTerminal.kind);
+				Expression expressionIf = parseExpression();
+				accept(TokenKind.THEN);
+				Vector<Statement> statementsIf = parseStatements();
+				accept(TokenKind.END_IF);
+				return new IfStatement(expressionIf, statementsIf);
+			case WHILE:
+				accept(currentTerminal.kind);
+				Expression expressionWhile = parseExpression();
+				accept(TokenKind.THEN);
+				Vector<Statement> statementsWhile = parseStatements();
+				accept(TokenKind.END_WHILE);
+				return new WhileStatement(expressionWhile, statementsWhile);
+			default:
+				System.out.println("parseEvaluationBlock() => error parsing evaluation block");
+				return null;
 		}
-
-	}
-
-	private void parseInsideEvaluationBlock() {
-		accept(currentTerminal.kind);
-		Expression expression = parseExpression();
-		accept(TokenKind.THEN);
-		parseStatements();
 	}
 
 	private Expression parseExpression() {
@@ -206,13 +198,13 @@ public class Parser {
 	}
 
 //we start from start bracket because identifier was already accepted
-	private MethodCall parseMethodCallsFromStartBracket(String placeholder) {
+	private MethodCall parseMethodCallsFromStartBracket(Identifier placeholder) {
 		System.out.println("\n-- METHOD CALLS ( --");
 		accept(TokenKind.START_BRACKET);
 		ParameterList parameters = parseParameterList();
 		accept(TokenKind.END_BRACKET);
 		accept(TokenKind.SEMICOLON);
-		return new MethodCall(new Identifier(placeholder), parameters);
+		return new MethodCall(placeholder, parameters);
 	}
 
 	private ParameterList parseParameterList() {

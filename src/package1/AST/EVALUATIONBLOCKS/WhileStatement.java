@@ -2,17 +2,18 @@ package package1.AST.EVALUATIONBLOCKS;
 
 import package1.AST.EvaluationBlock;
 import package1.AST.Expression;
-import package1.AST.MethodCall;
 import package1.AST.Statement;
 import package1.AST.Visitor;
 
+import java.util.Vector;
+
 public class WhileStatement extends EvaluationBlock {
     public Expression expression;
-    public Statement statement;
+    public Vector<Statement> statements;
 
-    public WhileStatement(Expression expression, Statement statement) {
+    public WhileStatement(Expression expression, Vector<Statement> statements) {
         this.expression = expression;
-        this.statement = statement;
+        this.statements = statements;
     }
 
     public Object visit(Visitor v, Object arg) {
