@@ -21,14 +21,14 @@ import java.io.File;
 
 public class TestDriverScanner
 {
-	private static final String EXAMPLES_DIR = "C:\\daddy\\";
-	private static final String HARRY_DIR = "/_repo/intelij/cmc/CodeExamples/";
+	private static final String EXAMPLES_DIR = "C:\\Users\\monomalo\\Documents\\GitHub\\cmc\\src\\CodeExamples";
+	private static final String HARRY_DIR = "/_repo/intelij/cmc/src/CodeExamples/";
 
 	private static final String userDir = System.getProperty("user.home") + HARRY_DIR;
 
 	public static void main( String args[] )
 	{
-		JFileChooser fc = new JFileChooser( userDir );
+		JFileChooser fc = new JFileChooser( EXAMPLES_DIR );
 
 		if( fc.showOpenDialog( null ) == JFileChooser.APPROVE_OPTION ) {
 			SourceFile in = new SourceFile( fc.getSelectedFile().getAbsolutePath() );
@@ -36,13 +36,14 @@ public class TestDriverScanner
 			Parser p = new Parser(s);
 
 			System.out.println("------------ START PARSE PROGRAM ------------");
-			p.parseProgram();
+		//	p.parseProgram();
 
-			System.out.println("------------ START PARSE PROGRAM ------------");
+			
 			Checker c = new Checker();
 
 			AST ast = (AST) p.parseProgram();
 			c.check( (Program) ast );
+			System.out.println("------------ END PARSE PROGRAM ------------");
 		}
 	}
 }

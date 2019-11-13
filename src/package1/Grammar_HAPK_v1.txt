@@ -8,22 +8,19 @@ block               declaration
 declaration         type IDENTIFIER OPERATOR INTEGER_LITERAL ;                       NUMBER x = 1;
                     type IDENTIFIER ;                                                NUMBER x;
                     METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statements ENDMETHOD
-                    // TODO NOT IMPLEMENTED
                     ARRAY type IDENTIFIER [ valueList | parameterList ] ENDARRAY
 
 type                NUMBER
                     BOO
 
-statements          operations
+statement           operations
                     evaluationBlock
 		            methodCall
 
-operations          IDENTIFIER OPERATOR IDENTIFIER ;                                  x=y;
+operation           IDENTIFIER OPERATOR IDENTIFIER ;                                  x=y;
                     IDENTIFIER OPERATOR INTEGER_LITERAL ;                             x=1;
  		            IDENTIFIER OPERATOR BooValue ;                                         x=true;
                     IDENTIFIER OPERATOR IDENTIFIER || INTEGER_LITERAL || BooValue || methodCalls OPERATOR IDENTIFIER || INTEGER_LITERAL || Boo || methodCalls ; x=x+1 x=1+1+1 x=x+x+x x=x+1+x
-                    // TODO WE DO NOT RETURN ANYTHING FROM METHOD!? SO THIS IS IRRELEVANT
-                    IDENTIFIER OPERATOR methodCalls ;                                 x=addSum(y,z);
 
 methodCall          IDENTIFIER START_BRACKET parameterList END_BRACKET
 
@@ -44,10 +41,8 @@ valueList           INTEGER_LITERAL [ ,INTEGER_LITERAL ] *
 expression          IDENTIFIER OPERATOR IDENTIFIER
                     IDENTIFIER OPERATOR INTEGER_LITERAL
 		            IDENTIFIER OPERATOR BooValue
-
-		            // TODO WE DO NOT RETURN ANYTHING FROM METHOD!? SO THIS IS IRRELEVANT
-		            // IDENTIFIER OPERATOR methodCall
-
+		            BooValue OPERATOR IDENTIFIER
+				    INTEGER_LITERAL OPERATOR IDENTIFIER
 
 
 

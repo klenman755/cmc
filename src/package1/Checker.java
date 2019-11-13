@@ -5,12 +5,12 @@ import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
 import package1.AST.DECLARATIONS.DeVariable;
+import package1.AST.EVALUATIONBLOCKS.IfStatement;
+import package1.AST.EVALUATIONBLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
-import package1.AST.METHODCALLS.IfStatement;
 import package1.AST.METHODCALLS.Method;
-import package1.AST.METHODCALLS.WhileStatement;
 import package1.AST.OPERATIONS.OpDeclerationBoo;
 import package1.AST.OPERATIONS.OpDeclerationNum;
 import package1.AST.OPERATIONS.OpDeclerationFromVar;
@@ -105,12 +105,6 @@ public class Checker implements Visitor
 		return null;
 	}
 
-	public Object visitMethod(Method method, Object arg) {
-		method.name.visit( this, null );
-		method.list.visit( this, null );
-
-		return null;
-	}
 
 	public Object visitWhileStatement(WhileStatement whileStatement, Object arg) {
 		whileStatement.expression.visit( this, null );
@@ -281,4 +275,11 @@ public class Checker implements Visitor
 	public Object visitNUMBER(NUMBER number, Object arg) {
 		return number.spelling;
 	}
+
+	public Object visitMethodCall(MethodCall methodCall, Object arg) {
+		methodCall.name.visit( this, null );
+		methodCall.list.visit( this, null );
+		return null;
+	}
+
 }

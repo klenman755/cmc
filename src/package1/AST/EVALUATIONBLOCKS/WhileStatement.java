@@ -1,11 +1,12 @@
-package package1.AST.METHODCALLS;
+package package1.AST.EVALUATIONBLOCKS;
 
+import package1.AST.EvaluationBlock;
 import package1.AST.Expression;
 import package1.AST.MethodCall;
 import package1.AST.Statement;
 import package1.AST.Visitor;
 
-public class WhileStatement extends MethodCall {
+public class WhileStatement extends EvaluationBlock {
     public Expression expression;
     public Statement statement;
 

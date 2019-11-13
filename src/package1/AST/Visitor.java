@@ -11,12 +11,12 @@ import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
 import package1.AST.DECLARATIONS.DeVariable;
+import package1.AST.EVALUATIONBLOCKS.IfStatement;
+import package1.AST.EVALUATIONBLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
-import package1.AST.METHODCALLS.IfStatement;
 import package1.AST.METHODCALLS.Method;
-import package1.AST.METHODCALLS.WhileStatement;
 import package1.AST.OPERATIONS.*;
 import package1.AST.SUBTYPES.SubOpIdentifier;
 import package1.AST.SUBTYPES.SubOpIntegerLiteral;
@@ -58,8 +58,6 @@ public interface Visitor
 
 	public Object visitIfStatement(IfStatement ifStatement, Object arg);
 
-	public Object visitMethod(Method method, Object arg);
-
 	public Object visitWhileStatement(WhileStatement whileStatement, Object arg);
 
 	public Object visitOpDecleration(OpDeclerationNum opDecleration, Object arg);
@@ -89,4 +87,6 @@ public interface Visitor
 	public Object visitNUMBER(NUMBER number, Object arg);
 
 	public Object visitOpDeclerationBoo(OpDeclerationBoo opDeclerationBoo, Object arg);
+	
+	public Object visitMethodCall(MethodCall methodCall, Object arg);
 }

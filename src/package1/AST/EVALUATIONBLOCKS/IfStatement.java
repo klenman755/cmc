@@ -1,9 +1,9 @@
-package package1.AST.METHODCALLS;
+package package1.AST.EVALUATIONBLOCKS;
 
 import package1.AST.*;
 import package1.AST.TOKENS.Identifier;
 
-public class IfStatement extends MethodCall {
+public class IfStatement extends EvaluationBlock {
     public Expression expression;
     public Statement statement;
 

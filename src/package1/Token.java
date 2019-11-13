@@ -59,7 +59,7 @@ public class Token {
 			return false;
 	}
 
-	//TODO is correct? When is this called?
+
 	public boolean isBoolean()
 	{
 		if( kind == TokenKind.BOO_VALUE )
@@ -87,19 +87,14 @@ public class Token {
 			TokenKind.END_IF,
 			TokenKind.THEN,
 
-			// TODO remove
-			TokenKind.STRUCTURE,
-			TokenKind.END_STRUCTURE,
+			TokenKind.ARRAY,
+			TokenKind.END_ARRAY,
 
 			TokenKind.BOO, 
 			TokenKind.NUMBER,
 			TokenKind.RETURN,
 			TokenKind.WRITE,
 
-			// TODO remove
-		/*	TokenKind.TRUE,
-			TokenKind.FALSE
-			*/
 
 	};
 	

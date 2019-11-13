@@ -21,19 +21,16 @@ public enum TokenKind {
 	END_IF("ENDIF"),
 	THEN("THEN"),
 
-	//TODO do we have structure?
-	STRUCTURE("STRUCTURE"),
-	END_STRUCTURE("ENDSTRUCTURE"),
+	
+	ARRAY("ARRAY"),
+	END_ARRAY("ENDARRAY"),
 
 	BOO("BOO"), 
 	NUMBER("NUMBER"),
 	RETURN("RETURN"),
 	WRITE("WRITE"),
 
-	//TODO remove
-	/**TRUE("TRUE"),
-	FALSE("FALSE"),
-	*/
+	
 
 	COMMA(","),
 	SEMICOLON(";"),

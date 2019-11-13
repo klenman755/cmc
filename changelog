@@ -1,0 +1,12 @@
+12.11.
+peter
+-added support for boolean types
+PARSER
+-parseExpression => expressions are evaluated (identifier operator identifier/integer_literal/boo_value) / (integer_literal operator identifier/integer_literal) 
+							/(boo_value operator identifier/boo_value)
+-parseEvaluationBlock => we agreed that we have no else
+
+13.11.
+class
+							
+							

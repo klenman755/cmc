@@ -7,7 +7,8 @@
  */
 
 package package1;
-//TODO add support for scanning boo
+
+
 public class Scanner {
 	private SourceFile source;
 
@@ -59,11 +60,14 @@ public class Scanner {
 	private TokenKind scanToken() {
 		if (isLetter(currentChar)) {
 			takeIt();
-			while (isLetter(currentChar) || isDigit(currentChar))
+			while (isLetter(currentChar) || isDigit(currentChar)) {
 				takeIt();
-
-			return TokenKind.IDENTIFIER;
-
+			}
+			if (currentSpelling.toString().equals("TRUE") || currentSpelling.toString().equals("false")) {
+				return TokenKind.BOO_VALUE;
+			} else {
+				return TokenKind.IDENTIFIER;
+			}
 		} else if (isDigit(currentChar)) {
 			takeIt();
 			while (isDigit(currentChar))
@@ -122,7 +126,8 @@ public class Scanner {
 	}
 
 	public Token scan() {
-		while (currentChar == '_' || currentChar == '\n' || currentChar == '\r' || currentChar == '\t' || currentChar == ' ') {
+		while (currentChar == '_' || currentChar == '\n' || currentChar == '\r' || currentChar == '\t'
+				|| currentChar == ' ') {
 			scanSeparator();
 		}
 
