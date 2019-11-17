@@ -1,5 +1,5 @@
 package package1.AST;
 
-public abstract class EvaluationBlock extends Statement {
+public abstract class EvaluationBlock extends AST {
 
 }

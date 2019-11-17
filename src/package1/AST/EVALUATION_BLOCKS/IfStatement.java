@@ -1,4 +1,4 @@
-package package1.AST.EVALUATIONBLOCKS;
+package package1.AST.EVALUATION_BLOCKS;
 
 import package1.AST.*;
 import package1.AST.TOKENS.Identifier;

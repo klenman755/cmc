@@ -2,7 +2,7 @@ package package1.AST;
 
 import package1.AST.TOKENS.Identifier;
 
-public class MethodCall extends Statement {
+public class MethodCall extends AST {
     public Identifier name;
     public ParameterList list;
 

@@ -5,74 +5,40 @@ program             block*
 block               declaration
                     statement
 
-declaration         type IDENTIFIER OPERATOR INTEGER_LITERAL ;                       NUMBER x = 1;
-                    type IDENTIFIER ;                                                NUMBER x;
-                    METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statements ENDMETHOD
-                    ARRAY type IDENTIFIER [ valueList | parameterList ] ENDARRAY
+declaration         VARIABLE_TYPE IDENTIFIER OPERATOR [INTEGER_LITERAL | BOO_VALUE | IDENTIFIER];                   NUMBER x = 1;
+                    VARIABLE_TYPE IDENTIFIER ;                                                						NUMBER x;
+                    METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statement* ENDMETHOD
+                    ARRAY VARIABLE_TYPE IDENTIFIER [ valueList | parameterList ] ENDARRAY
 
-type                NUMBER
-                    BOO
 
-statement           operations
+statement           operation
                     evaluationBlock
 		            methodCall
 
 operation           IDENTIFIER OPERATOR IDENTIFIER ;                                  x=y;
                     IDENTIFIER OPERATOR INTEGER_LITERAL ;                             x=1;
- 		            IDENTIFIER OPERATOR BooValue ;                                         x=true;
+ 		            IDENTIFIER OPERATOR BooValue ;                                    x=true;
 
-                    IDENTIFIER OPERATOR [ IDENTIFIER || INTEGER_LITERAL ] [ OPERATOR IDENTIFIER || INTEGER_LITERAL ]* ;  x=x+1 x=1+1+1 x=x+x+x x=x+1+x
+                    IDENTIFIER OPERATOR [ IDENTIFIER | INTEGER_LITERAL ] [ OPERATOR IDENTIFIER | INTEGER_LITERAL ]* ;  x=x+1 x=1+1+1 x=x+x+x x=x+1+x
 
 methodCall          IDENTIFIER START_BRACKET parameterList END_BRACKET
 
-evaluationBlock     IF expression THEN statements ENDIF
-                    WHILE expression THEN statements ENDWHILE
+evaluationBlock     IF expression THEN statement* ENDIF
+                    WHILE expression THEN statement* ENDWHILE
 
-parameterList       IDENTIFIER
-                    IDENTIFIER, IDENTIFIER...
+parameterList       IDENTIFIER [, IDENTIFIER]*
                     e
 
-declarationList     type IDENTIFIER
-                    type IDENTIFIER, type IDENTIFIER...
+declarationList     VARIABLE_TYPE IDENTIFIER
+                    VARIABLE_TYPE IDENTIFIER, VARIABLE_TYPE IDENTIFIER...
                     e
 
 valueList           INTEGER_LITERAL [ ,INTEGER_LITERAL ] *
-                    BooValue [ ,BooValue ] *
+                    BOO_VALUE [ ,BOO_VALUE ] *
 
 expression          IDENTIFIER OPERATOR IDENTIFIER
                     IDENTIFIER OPERATOR INTEGER_LITERAL
-		            IDENTIFIER OPERATOR BooValue
-		            BooValue OPERATOR IDENTIFIER
+		            IDENTIFIER OPERATOR BOO_VALUE
+		            BOO_VALUE OPERATOR IDENTIFIER
 				    INTEGER_LITERAL OPERATOR IDENTIFIER
-
-
-
-
-
-V2 - Removed Left recursion; || and *
-
-
-program             block
-
-block               [ declarations || statements || methodCalls ] [ block ]*
-
-declarations        type IDENTIFIER [ OPERATOR INTEGER_LITERAL ]*
-                    METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statements ENDMETHOD
-
-type                [ NUMBER || BOO ]
-
-statements          [ operations || methodCalls ]
-
-operations          IDENTIFIER OPERATOR [ [ IDENTIFIER [ OPERATOR [ IDENTIFIER || INTEGER_LITERAL ] ]* ] || INTEGER_LITERAL || methodCalls ]
-
-methodCalls         IDENTIFIER START_BRACKET parameterList END_BRACKET
-                    IF expression THEN statements ENDIF
-                    WHILE expression THEN statements ENDWHILE
-
-parameterList       IDENTIFIER [ , IDENTIFIER ]*
-                    e
-
-declarationList     type IDENTIFIER [ , type IDENTIFIER ]*
-                    e
-
-expression          IDENTIFIER OPERATOR [ IDENTIFIER || NTEGER_LITERAL || BOOLEAN ]
+				    

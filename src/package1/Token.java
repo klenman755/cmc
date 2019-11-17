@@ -60,6 +60,13 @@ public class Token {
 	}
 
 
+	public boolean isVariableType()
+	{
+		if( kind == TokenKind.VARIABLE_TYPE )
+			return containsOperator( spelling, VARIABLE_TYPE );
+		else
+			return false;
+	}
 	public boolean isBoolean()
 	{
 		if( kind == TokenKind.BOO_VALUE )
@@ -89,15 +96,19 @@ public class Token {
 
 			TokenKind.ARRAY,
 			TokenKind.END_ARRAY,
-
-			TokenKind.BOO, 
-			TokenKind.NUMBER,
+			TokenKind.VARIABLE_TYPE,
 			TokenKind.RETURN,
 			TokenKind.WRITE,
 
 
 	};
 	
+	
+	private static final String VARIABLE_TYPE[] = { 
+			
+			"BOO", 	"NUMBER"
+			
+	};
 	
 	private static final String ASSIGNOPS[] =
 	{

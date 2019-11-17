@@ -1,16 +1,23 @@
 package package1;
 
 import package1.AST.*;
-import package1.AST.EVALUATIONBLOCKS.IfStatement;
-import package1.AST.EVALUATIONBLOCKS.WhileStatement;
+import package1.AST.DECLARATIONS.DeArray;
+import package1.AST.DECLARATIONS.DeInitialization;
+import package1.AST.DECLARATIONS.DeMethod;
+import package1.AST.DECLARATIONS.DeVariable;
+import package1.AST.EVALUATION_BLOCKS.IfStatement;
+import package1.AST.EVALUATION_BLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
+import package1.AST.OPERATIONS.OpDecleration;
 import package1.AST.OPERATIONS.OpDeclerationBoo;
 import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
+import package1.AST.VALUE_LISTS.ValueListBooValue;
+import package1.AST.VALUE_LISTS.ValueListIntegerLiteralValue;
 
 import java.util.Vector;
 
@@ -25,32 +32,31 @@ public class Parser {
 
 	public Object parseProgram() {
 		currentTerminal = scan.scan();
-		Block block = parseBlock();
+		Vector<Block> blocks = new Vector<Block>();
+		
 
-		if (currentTerminal.kind != TokenKind.EOT) {
-			parseBlock();
-		} else {
-			System.out.println("\nEOT");
-		}
-
-		return new Program(block);
+		while (currentTerminal.kind != TokenKind.EOT) {
+			blocks.add(parseBlock());
+			
+		} 
+		System.out.println("FINITO");
+		return new Program(blocks);
 	}
 
 	private Block parseBlock() {
 		System.out.println("\n-- BLOCK --");
 		switch (currentTerminal.kind) {
-		case BOO:
-		case NUMBER:
+		case VARIABLE_TYPE:
 		case METHOD:
 		case ARRAY:
-			return new Block(parseDeclarations(), null);
+			return new Block(parseDeclarations());
 		case IDENTIFIER:
 		case IF:
 		case WHILE:
-			return new Block(null, parseStatement());
+			return new Block( parseStatement());
 
 		default:
-			return new Block(null, null);
+			return null;
 		}
 	}
 
@@ -62,9 +68,9 @@ public class Parser {
 				accept(currentTerminal.kind);
 				switch (currentTerminal.kind) {
 					case OPERATOR:
-						return parseOpertion(placeholder);
+						return new Statement(parseOpertion(placeholder));
 					case START_BRACKET:
-						return parseMethodCallsFromStartBracket(placeholder);
+						return new Statement(parseMethodCallsFromStartBracket(placeholder));
 					default:
 
 						System.err.println("parseStatements() => error in parsing statements ");
@@ -73,10 +79,10 @@ public class Parser {
 
 			case IF:
 			case WHILE:
-				return parseEvaluationBlock();
+				 return new Statement(parseEvaluationBlock());
 
 			default:
-				System.out.println("Error in statement");
+				System.err.println("Error in statement");
 				return null;
 		}
 	}
@@ -84,21 +90,19 @@ public class Parser {
 	private Vector<Statement> parseStatements() {
 		System.out.println("\n-- STATEMNETS --");
 		Vector<Statement> statementVector = new Vector<Statement>();
-		Statement statement;
 		do {
-			statement = parseStatement();
-			if (statement != null) {
 				statementVector.add(parseStatement());
-			}
-		} while ( currentTerminal.kind != TokenKind.END_METHOD && currentTerminal.kind != TokenKind.END_IF &&  currentTerminal.kind != TokenKind.END_WHILE && statement != null);
+		} while ( currentTerminal.kind != TokenKind.END_METHOD && currentTerminal.kind != TokenKind.END_IF &&  currentTerminal.kind != TokenKind.END_WHILE );
 
 		return statementVector;
 	}
 
 	private Operation parseOpertion(Identifier placeholder) {
 		Vector<Operator> operators = new Vector<Operator>();
+		Vector<Object> values = new Vector<Object>();
 
 		operators.add(new Operator(currentTerminal.spelling));
+		//accepting "="
 		accept(TokenKind.OPERATOR);
 
 		switch (currentTerminal.kind) {
@@ -109,16 +113,29 @@ public class Parser {
 				return new OpDeclerationBoo(placeholder, operators.get(0), booValue);
 
 			case INTEGER_LITERAL:
+			case IDENTIFIER:	
 				accept(currentTerminal.kind);
 
-				// take first and then WHILE not semicollon AND has operator => loop
-				return null;
-			case IDENTIFIER:
-				accept(currentTerminal.kind);
-				return null;
-
+				while(currentTerminal.kind==TokenKind.OPERATOR) {
+					operators.add(new Operator(currentTerminal.spelling));
+					accept(currentTerminal.kind);
+					if(currentTerminal.kind==TokenKind.INTEGER_LITERAL) {
+						values.add(new IntegerLiteral(currentTerminal.spelling));
+						
+					}else if(currentTerminal.kind==TokenKind.IDENTIFIER) {
+						values.add(new Identifier(currentTerminal.spelling));
+						
+					}else {
+						System.err.println("parseOpertion() => unexpected expression");
+						return null;
+					}
+					accept(currentTerminal.kind);
+					
+				}
+				accept(TokenKind.SEMICOLON);
+				return new OpDecleration(placeholder, operators, values);
 			default:
-				System.out.println("Error in statement");
+				System.err.println("parseOpertion() => Error in statement");
 				return null;
 		}
 	}
@@ -141,7 +158,7 @@ public class Parser {
 				accept(TokenKind.END_WHILE);
 				return new WhileStatement(expressionWhile, statementsWhile);
 			default:
-				System.out.println("parseEvaluationBlock() => error parsing evaluation block");
+				System.err.println("parseEvaluationBlock() => error parsing evaluation block");
 				return null;
 		}
 	}
@@ -170,7 +187,7 @@ public class Parser {
 				accept(currentTerminal.kind);
 				return new ExToValue(leftSideIdentifier, operator, integerLiteralValue);
 			default:
-				System.out.println("error in parsing expression: wrong value type");
+				System.err.println("error in parsing expression: wrong value type");
 				return null;
 			}
 		case BOO_VALUE:
@@ -191,7 +208,7 @@ public class Parser {
 			return new ExToValue(rightSideIndentifier2, operatorIntegerLiteral, integerLiteralValue);
 
 		default:
-			System.out.println("error in parsing expression: wrong value type");
+			System.err.println("error in parsing expression: wrong value type");
 			return null;
 		}
 
@@ -229,93 +246,90 @@ public class Parser {
 					accept(currentTerminal.kind);
 					break;
 				default:
-					System.out.println("wrong parameter in parameter list");
+					System.err.println("wrong parameter in parameter list");
 					break;
 				}
 			}
 			return parameters;
 
 		default:
-			System.out.println("Error in statement");
+			System.err.println("Error in statement");
 			return null;
 		}
 
 	}
 
-	private void parseValueList() {
-
+	private ValueList parseValueList() {
+		System.out.println("\n--  PARSE VALUE LIST  --");
 		switch (currentTerminal.kind) {
 		case INTEGER_LITERAL:
+			Vector<IntegerLiteral> integerLiteralValues = new Vector<>();
+			integerLiteralValues.add(new IntegerLiteral(currentTerminal.spelling));
 			accept(currentTerminal.kind);
 			while (currentTerminal.kind == TokenKind.COMMA) {
 				accept(currentTerminal.kind);
+				integerLiteralValues.add(new IntegerLiteral(currentTerminal.spelling));
 				accept(TokenKind.INTEGER_LITERAL);
 			}
-			break;
+			
+			return new ValueListIntegerLiteralValue(integerLiteralValues);
 		case BOO_VALUE:
+			Vector<BooValue> booValues = new Vector<>();
+			booValues.add(new BooValue(currentTerminal.spelling));
 			accept(currentTerminal.kind);
 			while (currentTerminal.kind == TokenKind.COMMA) {
 				accept(currentTerminal.kind);
+				booValues.add(new BooValue(currentTerminal.spelling));
 				accept(TokenKind.BOO_VALUE);
 			}
-			break;
+			
+			return new ValueListBooValue(booValues);
 		default:
-			System.out.println("parseValueList() => error parsing value list");
-			break;
+			System.err.println("parseValueList() => error parsing value list");
+			return null;
 
 		}
 
 	}
 
-	// we start from operator because identifier is already accepted
-	private void parseOperations() {
-		System.out.println("\n-- OPERATION --");
-		accept(TokenKind.OPERATOR);
+	
+	private Declaration parseInitialization() {
+		System.out.println("-- INITIALIZATION --");
+		VariableType variableType = new VariableType(currentTerminal.spelling);
+		accept(currentTerminal.kind);
+		Identifier identifier = new Identifier(currentTerminal.spelling);
+		accept(TokenKind.IDENTIFIER);
+
 		switch (currentTerminal.kind) {
-		case INTEGER_LITERAL:
+		case SEMICOLON:
 			accept(currentTerminal.kind);
-			while (currentTerminal.kind == TokenKind.OPERATOR) {
-				accept(TokenKind.OPERATOR);
-				if (currentTerminal.kind == TokenKind.INTEGER_LITERAL || currentTerminal.kind == TokenKind.IDENTIFIER) {
-					accept(currentTerminal.kind);
-				}
+			return new DeVariable(variableType, identifier);
+		case OPERATOR:
+			Operator operator = new Operator(currentTerminal.spelling);
+			Object value;
+			accept(currentTerminal.kind);
 
+			if (currentTerminal.kind == TokenKind.INTEGER_LITERAL) {
+				value = new IntegerLiteral(currentTerminal.spelling);
+
+			} else if (currentTerminal.kind == TokenKind.IDENTIFIER) {
+				value = new Identifier(currentTerminal.spelling);
+
+			} else if (currentTerminal.kind == TokenKind.BOO_VALUE) {
+				value = new BooValue(currentTerminal.spelling);
+
+			} else {
+				System.err.println("parseInitialization() => unexpected expression");
+				return null;
 			}
+			accept(currentTerminal.kind);
 			accept(TokenKind.SEMICOLON);
-			break;
-		case IDENTIFIER:
-			accept(currentTerminal.kind);
-			switch (currentTerminal.kind) {
-			case SEMICOLON:
-				accept(currentTerminal.kind);
-				break;
-			case OPERATOR:
-				accept(TokenKind.OPERATOR);
-				switch (currentTerminal.kind) {
-				case INTEGER_LITERAL:
-					accept(currentTerminal.kind);
-					while (currentTerminal.kind == TokenKind.OPERATOR) {
-						accept(TokenKind.OPERATOR);
-						if (currentTerminal.kind == TokenKind.INTEGER_LITERAL
-								|| currentTerminal.kind == TokenKind.IDENTIFIER) {
-							accept(currentTerminal.kind);
-						}
-
-					}
-					accept(TokenKind.SEMICOLON);
-					break;
-				default:
-					System.out.println("Error in statement");
-					break;
-				}
-
-			default:
-				System.out.println("Error in statement");
-				break;
-			}
+			
+			return new DeInitialization(variableType, identifier, operator, value);
+			
 		default:
-			System.out.println("Error in statement");
-			break;
+			System.err.println("Error in statement");
+			return null;
 		}
 
 	}
@@ -323,97 +337,84 @@ public class Parser {
 	private Declaration parseDeclarations() {
 		System.out.println("\n-- DECLARATION --");
 		switch (currentTerminal.kind) {
-		case BOO:
-		case NUMBER:
-			accept(currentTerminal.kind);
-			accept(TokenKind.IDENTIFIER);
-			switch (currentTerminal.kind) {
-			case SEMICOLON:
-				accept(currentTerminal.kind);
-				break;
-			case OPERATOR:
-				accept(currentTerminal.kind);
-				if (currentTerminal.kind == TokenKind.IDENTIFIER) {
-
-					accept(TokenKind.IDENTIFIER);
-				} else if (currentTerminal.kind == TokenKind.INTEGER_LITERAL) {
-					accept(TokenKind.INTEGER_LITERAL);
-				}
-				accept(TokenKind.SEMICOLON);
-				break;
-			default:
-				System.err.println("Error in statement");
-				break;
-			}
-			break;
+		case VARIABLE_TYPE:
+			return parseInitialization();
 
 		case METHOD:
 			accept(currentTerminal.kind);
+			Identifier identifier = new Identifier(currentTerminal.spelling);
 			accept(TokenKind.IDENTIFIER);
 			accept(TokenKind.START_BRACKET);
-			parseDeclarationList();
+			DeclarationList declarationList = parseDeclarationList();
 			accept(TokenKind.END_BRACKET);
-			parseStatements();
+			 Vector<Statement> statements = parseStatements();
 			accept(TokenKind.END_METHOD);
-			break;
+			
+			return new DeMethod(identifier, declarationList, statements);
 		case ARRAY:
 			accept(currentTerminal.kind);
-			if (currentTerminal.kind == TokenKind.BOO || currentTerminal.kind == TokenKind.NUMBER) {
-				accept(currentTerminal.kind);
-			} else {
-				System.err.println("parseDeclarations() => error parsing an array1");
-				break;
-			}
+			VariableType variableType = new VariableType(currentTerminal.spelling);
+			accept(TokenKind.VARIABLE_TYPE);
+			Identifier arrayIdentifier = new Identifier(currentTerminal.spelling);
+			
 			accept(TokenKind.IDENTIFIER);
 			switch (currentTerminal.kind) {
 			case IDENTIFIER:
-				parseParameterList();
-
-				break;
+				ParameterList parameterList = parseParameterList();
+				accept(TokenKind.END_ARRAY);
+				return new DeArray(variableType, arrayIdentifier, parameterList);
+			
 			case INTEGER_LITERAL:
 			case BOO_VALUE:
-				parseValueList();
-				break;
+				ValueList valueList = parseValueList();
+				accept(TokenKind.END_ARRAY);
+				return new DeArray(variableType, arrayIdentifier, valueList);
+				
+				
 			default:
 
-				System.err.println("parseDeclarations() => error parsing an array2");
-				break;
+				System.err.println("parseDeclarations() => error parsing an array");
+				return null;
 			}
-			accept(TokenKind.END_ARRAY);
-			break;
-
+			
+		
 		default:
-			System.err.println("Error in statement");
-			break;
+			System.err.println("parseDeclarations() => error parsing declartation");
+			return null;
 
 		}
-		return null;
 	}
-
-	private void parseDeclarationList() {
+//when creating method
+	private DeclarationList parseDeclarationList() {
 		System.out.println("\n-- DECLARATION LIST --");
+		
 		switch (currentTerminal.kind) {
 		case END_BRACKET:
-			break;
-		case BOO:
-		case NUMBER:
+			return  new DeclarationList(null, null);
+		case VARIABLE_TYPE:
+			Vector<VariableType> variableTypeList = new Vector<VariableType>();
+			Vector<Identifier> identifierList = new Vector<Identifier>();
+			variableTypeList.add(new VariableType(currentTerminal.spelling));
 			accept(currentTerminal.kind);
+			identifierList.add(new Identifier(currentTerminal.spelling));
 			accept(TokenKind.IDENTIFIER);
 			while (currentTerminal.kind == TokenKind.COMMA) {
 				accept(TokenKind.COMMA);
-				if (currentTerminal.kind == TokenKind.BOO || currentTerminal.kind == TokenKind.NUMBER) {
+				if (currentTerminal.kind == TokenKind.VARIABLE_TYPE) {
+					variableTypeList.add(new VariableType(currentTerminal.spelling));
 					accept(currentTerminal.kind);
+					identifierList.add(new Identifier(currentTerminal.spelling));
+					accept(TokenKind.IDENTIFIER);
 				} else {
-					System.out.println("Error in statement");
-					break;
+					System.err.println("parseDeclarationList() => Error in statement");
+				return null;
 				}
-				accept(TokenKind.IDENTIFIER);
-				break;
+				
 			}
-			break;
+			return new DeclarationList(variableTypeList, identifierList);
 		default:
-			System.out.println("Error in statement");
-			break;
+			System.err.println("parseDeclarationList => Error in statement");
+			return null;
 		}
 	}
 
@@ -422,7 +423,7 @@ public class Parser {
 			System.out.print(currentTerminal.spelling + " ");
 			currentTerminal = scan.scan();
 		} else {
-			System.out.println("Expected token of kind " + expected);
+			System.err.println("Expected token of kind " + expected);
 		}
 	}
 }

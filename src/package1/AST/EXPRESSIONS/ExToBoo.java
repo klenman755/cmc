@@ -4,7 +4,6 @@ import package1.AST.Expression;
 import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.Operator;
-import package1.AST.TYPES.BOO;
 import package1.AST.Visitor;
 
 public class ExToBoo extends Expression {

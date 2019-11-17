@@ -1,11 +1,13 @@
 package package1.AST;
 
-public class Program extends AST {
-	public Block block;
+import java.util.Vector;
 
-	public Program( Block block )
+public class Program extends AST {
+	public Vector<Block> blocks;
+
+	public Program( Vector<Block> blocks )
 	{
-		this.block = block;
+		this.blocks = blocks;
 	}
 
 	public Object visit( Visitor v, Object arg )

@@ -1,19 +1,14 @@
 package package1.AST;
 
-import package1.AST.TYPES.BOO;
-import package1.AST.TYPES.NUMBER;
+public class VariableType extends Terminal {
 
-public abstract class VariableType extends AST {
+	public VariableType(String spelling) {
+		this.spelling = spelling;
+	}
 
-    public BOO boo;
-    public NUMBER number;
+	@Override
+	public Object visit(Visitor v, Object arg) {
+		return v.visitVariableType(this, arg);
+	}
 
-    public VariableType(BOO boo, NUMBER number) {
-        this.boo = boo;
-        this.number = number;
-    }
-
-    public Object visit(Visitor v, Object arg) {
-        return v.visitVariableType( this, arg );
-    }
 }

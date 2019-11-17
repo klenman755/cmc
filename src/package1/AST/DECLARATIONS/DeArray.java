@@ -9,14 +9,20 @@ public class DeArray extends Declaration {
     public ParameterList parameterList;
     public ValueList valueList;
 
-    public DeArray(VariableType type, Identifier name, ParameterList parameterList, ValueList valueList) {
+    public DeArray(VariableType type, Identifier name, ParameterList parameterList) {
         this.type = type;
         this.name = name;
         this.parameterList = parameterList;
-        this.valueList = valueList;
+       
     }
 
-    public Object visit(Visitor v, Object arg) {
+    public DeArray(VariableType type, Identifier name, ValueList valueList) {
+		this.type = type;
+		this.name = name;
+		this.valueList = valueList;
+	}
+
+	public Object visit(Visitor v, Object arg) {
         return v.visitDeArray( this, arg );
     }
 }

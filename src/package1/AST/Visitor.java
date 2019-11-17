@@ -11,8 +11,8 @@ import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
 import package1.AST.DECLARATIONS.DeVariable;
-import package1.AST.EVALUATIONBLOCKS.IfStatement;
-import package1.AST.EVALUATIONBLOCKS.WhileStatement;
+import package1.AST.EVALUATION_BLOCKS.IfStatement;
+import package1.AST.EVALUATION_BLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
@@ -21,8 +21,8 @@ import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
-import package1.AST.TYPES.BOO;
-import package1.AST.TYPES.NUMBER;
+import package1.AST.VALUE_LISTS.ValueListBooValue;
+import package1.AST.VALUE_LISTS.ValueListIntegerLiteralValue;
 
 public interface Visitor
 {
@@ -68,11 +68,14 @@ public interface Visitor
 
 	public Object visitVariableType(VariableType variableType, Object arg);
 
-	public Object visitBOO(BOO boo, Object arg);
-
-	public Object visitNUMBER(NUMBER number, Object arg);
-
 	public Object visitOpDeclerationBoo(OpDeclerationBoo opDeclerationBoo, Object arg);
 	
 	public Object visitMethodCall(MethodCall methodCall, Object arg);
+
+	public Object visitValueListBooValue(ValueListBooValue valueListBooValue, Object arg);
+
+	public Object visitValueListIntegerLiteralValue(ValueListIntegerLiteralValue valueListIntegerLiteralValue,
+			Object arg);
+
+	public Object visitDeclaration(Declaration declaration, Object arg);
 }

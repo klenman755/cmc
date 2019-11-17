@@ -23,7 +23,7 @@ public class OpDecleration extends Operation {
         this.operators = operators;
         this.values = values;
     }
-
+    @Override
     public Object visit(Visitor v, Object arg) {
         return v.visitOpDecleration( this, arg );
     }

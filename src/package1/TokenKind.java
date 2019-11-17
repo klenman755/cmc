@@ -11,6 +11,7 @@ public enum TokenKind {
 	IDENTIFIER,
 	INTEGER_LITERAL,
 	BOO_VALUE,
+	VARIABLE_TYPE,
 	OPERATOR,
 	
 	WHILE( "WHILE" ),
@@ -25,8 +26,7 @@ public enum TokenKind {
 	ARRAY("ARRAY"),
 	END_ARRAY("ENDARRAY"),
 
-	BOO("BOO"), 
-	NUMBER("NUMBER"),
+	
 	RETURN("RETURN"),
 	WRITE("WRITE"),
 

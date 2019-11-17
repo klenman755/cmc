@@ -65,7 +65,10 @@ public class Scanner {
 			}
 			if (currentSpelling.toString().equals("TRUE") || currentSpelling.toString().equals("false")) {
 				return TokenKind.BOO_VALUE;
-			} else {
+			}
+			if (currentSpelling.toString().equals("NUMBER") || currentSpelling.toString().equals("BOO")) {
+				return TokenKind.VARIABLE_TYPE;
+			}else {
 				return TokenKind.IDENTIFIER;
 			}
 		} else if (isDigit(currentChar)) {

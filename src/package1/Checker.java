@@ -5,22 +5,19 @@ import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
 import package1.AST.DECLARATIONS.DeVariable;
-import package1.AST.EVALUATIONBLOCKS.IfStatement;
-import package1.AST.EVALUATIONBLOCKS.WhileStatement;
+import package1.AST.EVALUATION_BLOCKS.IfStatement;
+import package1.AST.EVALUATION_BLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
 import package1.AST.OPERATIONS.OpDeclerationBoo;
 import package1.AST.OPERATIONS.OpDecleration;
-import package1.AST.SUBTYPES.SubOpIdentifier;
-import package1.AST.SUBTYPES.SubOpIntegerLiteral;
-import package1.AST.SUBTYPES.SubTypeIdentifier;
 import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
-import package1.AST.TYPES.BOO;
-import package1.AST.TYPES.NUMBER;
+import package1.AST.VALUE_LISTS.ValueListBooValue;
+import package1.AST.VALUE_LISTS.ValueListIntegerLiteralValue;
 
 public class Checker implements Visitor
 {
@@ -34,8 +31,9 @@ public class Checker implements Visitor
 	public Object visitProgram( Program p, Object arg )
 	{
 		idTable.openScope();
-
-		p.block.visit( this, null );
+		
+		for( Block block : p.blocks )
+			block.visit( this, null );
 
 		idTable.closeScope();
 
@@ -51,8 +49,8 @@ public class Checker implements Visitor
 	}
 
 	public Object visitVariableType(VariableType variableType, Object arg) {
-		variableType.boo.visit( this, null );
-		variableType.number.visit( this, null );
+		variableType.visit( this, null );
+		variableType.visit( this, null );
 
 		return null;
 	}
@@ -98,15 +96,20 @@ public class Checker implements Visitor
 
 	public Object visitIfStatement(IfStatement ifStatement, Object arg) {
 		ifStatement.expression.visit( this, null );
-		ifStatement.statement.visit( this, null );
+		
+		for( Statement stmnt : ifStatement.statements )
+			stmnt.visit( this, null );
+		
 		return null;
 	}
 
 
 	public Object visitWhileStatement(WhileStatement whileStatement, Object arg) {
 		whileStatement.expression.visit( this, null );
-		whileStatement.statement.visit( this, null );
-
+		
+		for( Statement stmnt : whileStatement.statements )
+			stmnt.visit( this, null );
+		
 		return null;
 	}
 
@@ -249,6 +252,25 @@ public class Checker implements Visitor
 	public Object visitMethodCall(MethodCall methodCall, Object arg) {
 		methodCall.name.visit( this, null );
 		methodCall.list.visit( this, null );
+		return null;
+	}
+
+	@Override
+	public Object visitValueListBooValue(ValueListBooValue valueListBooValue, Object arg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visitValueListIntegerLiteralValue(ValueListIntegerLiteralValue valueListIntegerLiteralValue,
+			Object arg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visitDeclaration(Declaration declaration, Object arg) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
