@@ -26,11 +26,10 @@ methodCall          IDENTIFIER START_BRACKET parameterList END_BRACKET
 evaluationBlock     IF expression THEN statement* ENDIF
                     WHILE expression THEN statement* ENDWHILE
 
-parameterList       IDENTIFIER [, IDENTIFIER]*
+parameterList       IDENTIFIER | INTEGER_LITERAL | BOO_VALUE  [, IDENTIFIER | INTEGER_LITERAL | BOO_VALUE ]*
                     e
 
-declarationList     VARIABLE_TYPE IDENTIFIER
-                    VARIABLE_TYPE IDENTIFIER, VARIABLE_TYPE IDENTIFIER...
+declarationList     VARIABLE_TYPE IDENTIFIER [, VARIABLE_TYPE IDENTIFIER]*
                     e
 
 valueList           INTEGER_LITERAL [ ,INTEGER_LITERAL ] *

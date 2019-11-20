@@ -24,14 +24,14 @@ public class IdentificationTable
 	}
 	
 	
-	public void enter( String id, Declaration attr)
+	public void enter( String id, Declaration dec)
 	{
 		IdEntry entry = find( id );
 		
 		if( entry != null && entry.level == level )
 			System.out.println( id + " declared twice" );
 		else
-			table.add( new IdEntry( level, id, attr ) );
+			table.add( new IdEntry( level, id, dec) );
 	}
 	
 	
@@ -40,7 +40,7 @@ public class IdentificationTable
 		IdEntry entry = find( id );
 		
 		if( entry != null )
-			return entry.attr;
+			return entry.declaration;
 		else
 			return null;
 	}
@@ -67,7 +67,7 @@ public class IdentificationTable
 	private IdEntry find( String id )
 	{
 		for( int i = table.size() - 1; i >= 0; i-- )
-			if( table.get(i).id.equals( id ) )
+			if( table.get(i).name.equals( id ) )
 				return table.get(i);
 				
 		return null;

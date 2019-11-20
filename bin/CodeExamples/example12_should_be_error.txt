@@ -1,3 +1,0 @@
-WHILE x == 1 THEN
-    x = x - 1;
-ENDIF

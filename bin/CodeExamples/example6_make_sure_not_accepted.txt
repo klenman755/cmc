@@ -1,5 +1,0 @@
-NUMBER y = 1;
-
-METHOD addOne (NUMBER x)
-    x + 1 + 1 + x;
-ENDMETHOD

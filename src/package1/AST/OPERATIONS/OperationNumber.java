@@ -7,7 +7,7 @@ import package1.AST.Visitor;
 
 import java.util.Vector;
 
-public class OpDecleration extends Operation {
+public class OperationNumber extends Operation {
 
     public Identifier identifierOne;
 
@@ -18,13 +18,13 @@ public class OpDecleration extends Operation {
     // if Identifier fetch from the table the value (IntegerLiteral)
     public Vector<Object> values;
 
-    public OpDecleration(Identifier identifierOne, Vector<Operator> operators, Vector<Object> values) {
+    public OperationNumber(Identifier identifierOne, Vector<Operator> operators, Vector<Object> values) {
         this.identifierOne = identifierOne;
         this.operators = operators;
         this.values = values;
     }
     @Override
     public Object visit(Visitor v, Object arg) {
-        return v.visitOpDecleration( this, arg );
+        return v.visitOperationNumbers( this, arg );
     }
 }

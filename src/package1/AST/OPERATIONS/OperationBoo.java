@@ -6,19 +6,19 @@ import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.Operator;
 import package1.AST.Visitor;
 
-public class OpDeclerationBoo extends Operation {
+public class OperationBoo extends Operation {
 
     public Identifier identifier;
     public Operator operator;
     public BooValue boo;
 
-    public OpDeclerationBoo(Identifier identifier, Operator operator, BooValue boo) {
+    public OperationBoo(Identifier identifier, Operator operator, BooValue boo) {
         this.identifier = identifier;
         this.operator = operator;
         this.boo = boo;
     }
     @Override
     public Object visit(Visitor v, Object arg) {
-        return v.visitOpDeclerationBoo( this, arg );
+        return v.visitOperationBoo( this, arg );
     }
 }

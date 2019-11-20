@@ -4,23 +4,22 @@ import package1.AST.*;
 
 public class IdEntry
 {
-	// TODO are we using this?
 
 	public int level;
-	public String id;
-	public Declaration attr;
+	public String name;
+	public Declaration declaration;
 	
 	
-	public IdEntry( int level, String id, Declaration attr )
+	public IdEntry( int level, String id, Declaration declaration )
 	{
 		this.level = level;
-		this.id = id;
-		this.attr = attr;
+		this.name = id;
+		this.declaration = declaration;
 	}
 	
 	
 	public String toString()
 	{
-		return level + "," + id;
+		return level + "," + name;
 	}
 }

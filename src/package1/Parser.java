@@ -4,14 +4,13 @@ import package1.AST.*;
 import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
-import package1.AST.DECLARATIONS.DeVariable;
 import package1.AST.EVALUATION_BLOCKS.IfStatement;
 import package1.AST.EVALUATION_BLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
-import package1.AST.OPERATIONS.OpDecleration;
-import package1.AST.OPERATIONS.OpDeclerationBoo;
+import package1.AST.OPERATIONS.OperationNumber;
+import package1.AST.OPERATIONS.OperationBoo;
 import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
@@ -110,10 +109,10 @@ public class Parser {
 				BooValue booValue = new BooValue(currentTerminal.spelling);
 				accept(currentTerminal.kind);
 				accept(TokenKind.SEMICOLON);
-				return new OpDeclerationBoo(placeholder, operators.get(0), booValue);
+				return new OperationBoo(placeholder, operators.get(0), booValue);
 
 			case INTEGER_LITERAL:
-			case IDENTIFIER:	
+				values.add(new IntegerLiteral(currentTerminal.spelling)); 
 				accept(currentTerminal.kind);
 
 				while(currentTerminal.kind==TokenKind.OPERATOR) {
@@ -133,7 +132,32 @@ public class Parser {
 					
 				}
 				accept(TokenKind.SEMICOLON);
-				return new OpDecleration(placeholder, operators, values);
+				return new OperationNumber(placeholder, operators, values);
+			case IDENTIFIER:
+				values.add(new Identifier(currentTerminal.spelling));
+				accept(currentTerminal.kind);
+				
+				while(currentTerminal.kind==TokenKind.OPERATOR) {
+					operators.add(new Operator(currentTerminal.spelling));
+					accept(currentTerminal.kind);
+					if(currentTerminal.kind==TokenKind.INTEGER_LITERAL) {
+						values.add(new IntegerLiteral(currentTerminal.spelling));
+						
+					}else if(currentTerminal.kind==TokenKind.IDENTIFIER) {
+						values.add(new Identifier(currentTerminal.spelling));
+						
+					}else {
+						System.err.println("parseOpertion() => unexpected expression");
+						return null;
+					}
+					accept(currentTerminal.kind);
+					
+				}
+				accept(TokenKind.SEMICOLON);
+				return new OperationNumber(placeholder, operators, values);
+				
+				
+				
 			default:
 				System.err.println("parseOpertion() => Error in statement");
 				return null;
@@ -229,20 +253,32 @@ public class Parser {
 		System.out.println("\n-- PARAMETER LIST --");
 		switch (currentTerminal.kind) {
 		case END_BRACKET:
-
 			return parameters;
 		case IDENTIFIER:
 		case INTEGER_LITERAL:
 		case BOO_VALUE:
-			parameters.list.add(new Identifier(currentTerminal.spelling));
+			if(currentTerminal.kind == TokenKind.IDENTIFIER) {
+				parameters.list.add(new Identifier(currentTerminal.spelling));
+			} else if(currentTerminal.kind == TokenKind.INTEGER_LITERAL) {
+				parameters.list.add(new IntegerLiteral(currentTerminal.spelling));
+			} else if(currentTerminal.kind == TokenKind.BOO_VALUE) {
+				parameters.list.add(new BooValue(currentTerminal.spelling));
+			}
 			accept(currentTerminal.kind);
+			
 			while (currentTerminal.kind == TokenKind.COMMA) {
 				accept(TokenKind.COMMA);
 				switch (currentTerminal.kind) {
 				case IDENTIFIER:
 				case INTEGER_LITERAL:
 				case BOO_VALUE:
-					parameters.list.add(new Identifier(currentTerminal.spelling));
+					if(currentTerminal.kind == TokenKind.IDENTIFIER) {
+						parameters.list.add(new Identifier(currentTerminal.spelling));
+					} else if(currentTerminal.kind == TokenKind.INTEGER_LITERAL) {
+						parameters.list.add(new IntegerLiteral(currentTerminal.spelling));
+					} else if(currentTerminal.kind == TokenKind.BOO_VALUE) {
+						parameters.list.add(new BooValue(currentTerminal.spelling));
+					}
 					accept(currentTerminal.kind);
 					break;
 				default:
@@ -303,7 +339,7 @@ public class Parser {
 		switch (currentTerminal.kind) {
 		case SEMICOLON:
 			accept(currentTerminal.kind);
-			return new DeVariable(variableType, identifier);
+			return new DeInitialization(variableType, identifier, null, null);
 		case OPERATOR:
 			Operator operator = new Operator(currentTerminal.spelling);
 			Object value;

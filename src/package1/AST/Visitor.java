@@ -10,7 +10,6 @@ package package1.AST;
 import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
-import package1.AST.DECLARATIONS.DeVariable;
 import package1.AST.EVALUATION_BLOCKS.IfStatement;
 import package1.AST.EVALUATION_BLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
@@ -44,8 +43,6 @@ public interface Visitor
 
 	public Object visitDeInitialization(DeInitialization deInitialization, Object arg);
 
-	public Object visitDeVariable(DeVariable deVariable, Object arg);
-
 	public Object visitExToBoo(ExToBoo exToBoo, Object arg);
 
 	public Object visitExToValue(ExToValue exToValue, Object arg);
@@ -56,20 +53,14 @@ public interface Visitor
 
 	public Object visitWhileStatement(WhileStatement whileStatement, Object arg);
 
-	public Object visitOpDecleration(OpDecleration opDeclerationFromVar, Object arg);
-
 	public Object visitProgram(Program program, Object arg);
 
 	public Object visitDeArray(DeArray deArray, Object arg);
 
 	public Object visitBooValue(BooValue booValue, Object arg);
 
-	public Object visitValueList(ValueList valueList, Object arg);
-
 	public Object visitVariableType(VariableType variableType, Object arg);
 
-	public Object visitOpDeclerationBoo(OpDeclerationBoo opDeclerationBoo, Object arg);
-	
 	public Object visitMethodCall(MethodCall methodCall, Object arg);
 
 	public Object visitValueListBooValue(ValueListBooValue valueListBooValue, Object arg);
@@ -78,4 +69,9 @@ public interface Visitor
 			Object arg);
 
 	public Object visitDeclaration(Declaration declaration, Object arg);
+
+	public Object visitOperationNumbers(OperationNumber operationNumbers, Object arg);
+
+	public Object visitOperationBoo(OperationBoo operationBoo, Object arg);
+
 }

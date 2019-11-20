@@ -4,14 +4,13 @@ import package1.AST.*;
 import package1.AST.DECLARATIONS.DeArray;
 import package1.AST.DECLARATIONS.DeInitialization;
 import package1.AST.DECLARATIONS.DeMethod;
-import package1.AST.DECLARATIONS.DeVariable;
 import package1.AST.EVALUATION_BLOCKS.IfStatement;
 import package1.AST.EVALUATION_BLOCKS.WhileStatement;
 import package1.AST.EXPRESSIONS.ExToBoo;
 import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
-import package1.AST.OPERATIONS.OpDeclerationBoo;
-import package1.AST.OPERATIONS.OpDecleration;
+import package1.AST.OPERATIONS.OperationBoo;
+import package1.AST.OPERATIONS.OperationNumber;
 import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
@@ -19,189 +18,274 @@ import package1.AST.TOKENS.Operator;
 import package1.AST.VALUE_LISTS.ValueListBooValue;
 import package1.AST.VALUE_LISTS.ValueListIntegerLiteralValue;
 
-public class Checker implements Visitor
-{
+public class Checker implements Visitor {
 	private IdentificationTable idTable = new IdentificationTable();
 
-	public void check( Program p )
-	{
-		p.visit( this, null );
+	public void check(Program p) {
+		p.visit(this, null);
 	}
 
-	public Object visitProgram( Program p, Object arg )
-	{
+	@Override
+	public Object visitProgram(Program p, Object arg) {
 		idTable.openScope();
-		
-		for( Block block : p.blocks )
-			block.visit( this, null );
+
+		for (Block block : p.blocks)
+			block.visit(this, null);
 
 		idTable.closeScope();
 
 		return null;
 	}
 
-	public Object visitBlock(Block b, Object arg )
-	{
-		b.decs.visit( this, null );
-		b.stats.visit( this, null );
-
+	@Override
+	public Object visitBlock(Block b, Object arg) {
+		if (b.decs != null) {
+			b.decs.visit(this, null);
+		} else if (b.stats != null) {
+			b.stats.visit(this, null);
+		}
 		return null;
 	}
 
+	@Override
 	public Object visitVariableType(VariableType variableType, Object arg) {
-		variableType.visit( this, null );
-		variableType.visit( this, null );
 
-		return null;
+		return variableType.spelling;
 	}
 
+	@Override
 	public Object visitStatement(Statement s, Object arg) {
-		s.operation.visit( this, null );
-		s.methodCall.visit( this, null );
 
+		if (s.operation != null) {
+			s.operation.visit(this, null);
+		} else if (s.methodCall != null) {
+			s.methodCall.visit(this, null);
+		} else if (s.evaluationBlock != null) {
+			s.evaluationBlock.visit(this, null);
+		}
 		return null;
 	}
 
-	public Object visitOpDeclerationBoo(OpDeclerationBoo opDeclerationBoo, Object arg) {
-		opDeclerationBoo.identifier.visit( this, null );
-		opDeclerationBoo.operator.visit( this, null );
-		opDeclerationBoo.boo.visit( this, null );
-
-		return null;
-	}
-
+	@Override
 	public Object visitExToBoo(ExToBoo exToBoo, Object arg) {
-		exToBoo.name.visit( this, null );
-		exToBoo.doubleEquals.visit( this, null );
-		exToBoo.boo.visit( this, null );
+		Declaration temp = idTable.retrieve(exToBoo.name.spelling);
+
+		if (temp == null) {
+			System.out.println("visitExToBoo() => variable does not exist");
+		} else {
+			if (!(temp instanceof DeInitialization)) {
+				System.out.println("visitExToBoo() => not the right class type");
+			}
+			DeInitialization temp2 = (DeInitialization) temp;
+			if (!temp2.type.spelling.equals("BOO")) {
+				System.out.println("visitExToBoo() => not the right variable type");
+			}
+		}
+
+		if (!exToBoo.doubleEquals.spelling.equals("==")) {
+			System.out.println("visitExToBoo() => wrong operator");
+		}
+
+		exToBoo.boo.visit(this, null);
 
 		return null;
 	}
 
+	@Override
 	public Object visitExToValue(ExToValue exToValue, Object arg) {
-		exToValue.name.visit( this, null );
-		exToValue.doubleEquals.visit( this, null );
-		exToValue.value.visit( this, null );
+		Declaration temp = idTable.retrieve(exToValue.name.spelling);
+
+		if (temp == null) {
+			System.out.println("exToValue() => variable does not exist");
+		} else {
+			if (!(temp instanceof DeInitialization)) {
+				System.out.println("exToValue() => not the right class type");
+			}
+			DeInitialization temp2 = (DeInitialization) temp;
+			if (!temp2.type.spelling.equals("NUMER")) {
+				System.out.println("exToValue() => not the right variable type");
+			}
+		}
+
+		if (!exToValue.doubleEquals.spelling.equals("==")) {
+			System.out.println("exToValue() => wrong operator");
+		}
+
+		exToValue.value.visit(this, null);
 
 		return null;
 	}
 
+	@Override
 	public Object visitExToVar(ExToVar exToVar, Object arg) {
-		exToVar.name.visit( this, null );
-		exToVar.doubleEquals.visit( this, null );
-		exToVar.variable.visit( this, null );
+		Declaration temp = idTable.retrieve(exToVar.name.spelling);
+		DeInitialization temp2 = null;
+
+		Declaration temp3 = idTable.retrieve(exToVar.variable.spelling);
+		DeInitialization temp4 = null;
+
+		if (temp == null) {
+			System.out.println("visitExToVar() => variable does not exist");
+		} else {
+			if (!(temp instanceof DeInitialization)) {
+				System.out.println("visitExToVar() => not the right class type");
+			}
+			temp2 = (DeInitialization) temp;
+		}
+
+		if (!exToVar.doubleEquals.spelling.equals("==")) {
+			System.out.println("visitExToVar() => wrong operator");
+		}
+
+		if (temp3 == null) {
+			System.out.println("visitExToVar() => variable does not exist");
+		} else {
+
+			temp4 = (DeInitialization) temp3;
+			if (temp2.type != temp4.type) {
+				System.out.println("visitExToVar() => variable type mismatch");
+			}
+			exToVar.variable.visit(this, null);
+		}
 
 		return null;
 	}
 
+	@Override
 	public Object visitIfStatement(IfStatement ifStatement, Object arg) {
-		ifStatement.expression.visit( this, null );
-		
-		for( Statement stmnt : ifStatement.statements )
-			stmnt.visit( this, null );
-		
+		ifStatement.expression.visit(this, null);
+
+		for (Statement stmnt : ifStatement.statements)
+			stmnt.visit(this, null);
+
 		return null;
 	}
 
-
+	@Override
 	public Object visitWhileStatement(WhileStatement whileStatement, Object arg) {
-		whileStatement.expression.visit( this, null );
-		
-		for( Statement stmnt : whileStatement.statements )
-			stmnt.visit( this, null );
-		
+		whileStatement.expression.visit(this, null);
+
+		for (Statement stmnt : whileStatement.statements)
+			stmnt.visit(this, null);
+
 		return null;
 	}
 
-	public Object visitOpDecleration(OpDecleration opDecleration, Object arg) {
-		opDecleration.identifier.visit( this, null );
-		opDecleration.operator.visit( this, null );
-		opDecleration.integerLiteral.visit( this, null );
-		return null;
-	}
-
-
-	//
-	//
-	//
-
-
-
-
-
-	public Object visitValueList(ValueList valueList, Object arg) {
-		for( IntegerLiteral integer : valueList.numbers )
-			integer.visit( this, null );
-
-		for( BooValue boo : valueList.booleans )
-			boo.visit( this, null );
-
-		//TODO JAN ADDS TO TYPE AND RETURNS TYPE?? - WTF
-		return null;
-	}
-
-
+	@Override
 	public Object visitDeclarationList(DeclarationList dl, Object arg) {
-
-		for( SubTypeIdentifier subTypeIdentifier : dl.declarationList )
-			subTypeIdentifier.visit( this, null );
-
 		return null;
 	}
 
+	@Override
 	public Object visitParameterList(ParameterList pl, Object arg) {
 
-		for( Identifier identifier : pl.list )
-			identifier.visit( this, null );
+		for (Object obj : pl.list) {
+			if (obj instanceof Identifier) {
+				Identifier temp = (Identifier) obj;
+				if (idTable.retrieve(temp.spelling) == null) {
+					System.out.println("visitParameterList() => variable not declared");
+				}
+			}
+		}
 
 		return null;
 	}
 
-	public Object visitOpDeclerationVarAndLiteral(OpDeclerationVarAndLiteral opDeclerationVarAndLiteral, Object arg) {
-		opDeclerationVarAndLiteral.name.visit( this, null );
-
-		for( SubOpIdentifier v : opDeclerationVarAndLiteral.variables )
-			v.visit( this, null );
-
-		for( SubOpIntegerLiteral v : opDeclerationVarAndLiteral.literals )
-			v.visit( this, null );
-
-		return null;
-	}
-
-
-
-
-	//
-	// DECLARATIONS
-	//
-
+	@Override
 	public Object visitDeMethod(DeMethod deMethod, Object arg) {
-		String id = (String) deMethod.name.visit( this, null );
-		deMethod.list.visit( this, null );
-		deMethod.statement.visit( this, null );
 
-		idTable.enter(id, deMethod);
+		idTable.enter(deMethod.name.spelling, deMethod);
+		idTable.openScope();
+
+		deMethod.list.visit(this, null);
+
+		for (Statement s : deMethod.statements) {
+			s.visit(this, null);
+		}
+
+		idTable.closeScope();
 
 		return null;
 	}
 
+	@Override
 	public Object visitDeInitialization(DeInitialization deInitialization, Object arg) {
-		deInitialization.type.visit( this, null );
-		String id = (String) deInitialization.name.visit( this, null );
-		deInitialization.equals.visit( this, null );
-		deInitialization.value.visit( this, null );
 
-		// TODO Example of declaration
+		boolean isRightHandSideVariableTypeEqualToLeftHandSideVariableTypeAndExists = checkInnerDeInitialization(
+				deInitialization);
+		if (isRightHandSideVariableTypeEqualToLeftHandSideVariableTypeAndExists) {
+
+			if (idTable.retrieve(deInitialization.name.spelling) == null) {
+				if (!deInitialization.equals.equals("=")) {
+					System.out.println("visitDeInitialization() => wrong operator");
+				}
+
+			} else {
+				System.out.println("visitDeInitialization() => The variable already exists");
+
+			}
+
+		}
+
+		String id = (String) deInitialization.name.visit(this, null);
+
 		idTable.enter(id, deInitialization);
 
 		return null;
 	}
 
+	private boolean checkInnerDeInitialization(DeInitialization deInitialization) {
+		if (deInitialization.type.spelling.equals("NUMBER")) {
+			if (deInitialization.value instanceof IntegerLiteral) {
+				return true;
+			} else if (deInitialization.value instanceof Identifier) {
+				Identifier identifier = (Identifier) deInitialization.value;
+				Declaration temp = idTable.retrieve(identifier.spelling);
+
+				if (temp == null) {
+					System.out.println("visitDeInitialization() => variable does not exist");
+				} else {
+					if (temp instanceof DeInitialization) {
+						DeInitialization temp2 = (DeInitialization) temp;
+						if (temp2.type.spelling.equals("NUMBER")) {
+							return true;
+						}
+					}
+				}
+				System.out.println("visitDeInitialization() => variable type mismatch");
+				return false;
+			}
+		} else if (deInitialization.type.spelling.equals("BOO")) {
+			if (deInitialization.value instanceof BooValue) {
+				return true;
+			} else if (deInitialization.value instanceof Identifier) {
+				Identifier identifier = (Identifier) deInitialization.value;
+				Declaration temp = idTable.retrieve(identifier.spelling);
+
+				if (temp == null) {
+					System.out.println("visitDeInitialization() => variable does not exist");
+				} else {
+					if (temp instanceof DeInitialization) {
+						DeInitialization temp2 = (DeInitialization) temp;
+						if (temp2.type.spelling.equals("BOO")) {
+							return true;
+						}
+					}
+				}
+				System.out.println("visitDeInitialization() => variable type mismatch");
+				return false;
+			}
+		}
+		return false;
+	}
+//**********************************************************************************************//
+	@Override
 	public Object visitDeArray(DeArray deArray, Object arg) {
 		deArray.type.visit(this, null);
+
 		String id = (String) deArray.name.visit(this, null);
 		deArray.parameterList.visit(this, null);
+
 		deArray.valueList.visit(this, null);
 
 		idTable.enter(id, deArray);
@@ -209,9 +293,10 @@ public class Checker implements Visitor
 		return null;
 	}
 
+	@Override
 	public Object visitDeVariable(DeVariable deVariable, Object arg) {
-		deVariable.type.visit( this, null );
-		String id = (String)  deVariable.name.visit( this, null );
+		deVariable.type.visit(this, null);
+		String id = (String) deVariable.name.visit(this, null);
 
 		idTable.enter(id, deVariable);
 
@@ -222,36 +307,40 @@ public class Checker implements Visitor
 	//
 	//
 
-
-
-
-	public Object visitIdentifier( Identifier i, Object arg ) {
+	@Override
+	public Object visitIdentifier(Identifier i, Object arg) {
 		return i.spelling;
 	}
 
-	public Object visitIntegerLiteral( IntegerLiteral i, Object arg ) {
+	@Override
+	public Object visitIntegerLiteral(IntegerLiteral i, Object arg) {
 		return i.spelling;
 	}
 
-	public Object visitOperator( Operator o, Object arg ) {
+	@Override
+	public Object visitOperator(Operator o, Object arg) {
 		return o.spelling;
 	}
 
+	@Override
 	public Object visitBooValue(BooValue booValue, Object arg) {
 		return booValue.spelling;
 	}
 
+	@Override
 	public Object visitBOO(BOO boo, Object arg) {
-	return boo.spelling;
+		return boo.spelling;
 	}
 
+	@Override
 	public Object visitNUMBER(NUMBER number, Object arg) {
 		return number.spelling;
 	}
 
+	@Override
 	public Object visitMethodCall(MethodCall methodCall, Object arg) {
-		methodCall.name.visit( this, null );
-		methodCall.list.visit( this, null );
+		methodCall.name.visit(this, null);
+		methodCall.list.visit(this, null);
 		return null;
 	}
 
@@ -270,6 +359,18 @@ public class Checker implements Visitor
 
 	@Override
 	public Object visitDeclaration(Declaration declaration, Object arg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visitOperationNumbers(OperationNumber operationNumbers, Object arg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visitOperationBoo(OperationBoo operationBoo, Object arg) {
 		// TODO Auto-generated method stub
 		return null;
 	}
