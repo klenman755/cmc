@@ -2,12 +2,9 @@ NUMBER y = 1;
 
 METHOD m1 (NUMBER x)
  y = y + x;
- m2(20)
+ m2(2)
 ENDMETHOD
 
 METHOD m2 (NUMBER x)
  y = y + x;
 ENDMETHOD
-
-m1 (10) ;
-m2 (10) ;

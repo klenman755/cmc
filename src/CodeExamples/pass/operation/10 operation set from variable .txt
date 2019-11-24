@@ -1,0 +1,4 @@
+NUMBER x;
+NUMBER y = 1;
+
+x = y;

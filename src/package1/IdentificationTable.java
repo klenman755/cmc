@@ -1,28 +1,16 @@
-/*
- * 02.10.2016 Minor edit
- * 29.10.2009 New package structure
- * 22.10.2006 Original version (based on Watt&Brown)
- */
- 
 package package1;
 
 import package1.AST.*;
-
 import java.util.Vector;
-
 
 public class IdentificationTable
 {
-	// TODO are we using this?
-
 	private Vector<IdEntry> table = new Vector<IdEntry>();
 	private int level = 0;
-	
-	
+
 	public IdentificationTable()
 	{
 	}
-	
 	
 	public void enter( String id, Declaration dec)
 	{
@@ -33,8 +21,7 @@ public class IdentificationTable
 		else
 			table.add( new IdEntry( level, id, dec) );
 	}
-	
-	
+
 	public Declaration retrieve( String id )
 	{
 		IdEntry entry = find( id );
@@ -45,12 +32,10 @@ public class IdentificationTable
 			return null;
 	}
 	
-	
 	public void openScope()
 	{
 		++level;
 	}
-	
 	
 	public void closeScope()
 	{
@@ -62,14 +47,19 @@ public class IdentificationTable
 		
 		level--;
 	}
-	
-	
+
 	private IdEntry find( String id )
 	{
 		for( int i = table.size() - 1; i >= 0; i-- )
 			if( table.get(i).name.equals( id ) )
 				return table.get(i);
-				
+
 		return null;
+	}
+
+	public void replace( String id, Declaration dec ) {
+		IdEntry old = find( id );
+		table.remove(old);
+		table.add( new IdEntry( level, id, dec) );
 	}
 }

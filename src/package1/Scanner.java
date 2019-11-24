@@ -63,7 +63,7 @@ public class Scanner {
 			while (isLetter(currentChar) || isDigit(currentChar)) {
 				takeIt();
 			}
-			if (currentSpelling.toString().equals("TRUE") || currentSpelling.toString().equals("false")) {
+			if (currentSpelling.toString().equals("TRUE") || currentSpelling.toString().equals("FALSE")) {
 				return TokenKind.BOO_VALUE;
 			}
 			if (currentSpelling.toString().equals("NUMBER") || currentSpelling.toString().equals("BOO")) {

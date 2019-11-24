@@ -13,6 +13,9 @@ package package1;
 
 
 
+import package1.AST.AST;
+import package1.AST.Program;
+
 import javax.swing.*;
 
 
@@ -25,22 +28,21 @@ public class TestDriverScanner
 
 	public static void main( String args[] )
 	{
-		JFileChooser fc = new JFileChooser( EXAMPLES_DIR );
+		JFileChooser fc = new JFileChooser( userDir );
 
 		if( fc.showOpenDialog( null ) == JFileChooser.APPROVE_OPTION ) {
 			SourceFile in = new SourceFile( fc.getSelectedFile().getAbsolutePath() );
 			Scanner s = new Scanner( in );
 			Parser p = new Parser(s);
 
-			System.out.println("------------ START PARSE PROGRAM ------------");
-			p.parseProgram();
+//			System.out.println("------------ START PARSE PROGRAM ------------");
+//			p.parseProgram();
 
-			
-			//Checker c = new Checker();
+			System.out.println("------------ START CHECK PROGRAM ------------");
+			Checker c = new Checker();
 
-			//AST ast = (AST) p.parseProgram();
-			//c.check( (Program) ast );
-			System.out.println("------------ END PARSE PROGRAM ------------");
+			AST ast = (AST) p.parseProgram();
+			c.check( (Program) ast );
 		}
 	}
 }

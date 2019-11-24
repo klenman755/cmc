@@ -17,6 +17,7 @@ public class OperationBoo extends Operation {
         this.operator = operator;
         this.boo = boo;
     }
+
     @Override
     public Object visit(Visitor v, Object arg) {
         return v.visitOperationBoo( this, arg );

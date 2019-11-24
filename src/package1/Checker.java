@@ -2,7 +2,7 @@ package package1;
 
 import package1.AST.*;
 import package1.AST.DECLARATIONS.DeArray;
-import package1.AST.DECLARATIONS.DeInitialization;
+import package1.AST.DECLARATIONS.DeVariable;
 import package1.AST.DECLARATIONS.DeMethod;
 import package1.AST.EVALUATION_BLOCKS.IfStatement;
 import package1.AST.EVALUATION_BLOCKS.WhileStatement;
@@ -15,8 +15,6 @@ import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
-import package1.AST.VALUE_LISTS.ValueListBooValue;
-import package1.AST.VALUE_LISTS.ValueListIntegerLiteralValue;
 
 public class Checker implements Visitor {
 	private IdentificationTable idTable = new IdentificationTable();
@@ -73,17 +71,20 @@ public class Checker implements Visitor {
 		if (temp == null) {
 			System.out.println("visitExToBoo() => variable does not exist");
 		} else {
-			if (!(temp instanceof DeInitialization)) {
-				System.out.println("visitExToBoo() => not the right class type");
+			if (!(temp instanceof DeVariable)) {
+				System.err.println("visitExToBoo() => not the right class type");
+				return null;
 			}
-			DeInitialization temp2 = (DeInitialization) temp;
+			DeVariable temp2 = (DeVariable) temp;
 			if (!temp2.type.spelling.equals("BOO")) {
-				System.out.println("visitExToBoo() => not the right variable type");
+				System.err.println("visitExToBoo() => not the right variable type");
+				return null;
 			}
 		}
 
 		if (!exToBoo.doubleEquals.spelling.equals("==")) {
-			System.out.println("visitExToBoo() => wrong operator");
+			System.err.println("visitExToBoo() => wrong operator");
+			return null;
 		}
 
 		exToBoo.boo.visit(this, null);
@@ -98,12 +99,13 @@ public class Checker implements Visitor {
 		if (temp == null) {
 			System.out.println("exToValue() => variable does not exist");
 		} else {
-			if (!(temp instanceof DeInitialization)) {
+			if ((temp instanceof DeVariable)) {
+				DeVariable temp2 = (DeVariable) temp;
+				if (!temp2.type.spelling.equals("NUMER")) {
+					System.out.println("exToValue() => not the right variable type");
+				}
+			} else {
 				System.out.println("exToValue() => not the right class type");
-			}
-			DeInitialization temp2 = (DeInitialization) temp;
-			if (!temp2.type.spelling.equals("NUMER")) {
-				System.out.println("exToValue() => not the right variable type");
 			}
 		}
 
@@ -119,18 +121,19 @@ public class Checker implements Visitor {
 	@Override
 	public Object visitExToVar(ExToVar exToVar, Object arg) {
 		Declaration temp = idTable.retrieve(exToVar.name.spelling);
-		DeInitialization temp2 = null;
+		DeVariable temp2 = null;
 
 		Declaration temp3 = idTable.retrieve(exToVar.variable.spelling);
-		DeInitialization temp4 = null;
+		DeVariable temp4 = null;
 
 		if (temp == null) {
 			System.out.println("visitExToVar() => variable does not exist");
 		} else {
-			if (!(temp instanceof DeInitialization)) {
+			if ((temp instanceof DeVariable)) {
+				temp2 = (DeVariable) temp;
+			} else {
 				System.out.println("visitExToVar() => not the right class type");
 			}
-			temp2 = (DeInitialization) temp;
 		}
 
 		if (!exToVar.doubleEquals.spelling.equals("==")) {
@@ -141,7 +144,7 @@ public class Checker implements Visitor {
 			System.out.println("visitExToVar() => variable does not exist");
 		} else {
 
-			temp4 = (DeInitialization) temp3;
+			temp4 = (DeVariable) temp3;
 			if (temp2.type != temp4.type) {
 				System.out.println("visitExToVar() => variable type mismatch");
 			}
@@ -187,7 +190,6 @@ public class Checker implements Visitor {
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -209,7 +211,7 @@ public class Checker implements Visitor {
 	}
 
 	@Override
-	public Object visitDeInitialization(DeInitialization deInitialization, Object arg) {
+	public Object visitDeInitialization(DeVariable deInitialization, Object arg) {
 
 		boolean isRightHandSideVariableTypeEqualToLeftHandSideVariableTypeAndExists = checkInnerDeInitialization(
 				deInitialization);
@@ -227,14 +229,14 @@ public class Checker implements Visitor {
 
 		}
 
-		String id = (String) deInitialization.name.visit(this, null);
+		String id = (String) deInitialization.name.spelling;
 
 		idTable.enter(id, deInitialization);
 
 		return null;
 	}
 
-	private boolean checkInnerDeInitialization(DeInitialization deInitialization) {
+	private boolean checkInnerDeInitialization(DeVariable deInitialization) {
 		if (deInitialization.type.spelling.equals("NUMBER")) {
 			if (deInitialization.value instanceof IntegerLiteral) {
 				return true;
@@ -245,8 +247,8 @@ public class Checker implements Visitor {
 				if (temp == null) {
 					System.out.println("visitDeInitialization() => variable does not exist");
 				} else {
-					if (temp instanceof DeInitialization) {
-						DeInitialization temp2 = (DeInitialization) temp;
+					if (temp instanceof DeVariable) {
+						DeVariable temp2 = (DeVariable) temp;
 						if (temp2.type.spelling.equals("NUMBER")) {
 							return true;
 						}
@@ -265,8 +267,8 @@ public class Checker implements Visitor {
 				if (temp == null) {
 					System.out.println("visitDeInitialization() => variable does not exist");
 				} else {
-					if (temp instanceof DeInitialization) {
-						DeInitialization temp2 = (DeInitialization) temp;
+					if (temp instanceof DeVariable) {
+						DeVariable temp2 = (DeVariable) temp;
 						if (temp2.type.spelling.equals("BOO")) {
 							return true;
 						}
@@ -278,37 +280,58 @@ public class Checker implements Visitor {
 		}
 		return false;
 	}
-//**********************************************************************************************//
+
 	@Override
 	public Object visitDeArray(DeArray deArray, Object arg) {
-		deArray.type.visit(this, null);
+		if(deArray.type.spelling.equals("NUMBER")) {
+			for(Object value : deArray.parameterList.list) {
+				if(value instanceof Identifier) {
+					Identifier v = (Identifier) value;
+					v.visit(this, null);
+				}
+				else if(value instanceof IntegerLiteral) {
+					IntegerLiteral v = (IntegerLiteral) value;
+					v.visit(this, null);
+				}
+				else if(value instanceof BooValue) {
+					System.err.println("visitDeArray() => type mismatch");
+					return null;
+				}
+			}
+		}
+		else if (deArray.type.spelling.equals("BOO")) {
+			for(Object value : deArray.parameterList.list) {
+				if(value instanceof Identifier) {
+					Identifier v = (Identifier) value;
+					v.visit(this, null);
+				}
+				else if(value instanceof IntegerLiteral) {
+					System.err.println("visitDeArray() => type mismatch");
+					return null;
+				}
+				else if(value instanceof BooValue) {
+					BooValue v = (BooValue) value;
+					v.visit(this, null);
+				}
+			}
+		}
 
-		String id = (String) deArray.name.visit(this, null);
-		deArray.parameterList.visit(this, null);
-
-		deArray.valueList.visit(this, null);
-
-		idTable.enter(id, deArray);
+		if(idTable.retrieve(deArray.name.spelling) == null) {
+			idTable.enter(deArray.name.spelling, deArray);
+		} else {
+			System.err.println("visitDeArray() => Variable name is already taken");
+		}
 
 		return null;
 	}
-
-	@Override
-	public Object visitDeVariable(DeVariable deVariable, Object arg) {
-		deVariable.type.visit(this, null);
-		String id = (String) deVariable.name.visit(this, null);
-
-		idTable.enter(id, deVariable);
-
-		return null;
-	}
-
-	//
-	//
-	//
 
 	@Override
 	public Object visitIdentifier(Identifier i, Object arg) {
+
+		if (idTable.retrieve(i.spelling) == null) {
+			System.out.println("visitIdentifier() => Identifier does not exist");
+		}
+
 		return i.spelling;
 	}
 
@@ -328,51 +351,156 @@ public class Checker implements Visitor {
 	}
 
 	@Override
-	public Object visitBOO(BOO boo, Object arg) {
-		return boo.spelling;
-	}
-
-	@Override
-	public Object visitNUMBER(NUMBER number, Object arg) {
-		return number.spelling;
-	}
-
-	@Override
 	public Object visitMethodCall(MethodCall methodCall, Object arg) {
-		methodCall.name.visit(this, null);
-		methodCall.list.visit(this, null);
-		return null;
-	}
+		Declaration method = idTable.retrieve(methodCall.name.spelling);
 
-	@Override
-	public Object visitValueListBooValue(ValueListBooValue valueListBooValue, Object arg) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		// method exists
+		if(method != null) {
+			// parameters match type and count
+			DeMethod methodDecleration = (DeMethod) method;
 
-	@Override
-	public Object visitValueListIntegerLiteralValue(ValueListIntegerLiteralValue valueListIntegerLiteralValue,
-			Object arg) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			int i = 0;
+			for(Object argument : methodCall.list.list) {
+				String varTypeSpelling = methodDecleration.list.variableTypeList.get(i).spelling;
 
-	@Override
-	public Object visitDeclaration(Declaration declaration, Object arg) {
-		// TODO Auto-generated method stub
-		return null;
+				if(varTypeSpelling.equals("NUMBER") && argument instanceof IntegerLiteral) {
+
+				}
+				else if (varTypeSpelling.equals("BOO") && argument instanceof BooValue) {
+
+				}
+				else {
+					System.err.println("visitMethodCall() => arguments does not match");
+				}
+
+				//TODO check out of bounds
+				i++;
+			}
+			return null;
+		} else {
+			System.err.println("visitMethodCall() => method not declared");
+			return null;
+		}
 	}
 
 	@Override
 	public Object visitOperationNumbers(OperationNumber operationNumbers, Object arg) {
-		// TODO Auto-generated method stub
+		// right hand side declared?
+		Declaration rhs = idTable.retrieve(operationNumbers.identifierOne.spelling);
+
+		if(rhs != null) {
+			if(operationNumbers.operators.get(0).spelling.equals("=")) {
+
+				DeVariable varRhs = (DeVariable) rhs;
+
+				if (varRhs.value instanceof IntegerLiteral) {
+					// can do operations
+					int i = 1;
+					// every value has to be integer literal or idendifier
+
+					for (Object obj : operationNumbers.values) {
+						if ( isOperator(operationNumbers.operators.get(i))) {
+
+							if (obj instanceof Identifier) {
+
+								// check if this idetifier exists and is the same variable type
+								Identifier identifier = (Identifier) obj;
+								Declaration lhs = idTable.retrieve(identifier.spelling);
+								if (lhs != null) {
+									DeVariable varLhs = (DeVariable) lhs;
+									if (varLhs.value instanceof IntegerLiteral) {
+										// do OPERATIONS
+									} else {
+										System.err.println("visitOperationNumbers() => LHS varibale type mismatch - " + identifier.spelling);
+										return null;
+									}
+								} else {
+									System.err.println("visitOperationNumbers() => LHS varibale does not exist - " + identifier.spelling);
+									return null;
+								}
+
+								return null;
+							}
+							else if (obj instanceof IntegerLiteral) {
+
+								// DO CALCULATION?
+
+							} else {
+								System.err.println("visitOperationNumbers() => Not correct variable type used on LHS");
+								return null;
+							}
+
+						} else {
+							System.err.println("visitOperationNumbers() => Not correct operator used on LHS");
+							return null;
+						}
+
+						i++;
+					}
+				} else {
+					System.err.println("visitOperationNumbers() => RHS type not NUMBER, parser error");
+					return null;
+				}
+			} else {
+				System.err.println("visitOperationNumbers() => first operator not '=' ");
+				return null;
+			}
+		} else {
+			System.err.println("visitOperationNumbers() => RHS not declared");
+			return null;
+		}
+
 		return null;
+	}
+
+	private boolean isOperator(Operator operator) {
+		if (operator.spelling.equals("+")) {
+			return true;
+		}
+		else if (operator.spelling.equals("-")) {
+			return true;
+		}
+		else if (operator.spelling.equals("/")) {
+			return true;
+		}
+		else if (operator.spelling.equals("*")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public Object visitOperationBoo(OperationBoo operationBoo, Object arg) {
-		// TODO Auto-generated method stub
+		Declaration rhs = idTable.retrieve(operationBoo.identifier.spelling);
+
+		if(rhs != null) {
+			if(operationBoo.operator.spelling.equals("=")) {
+				DeVariable varRhs = (DeVariable) rhs;
+
+				if (varRhs.value instanceof BooValue) {
+
+					idTable.replace(
+							operationBoo.identifier.spelling,
+							new DeVariable(
+									new VariableType("BOO"),
+									new Identifier(operationBoo.identifier.spelling),
+									new Operator("="),
+									operationBoo.boo
+							)
+					);
+
+				} else {
+					System.err.println("visitOperationNumbers() => booleans can only be reassigned");
+				}
+			} else {
+				System.err.println("visitOperationNumbers() => first operator not '=' ");
+				return null;
+			}
+		} else {
+			System.err.println("visitOperationNumbers() => RHS not declared");
+			return null;
+		}
 		return null;
 	}
-
 }

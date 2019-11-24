@@ -8,13 +8,13 @@ import package1.AST.Visitor;
 
 
 //TODO checker needs to check instance of value
-public class DeInitialization extends Declaration {
+public class DeVariable extends Declaration {
     public VariableType type;
     public Identifier name;
     public Operator equals;
     public Object value;
 
-    public DeInitialization(VariableType type, Identifier name, Operator equals, Object value) {
+    public DeVariable(VariableType type, Identifier name, Operator equals, Object value) {
         this.type = type;
         this.name = name;
         this.equals = equals;

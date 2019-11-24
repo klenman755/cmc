@@ -8,7 +8,7 @@ block               declaration
 declaration         VARIABLE_TYPE IDENTIFIER OPERATOR [INTEGER_LITERAL | BOO_VALUE | IDENTIFIER];                   NUMBER x = 1;
                     VARIABLE_TYPE IDENTIFIER ;                                                						NUMBER x;
                     METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statement* ENDMETHOD
-                    ARRAY VARIABLE_TYPE IDENTIFIER [ valueList | parameterList ] ENDARRAY
+                    ARRAY VARIABLE_TYPE IDENTIFIER [ parameterList ] ENDARRAY
 
 
 statement           operation
@@ -31,9 +31,6 @@ parameterList       IDENTIFIER | INTEGER_LITERAL | BOO_VALUE  [, IDENTIFIER | IN
 
 declarationList     VARIABLE_TYPE IDENTIFIER [, VARIABLE_TYPE IDENTIFIER]*
                     e
-
-valueList           INTEGER_LITERAL [ ,INTEGER_LITERAL ] *
-                    BOO_VALUE [ ,BOO_VALUE ] *
 
 expression          IDENTIFIER OPERATOR IDENTIFIER
                     IDENTIFIER OPERATOR INTEGER_LITERAL

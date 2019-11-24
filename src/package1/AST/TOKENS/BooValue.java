@@ -5,7 +5,7 @@ import package1.AST.Visitor;
 
 public class BooValue extends Terminal {
 
-    public BooValue(String spelling ) {
+    public BooValue(String spelling) {
         this.spelling = spelling;
     }
 

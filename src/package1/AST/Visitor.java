@@ -1,14 +1,7 @@
-/*
- * 27.09.2016 Minor edit
- * 29.10.2009 New package structure
- * 22.10.2006 Original version (based in Watt&Brown)
- */
- 
 package package1.AST;
 
-
 import package1.AST.DECLARATIONS.DeArray;
-import package1.AST.DECLARATIONS.DeInitialization;
+import package1.AST.DECLARATIONS.DeVariable;
 import package1.AST.DECLARATIONS.DeMethod;
 import package1.AST.EVALUATION_BLOCKS.IfStatement;
 import package1.AST.EVALUATION_BLOCKS.WhileStatement;
@@ -20,8 +13,6 @@ import package1.AST.TOKENS.BooValue;
 import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.IntegerLiteral;
 import package1.AST.TOKENS.Operator;
-import package1.AST.VALUE_LISTS.ValueListBooValue;
-import package1.AST.VALUE_LISTS.ValueListIntegerLiteralValue;
 
 public interface Visitor
 {
@@ -41,7 +32,7 @@ public interface Visitor
 
 	public Object visitDeMethod(DeMethod deMethod, Object arg);
 
-	public Object visitDeInitialization(DeInitialization deInitialization, Object arg);
+	public Object visitDeInitialization(DeVariable deInitialization, Object arg);
 
 	public Object visitExToBoo(ExToBoo exToBoo, Object arg);
 
@@ -63,15 +54,7 @@ public interface Visitor
 
 	public Object visitMethodCall(MethodCall methodCall, Object arg);
 
-	public Object visitValueListBooValue(ValueListBooValue valueListBooValue, Object arg);
-
-	public Object visitValueListIntegerLiteralValue(ValueListIntegerLiteralValue valueListIntegerLiteralValue,
-			Object arg);
-
-	public Object visitDeclaration(Declaration declaration, Object arg);
-
 	public Object visitOperationNumbers(OperationNumber operationNumbers, Object arg);
 
 	public Object visitOperationBoo(OperationBoo operationBoo, Object arg);
-
 }
