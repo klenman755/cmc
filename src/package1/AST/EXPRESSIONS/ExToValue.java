@@ -18,7 +18,7 @@ public class ExToValue extends Expression {
         this.value = value;
     }
 
-    public Object visit(Visitor v, Object arg) {
+    public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitExToValue( this, arg );
     }
 }

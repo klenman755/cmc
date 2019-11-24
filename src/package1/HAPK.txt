@@ -89,5 +89,5 @@ statements
 ARRAY NUMBER name
    1,
    1,
-   x,
+   x
 ENDARRAY

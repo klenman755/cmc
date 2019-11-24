@@ -18,7 +18,7 @@ public class ExToBoo extends Expression {
         this.boo = boo;
     }
 
-    public Object visit(Visitor v, Object arg) {
+    public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitExToBoo( this, arg );
     }
 }

@@ -1,6 +1,11 @@
 package package1;
 
 import package1.AST.*;
+import package1.AST.DECLARATIONS.DeVariable;
+import package1.AST.TOKENS.BooValue;
+import package1.AST.TOKENS.IntegerLiteral;
+
+import java.util.Objects;
 import java.util.Vector;
 
 public class IdentificationTable
@@ -57,9 +62,13 @@ public class IdentificationTable
 		return null;
 	}
 
-	public void replace( String id, Declaration dec ) {
-		IdEntry old = find( id );
-		table.remove(old);
-		table.add( new IdEntry( level, id, dec) );
+	// TODO refctor?
+	public void replaceNumberValue( String id, String value ) {
+		((IntegerLiteral)((DeVariable) Objects.requireNonNull(find(id)).declaration).value).spelling = value;
+	}
+
+	// TODO refctor?
+	public void replaceBooValue( String id, String value ) {
+		((BooValue)((DeVariable) Objects.requireNonNull(find(id)).declaration).value).spelling = value;
 	}
 }

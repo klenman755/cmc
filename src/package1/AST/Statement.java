@@ -17,7 +17,7 @@ public class Statement extends AST {
 		this.evaluationBlock = evaluationBlock;
 	}
 
-	public Object visit(Visitor v, Object arg) {
+	 public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitStatement( this, arg );
     }
 }

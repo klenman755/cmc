@@ -10,8 +10,7 @@ public class Identifier extends Terminal {
         this.spelling = spelling;
     }
 
-    public Object visit( Visitor v, Object arg )
-    {
+    public Object visit( Visitor v, Object arg ) throws Exception {
         return v.visitIdentifier( this, arg );
     }
 }

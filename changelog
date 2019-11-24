@@ -20,3 +20,5 @@ class
         ENDARRAY
 
     2. Refactored parameterList parese method in parser.
+    3. Parser can throw exception
+    4. Checker also should throw.

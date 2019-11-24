@@ -9,7 +9,7 @@ public class Operator extends Terminal {
         this.spelling = spelling;
     }
 
-    public Object visit(Visitor v, Object arg) {
+     public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitOperator(this, arg);
     }
 }

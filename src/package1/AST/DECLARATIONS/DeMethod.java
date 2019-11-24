@@ -19,7 +19,7 @@ public class DeMethod extends Declaration {
         this.statements = statements;
     }
 
-    public Object visit(Visitor v, Object arg) {
+    public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitDeMethod( this, arg );
     }
 }

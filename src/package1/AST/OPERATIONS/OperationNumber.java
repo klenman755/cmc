@@ -24,7 +24,7 @@ public class OperationNumber extends Operation {
         this.values = values;
     }
     @Override
-    public Object visit(Visitor v, Object arg) {
+     public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitOperationNumbers( this, arg );
     }
 }

@@ -19,7 +19,7 @@ public class OperationBoo extends Operation {
     }
 
     @Override
-    public Object visit(Visitor v, Object arg) {
+     public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitOperationBoo( this, arg );
     }
 }

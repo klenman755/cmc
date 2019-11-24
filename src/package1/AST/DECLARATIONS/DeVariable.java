@@ -6,22 +6,20 @@ import package1.AST.TOKENS.Identifier;
 import package1.AST.TOKENS.Operator;
 import package1.AST.Visitor;
 
-
-//TODO checker needs to check instance of value
 public class DeVariable extends Declaration {
     public VariableType type;
     public Identifier name;
-    public Operator equals;
+    public Operator equalsSign;
     public Object value;
 
-    public DeVariable(VariableType type, Identifier name, Operator equals, Object value) {
+    public DeVariable(VariableType type, Identifier name, Operator equalsSign, Object value) {
         this.type = type;
         this.name = name;
-        this.equals = equals;
+        this.equalsSign = equalsSign;
         this.value = value;
     }
 
-    public Object visit(Visitor v, Object arg) {
+     public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitDeInitialization( this, arg );
     }
 }

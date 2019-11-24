@@ -14,7 +14,7 @@ public class DeArray extends Declaration {
         this.parameterList = parameterList;
     }
 
-    public Object visit(Visitor v, Object arg) {
+     public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitDeArray( this, arg );
     }
 }

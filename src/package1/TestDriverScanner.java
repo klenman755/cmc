@@ -26,8 +26,7 @@ public class TestDriverScanner
 
 	private static final String userDir = System.getProperty("user.home") + HARRY_DIR;
 
-	public static void main( String args[] )
-	{
+	public static void main( String args[] ) throws Exception {
 		JFileChooser fc = new JFileChooser( userDir );
 
 		if( fc.showOpenDialog( null ) == JFileChooser.APPROVE_OPTION ) {
@@ -35,10 +34,8 @@ public class TestDriverScanner
 			Scanner s = new Scanner( in );
 			Parser p = new Parser(s);
 
-//			System.out.println("------------ START PARSE PROGRAM ------------");
 //			p.parseProgram();
 
-			System.out.println("------------ START CHECK PROGRAM ------------");
 			Checker c = new Checker();
 
 			AST ast = (AST) p.parseProgram();

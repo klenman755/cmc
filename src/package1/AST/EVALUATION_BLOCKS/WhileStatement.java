@@ -16,7 +16,7 @@ public class WhileStatement extends EvaluationBlock {
         this.statements = statements;
     }
 
-    public Object visit(Visitor v, Object arg) {
+     public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitWhileStatement( this, arg );
     }
 }

@@ -11,10 +11,7 @@ import package1.AST.EXPRESSIONS.ExToValue;
 import package1.AST.EXPRESSIONS.ExToVar;
 import package1.AST.OPERATIONS.OperationNumber;
 import package1.AST.OPERATIONS.OperationBoo;
-import package1.AST.TOKENS.BooValue;
-import package1.AST.TOKENS.Identifier;
-import package1.AST.TOKENS.IntegerLiteral;
-import package1.AST.TOKENS.Operator;
+import package1.AST.TOKENS.*;
 
 import java.util.Vector;
 
@@ -29,7 +26,8 @@ public class Parser {
 		this.scan = scan;
 	}
 
-	Object parseProgram() {
+	Object parseProgram() throws Exception {
+		System.out.println("\n------------ PARSE ------------");
 		currentTerminal = scan.scan();
 		Vector<Block> blocks = new Vector<>();
 		
@@ -38,11 +36,11 @@ public class Parser {
 			blocks.add(parseBlock());
 			
 		} 
-		System.out.println("\n\n\n------------ FINITO ------------");
+		System.out.println("\n\n\n------------ PARSE FINITO ------------");
 		return new Program(blocks);
 	}
 
-	private Block parseBlock() {
+	private Block parseBlock() throws Exception {
 		System.out.println("\n-- BLOCK --");
 		switch (currentTerminal.kind) {
 		case VARIABLE_TYPE:
@@ -59,7 +57,7 @@ public class Parser {
 		}
 	}
 
-	private Statement parseStatement() {
+	private Statement parseStatement() throws Exception {
 		indent = "  ";
 		System.out.println("\n" + indent + "-- STATEMNET --");
 
@@ -88,7 +86,7 @@ public class Parser {
 		}
 	}
 
-	private Vector<Statement> parseStatements() {
+	private Vector<Statement> parseStatements() throws Exception {
 		indent = "  ";
 		System.out.println("\n" + indent + "-- STATEMNETS --");
 
@@ -100,7 +98,7 @@ public class Parser {
 		return statementVector;
 	}
 
-	private Operation parseOpertion(Identifier placeholder) {
+	private Operation parseOpertion(Identifier placeholder) throws Exception {
 		indent = "  ";
 		System.out.println("\n" + indent + "-- OPERATION --");
 		Vector<Operator> operators = new Vector<>();
@@ -109,8 +107,6 @@ public class Parser {
 		operators.add(new Operator(currentTerminal.spelling));
 		//accepting "="
 		accept(TokenKind.OPERATOR);
-
-		Object xx = currentTerminal.kind;
 
 		switch (currentTerminal.kind) {
 			case BOO_VALUE:
@@ -164,7 +160,7 @@ public class Parser {
 		}
 	}
 
-	private EvaluationBlock parseEvaluationBlock() {
+	private EvaluationBlock parseEvaluationBlock() throws Exception {
 		indent = "    ";
 		System.out.println("\n" + indent + "-- EVALUATION --");
 		switch (currentTerminal.kind) {
@@ -188,7 +184,7 @@ public class Parser {
 		}
 	}
 
-	private Expression parseExpression() {
+	private Expression parseExpression() throws Exception {
 		indent = "    ";
 		System.out.println("\n" + indent + "-- EXPRESSION --");
 
@@ -241,7 +237,7 @@ public class Parser {
 	}
 
 //we start from start bracket because identifier was already accepted
-	private MethodCall parseMethodCallsFromStartBracket(Identifier placeholder) {
+	private MethodCall parseMethodCallsFromStartBracket(Identifier placeholder) throws Exception {
 		indent = "    ";
 		System.out.println("\n" + indent + "-- METHOD CALLS ( --");
 		accept(TokenKind.START_BRACKET);
@@ -251,7 +247,7 @@ public class Parser {
 		return new MethodCall(placeholder, parameters);
 	}
 
-	private ParameterList parseParameterList() {
+	private ParameterList parseParameterList() throws Exception {
 		ParameterList parameters = new ParameterList();
 		System.out.println("\n-- PARAMETER LIST --");
 		switch (currentTerminal.kind) {
@@ -260,11 +256,13 @@ public class Parser {
 		case IDENTIFIER:
 		case INTEGER_LITERAL:
 		case BOO_VALUE:
+			parameters.list.add(mapAndReturnObject());
+			accept(currentTerminal.kind);
 			while (currentTerminal.kind != TokenKind.END_BRACKET) {
 				while (currentTerminal.kind != TokenKind.END_ARRAY) {
+					accept(TokenKind.COMMA);
 					parameters.list.add(mapAndReturnObject());
 					accept(currentTerminal.kind);
-					accept(TokenKind.COMMA);
 				}
 			}
 			return parameters;
@@ -275,7 +273,7 @@ public class Parser {
 
 	}
 
-	private Declaration parseInitialization() {
+	private Declaration parseInitialization() throws Exception {
 		indent = "      ";
 		System.out.println("\n" + indent + "-- INITIALIZATION --");
 		VariableType variableType = new VariableType(currentTerminal.spelling);
@@ -316,7 +314,7 @@ public class Parser {
 		}
 	}
 
-	private Declaration parseDeclarations() {
+	private Declaration parseDeclarations() throws Exception {
 		indent = "  ";
 		System.out.println("\n" + indent + "-- DECLARATION --");
 				switch (currentTerminal.kind) {
@@ -350,7 +348,7 @@ public class Parser {
 		}
 	}
 
-	private Declaration parseArrayValues(VariableType variableType, Identifier arrayIdentifier) {
+	private Declaration parseArrayValues(VariableType variableType, Identifier arrayIdentifier) throws Exception {
 		indent = "      ";
 		System.out.println("\n" + indent + "-- ARRAY --");
 		ParameterList parameterList = new ParameterList();
@@ -372,7 +370,7 @@ public class Parser {
 		return new DeArray(variableType, arrayIdentifier, parameterList);
 	}
 
-	private Object mapAndReturnObject() {
+	private Object mapAndReturnObject() throws Exception {
 		if (currentTerminal.kind == TokenKind.IDENTIFIER) {
 			return new Identifier(currentTerminal.spelling);
 		} else if (currentTerminal.kind == TokenKind.INTEGER_LITERAL) {
@@ -384,7 +382,7 @@ public class Parser {
 	}
 
 	//when creating method
-	private DeclarationList parseDeclarationList() {
+	private DeclarationList parseDeclarationList() throws Exception {
 		indent = "        ";
 		System.out.println("\n" + indent + "-- DECLARATION LIST --");
 		
@@ -418,13 +416,14 @@ public class Parser {
 		}
 	}
 
-	private void accept(TokenKind expected) {
+	private void accept(TokenKind expected) throws Exception {
 		if (currentTerminal.kind == expected) {
 			System.out.print(indent + currentTerminal.spelling + " ");
 			indent = "";
 			currentTerminal = scan.scan();
 		} else {
-			System.err.println("Expected token of kind " + expected);
+			System.out.print(indent + "\n\n\n");
+			throw new Exception("Expected token of kind " + expected + ", but got " + currentTerminal.kind + " ( " + currentTerminal.spelling + " ) ");
 		}
 	}
 }

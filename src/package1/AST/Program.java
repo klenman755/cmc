@@ -10,7 +10,7 @@ public class Program extends AST {
 		this.blocks = blocks;
 	}
 
-	public Object visit( Visitor v, Object arg )
+	public Object visit( Visitor v, Object arg ) throws Exception
 	{
 		return v.visitProgram( this, arg );
 	}

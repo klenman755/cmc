@@ -14,7 +14,7 @@ public class IfStatement extends EvaluationBlock {
         this.statements = statements;
     }
 
-    public Object visit(Visitor v, Object arg) {
+     public Object visit(Visitor v, Object arg) throws Exception {
         return v.visitIfStatement( this, arg );
     }
 }
