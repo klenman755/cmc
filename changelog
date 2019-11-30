@@ -16,7 +16,7 @@ class
         ARRAY NUMBER name
            1,
            y,
-           x,
+           x
         ENDARRAY
 
     2. Refactored parameterList parese method in parser.
