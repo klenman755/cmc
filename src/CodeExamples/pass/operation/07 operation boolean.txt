@@ -1,0 +1,3 @@
+BOO x = TRUE;
+
+x = FALSE;

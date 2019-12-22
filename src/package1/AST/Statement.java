@@ -1,16 +1,23 @@
 package package1.AST;
 
-import package1.AST.TOKENS.Operator;
-
 public class Statement extends AST {
-    Operation operation;
-    MethodCall methodCall;
-
+    public Operation operation;
+    public MethodCall methodCall;
+    public EvaluationBlock evaluationBlock;
+    
     public Statement(Operation operation) {
-        this.operation = operation;
-    }
+		this.operation = operation;
+	}
 
-    public Statement(MethodCall methodCall) {
-        this.methodCall = methodCall;
+	public Statement(MethodCall methodCall) {
+		this.methodCall = methodCall;
+	}
+
+	public Statement(EvaluationBlock evaluationBlock) {
+		this.evaluationBlock = evaluationBlock;
+	}
+
+	 public Object visit(Visitor v, Object arg) throws Exception {
+        return v.visitStatement( this, arg );
     }
 }

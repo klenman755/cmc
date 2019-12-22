@@ -1,4 +1,5 @@
 package package1.AST;
 
-public class Declaration extends AST {
+public abstract class Declaration extends AST {
+
 }

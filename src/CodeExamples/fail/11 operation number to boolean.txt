@@ -1,0 +1,4 @@
+NUMBER x;
+
+x = TRUE;
+

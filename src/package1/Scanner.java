@@ -7,7 +7,8 @@
  */
 
 package package1;
-//TODO add support for scanning boo
+
+
 public class Scanner {
 	private SourceFile source;
 
@@ -37,11 +38,14 @@ public class Scanner {
 		switch (currentChar) {
 		case '_':
 			takeIt();
-			while (currentChar != SourceFile.EOL && currentChar != SourceFile.EOT)
+			while (currentChar != SourceFile.EOL && currentChar != SourceFile.EOT) {
 				takeIt();
+			}
 
-			if (currentChar == SourceFile.EOL)
+			if (currentChar == SourceFile.EOL) {
 				takeIt();
+			}
+
 			break;
 
 		case ' ':
@@ -56,19 +60,24 @@ public class Scanner {
 	private TokenKind scanToken() {
 		if (isLetter(currentChar)) {
 			takeIt();
-			while (isLetter(currentChar) || isDigit(currentChar))
+			while (isLetter(currentChar) || isDigit(currentChar)) {
 				takeIt();
-
-			return TokenKind.IDENTIFIER;
-
+			}
+			if (currentSpelling.toString().equals("TRUE") || currentSpelling.toString().equals("FALSE")) {
+				return TokenKind.BOO_VALUE;
+			}
+			if (currentSpelling.toString().equals("NUMBER") || currentSpelling.toString().equals("BOO")) {
+				return TokenKind.VARIABLE_TYPE;
+			}else {
+				return TokenKind.IDENTIFIER;
+			}
 		} else if (isDigit(currentChar)) {
 			takeIt();
 			while (isDigit(currentChar))
 				takeIt();
-
 			return TokenKind.INTEGER_LITERAL;
-
 		}
+
 		switch (currentChar) {
 		case '+':
 		case '-':
@@ -124,6 +133,7 @@ public class Scanner {
 				|| currentChar == ' ') {
 			scanSeparator();
 		}
+
 		currentSpelling = new StringBuffer("");
 		TokenKind kind = scanToken();
 

@@ -1,41 +1,43 @@
-/*
- * 23.08.2019 TokenKind enum introduced
- * 13.08.2018 Example path change
- * 16.08.2016 IScanner gone, minor editing
- * 21.09.2012 Examples Directory Changed
- * 20.09.2010 IScanner
- * 25.09.2009 New package structure
- * 21.09.2007 File Chooser
- * 22.09.2006 Original version
- */
- 
 package package1;
 
+import package1.AST.AST;
+import package1.AST.Program;
 
 import javax.swing.*;
 
- 
+
 public class TestDriverScanner
 {
-	private static final String EXAMPLES_DIR = "C:\\daddy\\";
-	
-	
-	public static void main( String args[] )
-	{
-		JFileChooser fc = new JFileChooser( EXAMPLES_DIR );
-		
+	private static final String EXAMPLES_DIR = "C:\\Users\\monomalo\\Documents\\GitHub\\cmc\\src\\CodeExamples";
+	private static final String HARRY_DIR = "/_repo/intellij/cmc/src/CodeExamples/";
+
+	private static final String userDir = System.getProperty("user.home") + HARRY_DIR;
+
+	public static void main( String args[] ) throws Exception {
+		JFileChooser fc = new JFileChooser( userDir );
+
 		if( fc.showOpenDialog( null ) == JFileChooser.APPROVE_OPTION ) {
+			String sourceName = fc.getSelectedFile().getAbsolutePath();
 			SourceFile in = new SourceFile( fc.getSelectedFile().getAbsolutePath() );
 			Scanner s = new Scanner( in );
 			Parser p = new Parser(s);
-			p.parseProgram();
-		
-		/**	Token t = s.scan();
-			while( t.kind != TokenKind.EOT ) {
-				System.out.println( t.kind + " " + t.spelling );
-			
-				t = s.scan();
-			}*/
+
+//			p.parseProgram();
+
+			Checker c = new Checker();
+			Encoder e = new Encoder();
+
+			Program program = (Program) p.parseProgram();
+			c.check( program );
+			e.encode( program );
+
+			String targetName;
+			if( sourceName.endsWith( ".txt" ) )
+				targetName = sourceName.substring( 0, sourceName.length() - 4 ) + ".tam";
+			else
+				targetName = sourceName + ".tam";
+
+			e.saveTargetProgram( targetName );
 		}
 	}
 }

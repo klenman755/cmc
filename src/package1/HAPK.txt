@@ -1,20 +1,20 @@
-NUMBER x = 1
-BOO isOK
+NUMBER x = 1;
+BOO isOK;
 
 METHOD addSum (NUMBER y, NUMBER z // DECLARATIONLIST)
-    y + z /// STATEMENT
+    y + z; /// STATEMENT
 ENDMETHOD
 
 METHOD m1 (NUMBER y)
-     y = y + 1
+     y = y + 1;
 ENDMETHOD
 
 METHOD m2 (NUMBER y)
-     y = 10
+     y = 10;
 ENDMETHOD
 
 METHOD m3 (NUMBER y)
-     m2(y PARAMETERLIST)
+     m2(y PARAMETERLIST);
 ENDMETHOD
 
 METHOD m4 (NUMBER y)
@@ -28,7 +28,6 @@ METHOD m4 (NUMBER y)
            /// STATEMENT
      ENDWHILE
 ENDMETHOD
-
 
 
 BLOCKS
@@ -86,3 +85,9 @@ statements
     NUMBER x, NUMBER y, ...
     NUMBER x
 
+
+ARRAY NUMBER name
+   1,
+   1,
+   x
+ENDARRAY

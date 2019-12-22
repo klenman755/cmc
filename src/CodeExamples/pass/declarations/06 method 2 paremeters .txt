@@ -1,0 +1,5 @@
+NUMBER y = 1;
+
+METHOD m1 (NUMBER x, NUMBER z)
+ y = y + z + x;
+ENDMETHOD

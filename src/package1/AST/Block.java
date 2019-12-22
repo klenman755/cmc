@@ -4,12 +4,19 @@ public class Block extends AST
 {
 	public Declaration decs;
 	public Statement stats;
-	public MethodCall methodCalls;
 
-	public Block(Declaration decs, Statement stats, MethodCall methodCalls )
-	{
+
+	public Block(Declaration decs) {
 		this.decs = decs;
+	}
+
+
+	public Block(Statement stats) {
 		this.stats = stats;
-		this.methodCalls = methodCalls;
+	}
+
+
+	public Object visit( Visitor v, Object arg ) throws Exception {
+		return v.visitBlock( this, arg );
 	}
 }

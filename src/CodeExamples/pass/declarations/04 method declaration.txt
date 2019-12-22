@@ -1,0 +1,5 @@
+NUMBER y = 1;
+
+METHOD addXtoY (NUMBER x)
+    y = y + x;
+ENDMETHOD

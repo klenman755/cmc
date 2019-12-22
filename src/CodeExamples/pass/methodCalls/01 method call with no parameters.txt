@@ -1,0 +1,7 @@
+NUMBER y = 0;
+
+METHOD m1 ()
+    y = 1;
+ENDMETHOD
+
+m1();

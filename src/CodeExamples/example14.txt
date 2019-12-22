@@ -1,3 +1,0 @@
-ARRAY NUMBER numbers
-1,2,3
-ENDARRAY

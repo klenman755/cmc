@@ -1,4 +1,5 @@
 package package1.AST;
 
-public class Expression extends AST {
+public abstract class Expression extends AST {
+
 }

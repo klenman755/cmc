@@ -1,0 +1,24 @@
+12.11.
+peter
+-added support for boolean types
+PARSER
+-parseExpression => expressions are evaluated (identifier operator identifier/integer_literal/boo_value) / (integer_literal operator identifier/integer_literal) 
+							/(boo_value operator identifier/boo_value)
+-parseEvaluationBlock => we agreed that we have no else
+
+13.11.
+class
+
+24.11 HARRY
+    1. Removed ValueList - as we can use parameter list and check in checker what is inside
+       this also allows: (mixed values, identifiers with VALUE)
+
+        ARRAY NUMBER name
+           1,
+           y,
+           x
+        ENDARRAY
+
+    2. Refactored parameterList parese method in parser.
+    3. Parser can throw exception
+    4. Checker also should throw.

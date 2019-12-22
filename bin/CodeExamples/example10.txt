@@ -1,3 +1,0 @@
-IF x == 1 THEN
-    x = 2;
-ENDIF
