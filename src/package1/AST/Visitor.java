@@ -18,17 +18,17 @@ public interface Visitor
 {
 	public Object visitBlock(Block b, Object arg) throws Exception;
 
-	public Object visitDeclarationList( DeclarationList dl, Object arg);
+	public Object visitDeclarationList( DeclarationList dl, Object arg) throws Exception;
 
-	public Object visitParameterList(ParameterList pl, Object arg);
+	public Object visitParameterList(ParameterList pl, Object arg) throws Exception;
 
 	public Object visitStatement(Statement s, Object arg) throws Exception;
 
 	public Object visitIdentifier(Identifier i, Object arg) throws Exception;
 
-	public Object visitIntegerLiteral(IntegerLiteral i, Object arg);
+	public Object visitIntegerLiteral(IntegerLiteral i, Object arg) throws Exception;
 
-	public Object visitOperator(Operator o, Object arg);
+	public Object visitOperator(Operator o, Object arg) throws Exception;
 
 	public Object visitDeMethod(DeMethod deMethod, Object arg) throws Exception;
 
@@ -48,9 +48,9 @@ public interface Visitor
 
 	public Object visitDeArray(DeArray deArray, Object arg) throws Exception;
 
-	public Object visitBooValue(BooValue booValue, Object arg);
+	public Object visitBooValue(BooValue booValue, Object arg) throws Exception;
 
-	public Object visitVariableType(VariableType variableType, Object arg);
+	public Object visitVariableType(VariableType variableType, Object arg) throws Exception;
 
 	public Object visitMethodCall(MethodCall methodCall, Object arg) throws Exception;
 
