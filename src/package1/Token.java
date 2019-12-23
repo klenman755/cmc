@@ -93,6 +93,7 @@ public class Token {
 			TokenKind.END_IF,
 			TokenKind.THEN,
 			TokenKind.SAY,
+			TokenKind.INPUT,
 			TokenKind.ARRAY,
 			TokenKind.END_ARRAY,
 			TokenKind.VARIABLE_TYPE,

@@ -13,6 +13,9 @@ import package1.AST.OPERATIONS.OperationNumber;
 import package1.AST.OPERATIONS.OperationBoo;
 import package1.AST.TOKENS.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLOutput;
 import java.util.Vector;
 
@@ -305,6 +308,7 @@ public class Parser {
 	private Declaration parseInitialization() throws Exception {
 		indent = "      ";
 		System.out.println("\n" + indent + "-- INITIALIZATION --");
+
 		VariableType variableType = new VariableType(currentTerminal.spelling);
 		accept(currentTerminal.kind);
 		Identifier identifier = new Identifier(currentTerminal.spelling);
@@ -328,6 +332,9 @@ public class Parser {
 			} else if (currentTerminal.kind == TokenKind.BOO_VALUE) {
 				value = new BooValue(currentTerminal.spelling);
 
+			} else if (currentTerminal.kind == TokenKind.INPUT) {
+				value = parseInput(variableType);
+
 			} else {
 				System.err.println("parseInitialization() => unexpected expression");
 				return null;
@@ -339,6 +346,39 @@ public class Parser {
 			
 		default:
 			System.err.println("Error in statement");
+			return null;
+		}
+	}
+
+	private Object parseInput(VariableType variableType) {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		String input = "";
+
+		try {
+			input = reader.readLine();
+		} catch (IOException e) {
+			System.err.println("parseInput() => Could not read input");
+			return null;
+		}
+
+		if( variableType.spelling.equals("BOO") ) {
+			if (input.equals("TRUE") || input.equals("FALSE")) {
+				return new BooValue(input);
+			} else {
+				System.err.println("parseInput() => input not boolean: " + input);
+				return null;
+			}
+		}
+		else if( variableType.spelling.equals("NUMBER") ) {
+			try {
+				Integer.parseInt(input);
+				return new IntegerLiteral(input);
+			} catch (NumberFormatException e) {
+				System.err.println("parseInput() => input not number: " + input);
+				return null;
+			}
+		} else {
+			System.err.println("parseInput() => Error in parseInput - no such type");
 			return null;
 		}
 	}

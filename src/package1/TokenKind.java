@@ -23,6 +23,7 @@ public enum TokenKind {
 	THEN("THEN"),
 
 	SAY("SAY"),
+	INPUT("INPUT"),
 
 	ARRAY("ARRAY"),
 	END_ARRAY("ENDARRAY"),

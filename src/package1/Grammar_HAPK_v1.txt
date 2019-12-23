@@ -7,7 +7,7 @@ block               declaration
                     statement
 
 
-declaration         VARIABLE_TYPE IDENTIFIER OPERATOR [INTEGER_LITERAL | BOO_VALUE | IDENTIFIER];                   NUMBER x = 1;
+declaration         VARIABLE_TYPE IDENTIFIER OPERATOR [INTEGER_LITERAL | BOO_VALUE | IDENTIFIER | input ];                   NUMBER x = 1;
                     VARIABLE_TYPE IDENTIFIER ;                                                						NUMBER x;
                     METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statement* ENDMETHOD
                     ARRAY VARIABLE_TYPE IDENTIFIER [ parameterList ] ENDARRAY
@@ -18,6 +18,8 @@ statement           operation
 		            say
 
 say                 SAY IDENTIFIER;
+
+input               INPUT [ BOO_VALUE | INTEGER_LITERAL ];
 
 operation           IDENTIFIER OPERATOR IDENTIFIER ;                                  x=y;
                     IDENTIFIER OPERATOR INTEGER_LITERAL ;                             x=1;
