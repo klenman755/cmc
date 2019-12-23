@@ -84,8 +84,7 @@ public class Token {
 		return false;
 	}
 
-	private static final TokenKind[] KEYWORDS = { 
-
+	private static final TokenKind[] KEYWORDS = {
 			TokenKind.WHILE,
 			TokenKind.END_WHILE,
 			TokenKind.METHOD,
@@ -93,14 +92,12 @@ public class Token {
 			TokenKind.IF ,
 			TokenKind.END_IF,
 			TokenKind.THEN,
-
+			TokenKind.SAY,
 			TokenKind.ARRAY,
 			TokenKind.END_ARRAY,
 			TokenKind.VARIABLE_TYPE,
 			TokenKind.RETURN,
 			TokenKind.WRITE,
-
-
 	};
 	
 	

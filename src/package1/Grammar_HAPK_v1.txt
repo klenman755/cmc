@@ -15,6 +15,9 @@ declaration         VARIABLE_TYPE IDENTIFIER OPERATOR [INTEGER_LITERAL | BOO_VAL
 statement           operation
                     evaluationBlock
 		            methodCall
+		            say
+
+say                 SAY IDENTIFIER;
 
 operation           IDENTIFIER OPERATOR IDENTIFIER ;                                  x=y;
                     IDENTIFIER OPERATOR INTEGER_LITERAL ;                             x=1;

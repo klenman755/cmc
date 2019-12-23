@@ -58,4 +58,5 @@ public interface Visitor
 
 	public Object visitOperationBoo(OperationBoo operationBoo, Object arg) throws Exception;
 
+	public Object visitSay(Say say, Object arg) throws Exception;
 }

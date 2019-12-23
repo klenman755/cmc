@@ -22,15 +22,13 @@ public enum TokenKind {
 	END_IF("ENDIF"),
 	THEN("THEN"),
 
-	
+	SAY("SAY"),
+
 	ARRAY("ARRAY"),
 	END_ARRAY("ENDARRAY"),
-
 	
 	RETURN("RETURN"),
 	WRITE("WRITE"),
-
-	
 
 	COMMA(","),
 	SEMICOLON(";"),

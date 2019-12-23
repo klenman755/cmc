@@ -13,6 +13,7 @@ import package1.AST.OPERATIONS.OperationNumber;
 import package1.AST.OPERATIONS.OperationBoo;
 import package1.AST.TOKENS.*;
 
+import java.sql.SQLOutput;
 import java.util.Vector;
 
 public class Parser {
@@ -43,17 +44,18 @@ public class Parser {
 	private Block parseBlock() throws Exception {
 		System.out.println("\n-- BLOCK --");
 		switch (currentTerminal.kind) {
-		case VARIABLE_TYPE:
-		case METHOD:
-		case ARRAY:
-			return new Block(parseDeclarations());
-		case IDENTIFIER:
-		case IF:
-		case WHILE:
-			return new Block( parseStatement());
+			case VARIABLE_TYPE:
+			case METHOD:
+			case ARRAY:
+				return new Block( parseDeclarations() );
+			case IDENTIFIER:
+			case IF:
+			case WHILE:
+			case SAY:
+				return new Block( parseStatement() );
 
-		default:
-			return null;
+			default:
+				return null;
 		}
 	}
 
@@ -79,11 +81,38 @@ public class Parser {
 			case IF:
 			case WHILE:
 				 return new Statement(parseEvaluationBlock());
+			case SAY:
+				accept( TokenKind.SAY );
+				Say say = parseSay();
+				accept( TokenKind.SEMICOLON );
+				return new Statement(say);
 
 			default:
 				System.err.println("Error in statement");
 				return null;
 		}
+	}
+
+	private Say parseSay() throws Exception {
+		indent = "    ";
+		System.out.println("\n" + indent + "-- SAY --");
+
+		StringBuilder stringBuilder = new StringBuilder();
+
+		while ( currentTerminal.kind != TokenKind.SEMICOLON && !currentTerminal.spelling.equals("") ) {
+			stringBuilder.append(currentTerminal.spelling);
+			stringBuilder.append(" ");
+			accept(currentTerminal.kind);
+		}
+
+		if(currentTerminal.spelling.equals("")) {
+			System.err.println("parseSay() => expected semicolon");
+			accept(currentTerminal.kind);
+		}
+		else {
+			System.out.println("\n" + indent + "// SAY: " + stringBuilder.toString() + " //");
+		}
+		return new Say(new Identifier(stringBuilder.toString()));
 	}
 
 	private Vector<Statement> parseStatements() throws Exception {

@@ -568,4 +568,9 @@ public class Checker implements Visitor {
 		return null;
 	}
 
+	@Override
+	public Object visitSay( Say say, Object arg ) throws Exception {
+		say.text.visit( this, null );
+		return null;
+	}
 }

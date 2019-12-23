@@ -287,4 +287,14 @@ public class Encoder implements Visitor {
 		}
 		return null;
 	}
+
+	@Override
+	public Object visitSay(Say say, Object arg) throws Exception {
+		say.text.visit( this,  true );
+
+		emit( Machine.CALLop, 0, Machine.PBr, Machine.putintDisplacement );
+		emit( Machine.CALLop, 0, Machine.PBr, Machine.puteolDisplacement );
+
+		return null;
+	}
 }
