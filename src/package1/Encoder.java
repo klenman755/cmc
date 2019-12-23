@@ -122,6 +122,8 @@ public class Encoder implements Visitor {
 			s.methodCall.visit(this, null);
 		} else if (s.evaluationBlock != null) {
 			s.evaluationBlock.visit(this, null);
+		} else if (s.say != null) {
+			s.say.visit(this, null);
 		}
 		return null;
 	}
