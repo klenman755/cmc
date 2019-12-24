@@ -72,7 +72,7 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitExToBoo(ExToBoo exToBoo, Object arg) throws Exception {
-        DeVariable var = null;
+        DeVariable var;
         try {
             var = (DeVariable) idTable.retrieve(exToBoo.name.spelling);
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitExToValue(ExToValue exToValue, Object arg) throws Exception {
-        DeVariable var = null;
+        DeVariable var;
         try {
             var = (DeVariable) idTable.retrieve(exToValue.name.spelling);
         } catch (Exception e) {
@@ -130,14 +130,14 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitExToVar(ExToVar exToVar, Object arg) throws Exception {
-        DeVariable rhs = null;
+        DeVariable rhs;
         try {
             rhs = (DeVariable) idTable.retrieve(exToVar.name.spelling);
         } catch (Exception e) {
             throw new Exception("visitExToVar() => Identifier variable type mismatch");
         }
 
-        DeVariable lhs = null;
+        DeVariable lhs;
         try {
             lhs = (DeVariable) idTable.retrieve(exToVar.variable.spelling);
         } catch (Exception e) {
@@ -208,17 +208,10 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitDeMethod(DeMethod deMethod, Object arg) throws Exception {
-
         idTable.enter(deMethod.name.spelling, deMethod);
         idTable.openScope();
 
         deMethod.list.visit(this, null);
-
-
-        //TODO THIS IS ignored, as satenebts should be read when method is called not declared.
-//		for (Statement s : deMethod.statements) {
-//			s.visit(this, null);
-//		}
 
         idTable.closeScope();
 
@@ -253,7 +246,7 @@ public class Checker implements Visitor {
             if (deInitialization.value instanceof IntegerLiteral) {
                 return true;
             } else if (deInitialization.value instanceof Identifier) {
-                DeVariable var = null;
+                DeVariable var;
                 try {
                     var = (DeVariable) idTable.retrieve(((Identifier) deInitialization.value).spelling);
                 } catch (Exception e) {
@@ -276,7 +269,7 @@ public class Checker implements Visitor {
             if (deInitialization.value instanceof BooValue) {
                 return true;
             } else if (deInitialization.value instanceof Identifier) {
-                DeVariable var = null;
+                DeVariable var;
                 try {
                     var = (DeVariable) idTable.retrieve(((Identifier) deInitialization.value).spelling);
                 } catch (Exception e) {
@@ -363,7 +356,7 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitMethodCall(MethodCall methodCall, Object arg) throws Exception {
-        DeMethod method = null;
+        DeMethod method;
         try {
             method = (DeMethod) idTable.retrieve(methodCall.name.spelling);
         } catch (Exception e) {
@@ -385,7 +378,7 @@ public class Checker implements Visitor {
                             new VariableType("NUMBER"),
                             new Identifier(method.list.identifierList.get(i).spelling),
                             null,
-                            ((IntegerLiteral) argument));
+                            argument);
 
                     idTable.enter(method.list.identifierList.get(i).spelling, var);
 
@@ -395,14 +388,12 @@ public class Checker implements Visitor {
                             new VariableType("NUMBER"),
                             new Identifier(method.list.identifierList.get(i).spelling),
                             null,
-                            ((BooValue) argument));
+                            argument);
 
                     idTable.enter(method.list.identifierList.get(i).spelling, var);
                 } else {
                     throw new Exception("visitMethodCall() => arguments does not match");
                 }
-
-                //TODO check out of bounds
                 i++;
             }
             for (Statement s : method.statements) {
@@ -418,7 +409,7 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitOperationNumbers(OperationNumber operationNumbers, Object arg) throws Exception {
-        DeVariable rhs = null;
+        DeVariable rhs;
         try {
             rhs = (DeVariable) idTable.retrieve(operationNumbers.identifierOne.spelling);
         } catch (Exception e) {
@@ -463,32 +454,24 @@ public class Checker implements Visitor {
         }
 
         for (Object obj : operationNumbers.values) {
-            if (obj instanceof IntegerLiteral) {
-                // TODO CALCULATION
+            if ( obj instanceof IntegerLiteral ) {
+                ((IntegerLiteral) obj).visit(this, null);
             } else {
-                DeVariable lhs = null;
+                DeVariable lhs;
                 try {
                     lhs = (DeVariable) idTable.retrieve(((Identifier) obj).spelling);
                 } catch (Exception e) {
                     throw new Exception("performOperationsToVariable() => Identifier variable type mismatch");
                 }
-
-
-                // declared
                 if (lhs == null) {
                     throw new Exception("performOperationsToVariable() => LHS variable not declared");
                 }
-
                 if (lhs.value == null) {
                     throw new Exception("performOperationsToVariable() => LHS variable is not initialized");
                 }
-
-                // right type
                 if (!lhs.type.spelling.equals("NUMBER")) {
                     throw new Exception("performOperationsToVariable() => LHS variable type mismatch");
                 }
-
-                // TODO CALCULATION
             }
         }
 
@@ -497,7 +480,7 @@ public class Checker implements Visitor {
 
     private Object variableReAssigning(OperationNumber operationNumbers) throws Exception {
         if (operationNumbers.values.get(0) instanceof Identifier) {
-            DeVariable lhsDec = null;
+            DeVariable lhsDec;
             try {
                 lhsDec = (DeVariable) idTable.retrieve(((Identifier) operationNumbers.values.get(0)).spelling);
             } catch (Exception e) {
@@ -538,7 +521,7 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitOperationBoo(OperationBoo operationBoo, Object arg) throws Exception {
-        DeVariable rhs = null;
+        DeVariable rhs;
         try {
             rhs = (DeVariable) idTable.retrieve(operationBoo.identifier.spelling);
         } catch (Exception e) {

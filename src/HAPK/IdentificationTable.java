@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Vector;
 
 public class IdentificationTable {
-    private Vector<IdEntry> table = new Vector<IdEntry>();
+    private Vector<IdEntry> table = new Vector<>();
     private int level = 0;
 
     public IdentificationTable() {
@@ -55,12 +55,10 @@ public class IdentificationTable {
         return null;
     }
 
-    // TODO refctor?
     public void replaceNumberValue(String id, String value) {
         ((IntegerLiteral) ((DeVariable) Objects.requireNonNull(find(id)).declaration).value).spelling = value;
     }
 
-    // TODO refctor?
     public void replaceBooValue(String id, String value) {
         ((BooValue) ((DeVariable) Objects.requireNonNull(find(id)).declaration).value).spelling = value;
     }
