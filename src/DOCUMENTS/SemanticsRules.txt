@@ -1,0 +1,21 @@
+HKPA language:
+    Methods do not have any return statement
+    Anything following SAY keyword will be treated as string, and stored as Identifier until semicolon is read.
+    INPUT keyword can only be used in new variable declaration. Only curtain values will be accepted
+        if number => any integer
+        if boo => "TRUE" or "FALSE" strings
+
+Semantics:
+    Variable has to be declared before it can be initialized or assigned
+    Variable has to be initialized before it is accessed
+    Variables and functions are not allowed to have the same names
+    Methods can access variables from lower or equal scope
+    Method parameters of different methods can have same names, but parameters of the same method must have different names
+    A name may be defined on different scope levels. Only the innermost definition is visible.
+    The left hand side of the = operator must be a variable.
+    The number of arguments in a function call must the same as the number of parameters in the function definition
+    Multiplications and divisions are NOT superior to additions and subtractions, HAKP language takes mathematical methods and reads them from left to right.
+    Operations cannot be performed on different types (number x = 100 +  True)
+    Variable types are not interchangeable
+    Variables with different types cannot be compared
+    it is not possible to declare a method within a method
