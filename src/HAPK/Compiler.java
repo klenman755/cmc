@@ -5,8 +5,8 @@ import HAPK.AST.Program;
 import javax.swing.*;
 
 public class Compiler {
-    private static final String EXAMPLES_DIR = "C:\\Users\\monomalo\\Documents\\GitHub\\cmc\\src\\CodeExamples";
-    private static final String HARRY_DIR = "/_repo/intellij/cmc/src/CodeExamples/";
+    private static final String EXAMPLES_DIR = "C:\\Users\\monomalo\\Documents\\GitHub\\cmc\\src\\TEST_CASES";
+    private static final String HARRY_DIR = "/_repo/intellij/cmc/src/TEST_CASES/";
 
     private static final String userDir = System.getProperty("user.home") + HARRY_DIR;
 

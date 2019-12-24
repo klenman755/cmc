@@ -100,7 +100,6 @@ public class Encoder implements Visitor {
 
     @Override
     public Object visitBlock(Block b, Object arg) throws Exception {
-        int before = nextAdr;
         if (b.decs != null) {
             emit(Machine.PUSHop, 0, 0, 1);
             arg = b.decs.visit(this, arg);
@@ -140,12 +139,12 @@ public class Encoder implements Visitor {
             }
             if (i instanceof IntegerLiteral) {
                 IntegerLiteral b = (IntegerLiteral) i;
-                emit(Machine.LOADLop, 1, 0, Integer.valueOf(b.spelling));
+                emit(Machine.LOADLop, 1, 0, Integer.parseInt(b.spelling));
             } else {
-                Identifier b = (Identifier) i;
                 Address adr;
                 try {
-                    adr = (Address) b.visit(this, new Boolean(false));
+                    assert i instanceof Identifier;
+                    adr = (Address) ((Identifier) i).visit(this, false);
                     int register = displayRegister(currentLevel, adr.level);
                     emit(Machine.LOADop, 1, register, adr.displacement);
                 } catch (Exception e) {
@@ -157,8 +156,8 @@ public class Encoder implements Visitor {
     }
 
     @Override
-    public Object visitIdentifier(Identifier i, Object arg) throws Exception {
-        return i.spelling;
+    public Object visitIdentifier(Identifier i, Object arg) {
+        return new Address();
     }
 
     @Override
@@ -187,7 +186,7 @@ public class Encoder implements Visitor {
     }
 
     @Override
-    public Object visitDeInitialization(DeVariable deInitialization, Object arg) throws Exception {
+    public Object visitDeInitialization(DeVariable deInitialization, Object arg) {
         deInitialization.address = (Address) arg;
         idTable.enter(deInitialization.name.spelling, deInitialization);
         if (deInitialization.value != null) {
@@ -233,7 +232,7 @@ public class Encoder implements Visitor {
 
     @Override
     public Object visitExToBoo(ExToBoo exToBoo, Object arg) throws Exception {
-        Address adr = (Address) exToBoo.name.visit(this, new Boolean(false));
+        Address adr = (Address) exToBoo.name.visit(this, false);
         int register = displayRegister(currentLevel, adr.level);
 
         emit(Machine.LOADop, 1, register, adr.displacement);
@@ -244,20 +243,20 @@ public class Encoder implements Visitor {
 
     @Override
     public Object visitExToValue(ExToValue exToValue, Object arg) throws Exception {
-        Address adr = (Address) exToValue.name.visit(this, new Boolean(false));
+        Address adr = (Address) exToValue.name.visit(this, false);
         int register = displayRegister(currentLevel, adr.level);
 
         emit(Machine.LOADop, 1, register, adr.displacement);
-        emit(Machine.LOADLop, 1, 0, Integer.valueOf(exToValue.value.spelling));
+        emit(Machine.LOADLop, 1, 0, Integer.parseInt(exToValue.value.spelling));
 
         return null;
     }
 
     @Override
     public Object visitExToVar(ExToVar exToVar, Object arg) throws Exception {
-        Address adr1 = (Address) exToVar.name.visit(this, new Boolean(false));
+        Address adr1 = (Address) exToVar.name.visit(this, false);
         int register1 = displayRegister(currentLevel, adr1.level);
-        Address adr2 = (Address) exToVar.variable.visit(this, new Boolean(false));
+        Address adr2 = (Address) exToVar.variable.visit(this, false);
         int register2 = displayRegister(currentLevel, adr2.level);
 
         emit(Machine.LOADop, 1, register1, adr1.displacement);
@@ -289,7 +288,7 @@ public class Encoder implements Visitor {
     public Object visitWhileStatement(WhileStatement whileStatement, Object arg) throws Exception {
         int startAdr = nextAdr;
 
-        whileStatement.expression.visit(this, new Boolean(true));
+        whileStatement.expression.visit(this, true);
 
         int jumpAdr = nextAdr;
         emit(Machine.JUMPIFop, 0, Machine.CBr, 0);
@@ -313,12 +312,12 @@ public class Encoder implements Visitor {
             }
             if (o instanceof IntegerLiteral) {
                 IntegerLiteral b = (IntegerLiteral) o;
-                emit(Machine.LOADLop, 1, 0, Integer.valueOf(b.spelling));
+                emit(Machine.LOADLop, 1, 0, Integer.parseInt(b.spelling));
             } else {
-                Identifier b = (Identifier) o;
                 Address adr;
                 try {
-                    adr = (Address) b.visit(this, new Boolean(false));
+                    assert o instanceof Identifier;
+                    adr = (Address) ((Identifier) o).visit(this, false);
                     int register = displayRegister(currentLevel, adr.level);
                     emit(Machine.LOADop, 1, register, adr.displacement);
                 } catch (Exception e) {
@@ -352,12 +351,12 @@ public class Encoder implements Visitor {
             }
             if (o instanceof IntegerLiteral) {
                 IntegerLiteral b = (IntegerLiteral) o;
-                emit(Machine.LOADLop, 1, 0, Integer.valueOf(b.spelling));
+                emit(Machine.LOADLop, 1, 0, Integer.parseInt(b.spelling));
             } else {
-                Identifier b = (Identifier) o;
                 Address adr;
                 try {
-                    adr = (Address) b.visit(this, new Boolean(false));
+                    assert o instanceof Identifier;
+                    adr = (Address) ((Identifier) o).visit(this, false);
                     int register = displayRegister(currentLevel, adr.level);
                     emit(Machine.LOADop, 1, register, adr.displacement);
                 } catch (Exception e) {
@@ -375,11 +374,12 @@ public class Encoder implements Visitor {
     @Override
     public Object visitOperationNumbers(OperationNumber operationNumbers, Object arg) throws Exception {
 
-        Address adr = (Address) operationNumbers.identifierOne.visit(this, new Boolean(false));
+        Address adr = (Address) operationNumbers.identifierOne.visit(this, false);
         int register = displayRegister(currentLevel, adr.level);
 
         emit(Machine.LOADop, 1, register, adr.displacement);
-        emit(Machine.LOADLop, 1, 0, (Integer) operationNumbers.values.get(0));
+        emit(Machine.LOADLop, 1, 0,  Integer.parseInt( ((IntegerLiteral) operationNumbers.values.get(0)).spelling));
+
         if (operationNumbers.operators.get(1).spelling.equals("+"))
             emit(Machine.CALLop, 0, Machine.PBr, Machine.addDisplacement);
         else if (operationNumbers.operators.get(1).spelling.equals("-"))
@@ -395,14 +395,14 @@ public class Encoder implements Visitor {
     @Override
     public Object visitOperationBoo(OperationBoo operationBoo, Object arg) throws Exception {
         if (operationBoo.operator.spelling.equals("=")) {
-            boolean valueNeeded = ((Boolean) arg).booleanValue();
+            boolean valueNeeded = (Boolean) arg;
 
-            Integer value = operationBoo.boo.spelling.equals("TRUE") ? 1 : 0;
+            int value = operationBoo.boo.spelling.equals("TRUE") ? 1 : 0;
 
             if (valueNeeded)
                 emit(Machine.LOADLop, 1, 0, value);
         }
-        Address adr = (Address) operationBoo.identifier.visit(this, new Boolean(false));
+        Address adr = (Address) operationBoo.identifier.visit(this, false);
         int register = displayRegister(currentLevel, adr.level);
         emit(Machine.STOREop, 1, register, adr.displacement);
         return null;

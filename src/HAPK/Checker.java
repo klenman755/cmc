@@ -547,7 +547,6 @@ public class Checker implements Visitor {
 
     @Override
     public Object visitSay(Say say, Object arg) throws Exception {
-        say.text.visit(this, null);
         return null;
     }
 }
