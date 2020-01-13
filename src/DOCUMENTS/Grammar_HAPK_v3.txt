@@ -5,7 +5,7 @@ program             block*
 block               declaration
                     statement
 
-declaration         VARIABLE_TYPE IDENTIFIER [; | OPERATOR [INTEGER_LITERAL | BOO_VALUE | IDENTIFIER | INPUT ]];
+declaration         VARIABLE_TYPE IDENTIFIER [ ; | OPERATOR [INTEGER_LITERAL | BOO_VALUE | IDENTIFIER | INPUT ]; ]
                     METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statement* ENDMETHOD
                     ARRAY VARIABLE_TYPE IDENTIFIER [ parameterList ] ENDARRAY
 

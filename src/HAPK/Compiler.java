@@ -21,19 +21,19 @@ public class Compiler {
             Parser p = new Parser(s);
 
             Checker c = new Checker();
-            Encoder e = new Encoder();
+//            Encoder e = new Encoder();
 
             Program program = (Program) p.parseProgram();
             c.check(program);
-            e.encode(program);
-
-            String targetName;
-            if (sourceName.endsWith(".txt"))
-                targetName = sourceName.substring(0, sourceName.length() - 4) + ".tam";
-            else
-                targetName = sourceName + ".tam";
-
-            e.saveTargetProgram(targetName);
+//            e.encode(program);
+//
+//            String targetName;
+//            if (sourceName.endsWith(".txt"))
+//                targetName = sourceName.substring(0, sourceName.length() - 4) + ".tam";
+//            else
+//                targetName = sourceName + ".tam";
+//
+//            e.saveTargetProgram(targetName);
         }
     }
 }

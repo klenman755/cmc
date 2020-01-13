@@ -34,14 +34,15 @@ public class Parser {
 
     Object parseProgram() throws Exception {
         System.out.println("\n------------ PARSE ------------");
+
         currentTerminal = scan.scan();
         Vector<Block> blocks = new Vector<>();
 
 
         while (currentTerminal.kind != TokenKind.EOT) {
             blocks.add(parseBlock());
-
         }
+
         System.out.println("\n\n\n------------ PARSE FINITO ------------");
         return new Program(blocks);
     }

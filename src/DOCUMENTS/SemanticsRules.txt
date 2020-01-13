@@ -4,6 +4,8 @@ HKPA language:
     INPUT keyword can only be used in new variable declaration. Only curtain values will be accepted
         if number => any integer
         if boo => "TRUE" or "FALSE" strings
+    Declaration is only global: If, while or method "body" only accepts statements
+        So no new local declarations are allowed. Methods may use arguments.
 
 Semantics:
     Variable has to be declared before it can be initialized or assigned
