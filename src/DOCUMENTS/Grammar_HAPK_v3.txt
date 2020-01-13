@@ -14,7 +14,7 @@ statement           operation
 		            IDENTIFIER START_BRACKET parameterList END_BRACKET
 		            SAY IDENTIFIER;
 
-operation           IDENTIFIER OPERATOR [IDENTIFIER | INTEGER_LITERAL | BooValue ] [OPERATOR [IDENTIFIER | INTEGER_LITERAL ]]* ;
+operation           IDENTIFIER OPERATOR [IDENTIFIER | INTEGER_LITERAL | BOO_VALUE ] [OPERATOR [IDENTIFIER | INTEGER_LITERAL ]]* ;
 
 evaluationBlock     IF expression THEN statement* ENDIF
                     WHILE expression THEN statement* ENDWHILE
