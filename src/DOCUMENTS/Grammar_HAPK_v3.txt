@@ -2,28 +2,27 @@ HAPK - V3
 
 program             block*
 
-block               declaration
-                    statement
+block               ( declaration | statement )
 
-declaration         VARIABLE_TYPE IDENTIFIER [ ; | OPERATOR [INTEGER_LITERAL | BOO_VALUE | IDENTIFIER | INPUT ]; ]
+declaration         VARIABLE_TYPE IDENTIFIER ( ; | OPERATOR (INTEGER_LITERAL | BOO_VALUE | IDENTIFIER | INPUT ); )
                     METHOD IDENTIFIER START_BRACKET declarationList END_BRACKET statement* ENDMETHOD
-                    ARRAY VARIABLE_TYPE IDENTIFIER [ parameterList ] ENDARRAY
+                    ARRAY VARIABLE_TYPE IDENTIFIER START_BRACKET parameterList END_BRACKET ENDARRAY
 
 statement           operation
                     evaluationBlock
 		            IDENTIFIER START_BRACKET parameterList END_BRACKET
 		            SAY IDENTIFIER;
 
-operation           IDENTIFIER OPERATOR [IDENTIFIER | INTEGER_LITERAL | BOO_VALUE ] [OPERATOR [IDENTIFIER | INTEGER_LITERAL ]]* ;
+operation           IDENTIFIER OPERATOR ( IDENTIFIER | INTEGER_LITERAL | BOO_VALUE ) ( OPERATOR (IDENTIFIER | INTEGER_LITERAL ) )* ;
 
 evaluationBlock     IF expression THEN statement* ENDIF
                     WHILE expression THEN statement* ENDWHILE
 
-parameterList       IDENTIFIER | INTEGER_LITERAL | BOO_VALUE  [, [IDENTIFIER | INTEGER_LITERAL | BOO_VALUE ]]*
+parameterList       IDENTIFIER | INTEGER_LITERAL | BOO_VALUE  ( , ( IDENTIFIER | INTEGER_LITERAL | BOO_VALUE ) )*
                     e
 
-declarationList     VARIABLE_TYPE IDENTIFIER [, VARIABLE_TYPE IDENTIFIER]*
+declarationList     VARIABLE_TYPE IDENTIFIER ( , VARIABLE_TYPE IDENTIFIER )*
                     e
 
-expression          IDENTIFIER OPERATOR [ IDENTIFIER | BOO_VALUE | INTEGER_LITERAL ]
-		            [ BOO_VALUE | INTEGER_LITERAL ] OPERATOR IDENTIFIER
+expression          IDENTIFIER OPERATOR ( IDENTIFIER | BOO_VALUE | INTEGER_LITERAL )
+		            ( BOO_VALUE | INTEGER_LITERAL ) OPERATOR IDENTIFIER
